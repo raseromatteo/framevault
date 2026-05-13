@@ -1,1 +1,961 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FrameVault — Archivio Stampe Originali di Cinema e Televisione</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:       #faf8f4;
+      --bg2:      #f2ede4;
+      --ink:      #1c1712;
+      --brown:    #5c3a1e;
+      --rust:     #b8420a;
+      --gold:     #c8922a;
+      --ash:      #7a6e62;
+      --border:   #ddd5c5;
+      --white:    #ffffff;
+    }
 
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--ink);
+      font-family: 'DM Sans', sans-serif;
+      overflow-x: hidden;
+    }
+
+    /* ── FILMSTRIP ── */
+    .filmstrip {
+      width: 100%;
+      height: 28px;
+      background: var(--ink);
+      overflow: hidden;
+      position: relative;
+    }
+    .filmstrip-inner {
+      position: absolute;
+      top: 7px;
+      left: 0;
+      width: 200%;
+      height: 14px;
+      background-image: repeating-linear-gradient(
+        90deg,
+        transparent 0, transparent 18px,
+        rgba(255,255,255,0.15) 18px, rgba(255,255,255,0.15) 20px,
+        transparent 20px, transparent 38px
+      );
+      animation: filmroll 3s linear infinite;
+    }
+    @keyframes filmroll {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-38px); }
+    }
+
+    /* ── NAV ── */
+    nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 18px 64px;
+      background: var(--white);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .logo {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.8rem;
+      letter-spacing: 4px;
+      color: var(--ink);
+    }
+    .logo span { color: var(--rust); }
+    nav ul {
+      list-style: none;
+      display: flex;
+      gap: 32px;
+      align-items: center;
+    }
+    nav ul a {
+      color: var(--ash);
+      text-decoration: none;
+      font-size: 0.82rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+    nav ul a:hover { color: var(--ink); }
+    .nav-cta {
+      background: var(--rust) !important;
+      color: var(--white) !important;
+      padding: 9px 22px;
+      border-radius: 2px;
+      font-weight: 500 !important;
+    }
+    .nav-cta:hover { background: var(--brown) !important; }
+
+    /* ── HERO ── */
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 88vh;
+      background: var(--white);
+    }
+    .hero-left {
+      padding: 80px 64px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    .eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--rust);
+      font-weight: 500;
+      margin-bottom: 20px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 28px;
+      height: 1px;
+      background: var(--rust);
+    }
+    h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.8rem, 4.5vw, 5rem);
+      font-weight: 900;
+      line-height: 1.08;
+      color: var(--ink);
+    }
+    h1 em {
+      font-style: italic;
+      color: var(--rust);
+    }
+    .hero-desc {
+      margin-top: 24px;
+      font-size: 1rem;
+      line-height: 1.75;
+      color: var(--ash);
+      max-width: 440px;
+    }
+    .hero-stats {
+      display: flex;
+      gap: 36px;
+      margin-top: 40px;
+      padding-top: 32px;
+      border-top: 1px solid var(--border);
+    }
+    .stat-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem;
+      letter-spacing: 1px;
+      color: var(--ash);
+      margin-top: 4px;
+    }
+    .cta-row {
+      display: flex;
+      gap: 14px;
+      margin-top: 36px;
+    }
+    .btn-primary {
+      background: var(--rust);
+      color: var(--white);
+      border: none;
+      padding: 15px 34px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      letter-spacing: 0.5px;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: background 0.25s, transform 0.2s;
+    }
+    .btn-primary:hover { background: var(--brown); transform: translateY(-1px); }
+    .btn-outline {
+      background: transparent;
+      color: var(--ink);
+      border: 1.5px solid var(--border);
+      padding: 15px 34px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 2px;
+      transition: border-color 0.25s, color 0.25s;
+    }
+    .btn-outline:hover { border-color: var(--ink); }
+
+    /* ── HERO RIGHT — grid preview ── */
+    .hero-right {
+      background: var(--bg2);
+      position: relative;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      gap: 4px;
+      padding: 4px;
+    }
+    .preview-cell {
+      background: var(--border);
+      border-radius: 2px;
+      position: relative;
+      overflow: hidden;
+      animation: fadein 0.8s ease both;
+    }
+    .preview-cell:nth-child(1)  { animation-delay: .05s; background: linear-gradient(135deg,#e8dfd0,#d5c9b5); grid-row: span 2; }
+    .preview-cell:nth-child(2)  { animation-delay: .10s; background: linear-gradient(160deg,#ddd3c2,#ccc0a8); }
+    .preview-cell:nth-child(3)  { animation-delay: .15s; background: linear-gradient(180deg,#e2d9c9,#cfc3ae); grid-row: span 2; }
+    .preview-cell:nth-child(4)  { animation-delay: .20s; background: linear-gradient(120deg,#d8cebb,#c9bca5); }
+    .preview-cell:nth-child(5)  { animation-delay: .25s; background: linear-gradient(200deg,#e5ddd0,#d4c9b2); grid-row: span 2; }
+    .preview-cell:nth-child(6)  { animation-delay: .30s; background: linear-gradient(140deg,#dacfc0,#c8bba4); }
+    .preview-cell:nth-child(7)  { animation-delay: .35s; background: linear-gradient(160deg,#e0d8ca,#cfc4b0); }
+    .preview-cell:nth-child(8)  { animation-delay: .40s; background: linear-gradient(180deg,#d6cbb8,#c4b99f); }
+    .preview-cell .cell-tag {
+      position: absolute;
+      bottom: 10px; left: 10px;
+      font-size: 0.55rem;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      color: rgba(92,58,30,0.65);
+      background: rgba(255,255,255,0.55);
+      padding: 3px 7px;
+      border-radius: 1px;
+    }
+    /* Simulated film grain overlay */
+    .preview-cell::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.07'/%3E%3C/svg%3E");
+      pointer-events: none;
+      opacity: 0.5;
+    }
+
+    /* ── MARQUEE ── */
+    .marquee-wrap {
+      background: var(--bg2);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 0;
+      overflow: hidden;
+    }
+    .marquee-track {
+      display: inline-flex;
+      animation: marquee 28s linear infinite;
+      white-space: nowrap;
+    }
+    .marquee-track span {
+      font-size: 0.72rem;
+      letter-spacing: 2.5px;
+      text-transform: uppercase;
+      color: var(--ash);
+      padding: 0 24px;
+    }
+    .marquee-track span.dot { color: var(--gold); font-size: 0.5rem; }
+    @keyframes marquee {
+      from { transform: translateX(0); }
+      to   { transform: translateX(-50%); }
+    }
+
+    /* ── SECTION SHARED ── */
+    section { padding: 88px 64px; }
+    .section-eyebrow {
+      font-size: 0.7rem;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--rust);
+      font-weight: 500;
+      margin-bottom: 12px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 3vw, 2.8rem);
+      font-weight: 800;
+      line-height: 1.15;
+      color: var(--ink);
+      margin-bottom: 48px;
+    }
+    .section-title span { color: var(--rust); font-style: italic; }
+
+    /* ── SERVIZI ── */
+    .services { background: var(--white); }
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .service-card {
+      background: var(--bg);
+      padding: 44px 36px;
+      border: 1px solid var(--border);
+      transition: border-color 0.25s, box-shadow 0.25s;
+      cursor: pointer;
+      position: relative;
+    }
+    .service-card:hover {
+      border-color: var(--rust);
+      box-shadow: 0 4px 28px rgba(184,66,10,0.07);
+    }
+    .service-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.4rem;
+      margin-bottom: 20px;
+      background: var(--bg2);
+    }
+    .service-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.2rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 10px;
+    }
+    .service-card p {
+      font-size: 0.875rem;
+      line-height: 1.7;
+      color: var(--ash);
+      margin-bottom: 20px;
+    }
+    .service-formats {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+    }
+    .tag {
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--brown);
+      border: 1px solid var(--border);
+      padding: 4px 10px;
+      border-radius: 2px;
+      background: var(--white);
+    }
+    .service-price {
+      margin-top: 24px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+    .service-price strong {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: var(--ink);
+      font-weight: 700;
+    }
+
+    /* ── COME FUNZIONA ── */
+    .howto { background: var(--bg2); }
+    .steps-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .steps-grid::before {
+      content: '';
+      position: absolute;
+      top: 24px;
+      left: 10%;
+      right: 10%;
+      height: 1px;
+      background: var(--border);
+      z-index: 0;
+    }
+    .step {
+      padding: 0 28px;
+      position: relative;
+      z-index: 1;
+    }
+    .step-circle {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 1.2rem;
+      letter-spacing: 1px;
+      color: var(--rust);
+      margin-bottom: 24px;
+    }
+    .step h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .step p {
+      font-size: 0.82rem;
+      line-height: 1.7;
+      color: var(--ash);
+    }
+
+    /* ── CATEGORIE ── */
+    .categories { background: var(--white); }
+    .cat-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+    }
+    .cat-card {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 28px 24px;
+      cursor: pointer;
+      transition: all 0.25s;
+      text-align: center;
+    }
+    .cat-card:hover {
+      background: var(--white);
+      border-color: var(--rust);
+      transform: translateY(-3px);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
+    }
+    .cat-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
+    .cat-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 4px;
+    }
+    .cat-card p { font-size: 0.75rem; color: var(--ash); }
+    .cat-count {
+      display: inline-block;
+      margin-top: 10px;
+      font-size: 0.65rem;
+      letter-spacing: 1px;
+      color: var(--rust);
+      text-transform: uppercase;
+    }
+
+    /* ── PIANI ── */
+    .pricing { background: var(--bg2); }
+    .price-intro {
+      font-size: 0.92rem;
+      color: var(--ash);
+      max-width: 560px;
+      margin-bottom: 48px;
+      line-height: 1.7;
+    }
+    .price-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .price-card {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      padding: 36px 28px;
+      position: relative;
+      transition: border-color 0.25s, box-shadow 0.25s;
+    }
+    .price-card:hover { border-color: var(--rust); box-shadow: 0 6px 24px rgba(184,66,10,0.08); }
+    .price-card-icon { font-size: 1.8rem; margin-bottom: 16px; }
+    .price-card-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 6px;
+    }
+    .price-card-desc { font-size: 0.83rem; color: var(--ash); line-height: 1.65; margin-bottom: 24px; }
+    .price-card-from {
+      font-size: 0.68rem;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      color: var(--ash);
+      margin-bottom: 4px;
+    }
+    .price-card-amount {
+      font-family: 'Playfair Display', serif;
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--ink);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .price-card-amount sup { font-size: 1.1rem; vertical-align: super; }
+    .price-card-note { font-size: 0.75rem; color: var(--ash); margin-bottom: 24px; }
+    .price-card ul {
+      list-style: none;
+      display: flex; flex-direction: column; gap: 9px;
+      margin-bottom: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .price-card ul li {
+      font-size: 0.82rem; color: var(--ash);
+      padding-left: 18px; position: relative; line-height: 1.5;
+    }
+    .price-card ul li::before { content: '✓'; position: absolute; left: 0; color: var(--rust); font-size: 0.7rem; top: 2px; }
+    .price-card .btn-primary,
+    .price-card .btn-outline { width: 100%; text-align: center; display: block; border-radius: 2px; }
+    .price-note-box {
+      margin-top: 32px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-left: 4px solid var(--gold);
+      padding: 20px 24px;
+      font-size: 0.84rem;
+      color: var(--ash);
+      line-height: 1.7;
+      max-width: 860px;
+    }
+    .price-note-box strong { color: var(--ink); }
+
+    /* ── LICENZE ── */
+    .licenses { background: var(--white); }
+    .license-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+    }
+    .license-card {
+      border: 1.5px solid var(--border);
+      padding: 40px;
+      transition: border-color 0.25s;
+    }
+    .license-card:hover { border-color: var(--gold); }
+    .license-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      font-weight: 700;
+      color: var(--ink);
+      margin-bottom: 8px;
+    }
+    .license-card p { font-size: 0.87rem; color: var(--ash); line-height: 1.7; margin-bottom: 20px; }
+    .license-uses { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
+    .license-use {
+      font-size: 0.8rem;
+      color: var(--ash);
+      padding-left: 16px;
+      position: relative;
+    }
+    .license-use::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+
+
+
+    /* ── NEWSLETTER ── */
+    .newsletter {
+      background: var(--ink);
+      text-align: center;
+      padding: 80px 64px;
+      color: #f5eed8;
+    }
+    .newsletter .section-eyebrow { color: #c8922a; }
+    .newsletter .section-title { color: #f5eed8; margin-bottom: 12px; }
+    .newsletter p { color: rgba(245,238,216,0.6); font-size: 0.92rem; margin-bottom: 36px; }
+    .email-row {
+      display: flex;
+      justify-content: center;
+      max-width: 460px;
+      margin: 0 auto;
+    }
+    .email-row input {
+      flex: 1;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.15);
+      border-right: none;
+      color: #f5eed8;
+      padding: 14px 18px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.88rem;
+      outline: none;
+      border-radius: 2px 0 0 2px;
+    }
+    .email-row input::placeholder { color: rgba(245,238,216,0.35); }
+    .email-row button {
+      background: var(--rust);
+      color: #fff;
+      border: none;
+      padding: 14px 28px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 500;
+      cursor: pointer;
+      border-radius: 0 2px 2px 0;
+      transition: background 0.25s;
+    }
+    .email-row button:hover { background: #a03808; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--white);
+      border-top: 1px solid var(--border);
+      padding: 36px 64px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: var(--ash);
+    }
+
+    /* ── UTILS ── */
+    @keyframes fadein {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    @media (max-width: 900px) {
+      nav { padding: 14px 24px; }
+      nav ul { display: none; }
+      .hero { grid-template-columns: 1fr; }
+      .hero-right { display: none; }
+      section { padding: 60px 24px; }
+      .services-grid, .steps-grid, .cat-grid, .price-grid, .license-row {
+        grid-template-columns: 1fr;
+      }
+      footer { flex-direction: column; gap: 10px; text-align: center; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="filmstrip"><div class="filmstrip-inner"></div></div>
+
+  <!-- NAV -->
+  <nav>
+    <div class="logo">Frame<span>Vault</span></div>
+    <ul>
+      <li><a href="#servizi">Servizi</a></li>
+      <li><a href="#catalogo">Catalogo</a></li>
+      <li><a href="#licenze">Licenze</a></li>
+      <li><a href="#prezzi">Prezzi</a></li>
+      <li><a href="#newsletter" class="nav-cta">Accedi all'archivio</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero" style="padding:0">
+    <div class="hero-left">
+      <div class="eyebrow">Archivio Digitale Ufficiale · Dal 1970</div>
+      <h1>Il cinema originale <em>finalmente online.</em></h1>
+      <p class="hero-desc">Oltre 500.000 stampe originali di cinema e televisione italiana, digitalizzate in alta risoluzione. Scarica, stampa e colleziona pezzi unici della storia audiovisiva.</p>
+      <div class="hero-stats">
+        <div>
+          <div class="stat-num">500K+</div>
+          <div class="stat-label">Stampe originali</div>
+        </div>
+        <div>
+          <div class="stat-num">50+</div>
+          <div class="stat-label">Anni di storia</div>
+        </div>
+        <div>
+          <div class="stat-num">Alta Ris.</div>
+          <div class="stat-label">Qualità digitale</div>
+        </div>
+      </div>
+      <div class="cta-row">
+        <button class="btn-primary">Esplora l'archivio</button>
+        <button class="btn-outline">Scopri i servizi</button>
+      </div>
+    </div>
+    <div class="hero-right">
+      <div class="preview-cell"><span class="cell-tag">1974 · Drama</span></div>
+      <div class="preview-cell"><span class="cell-tag">1981 · Thriller</span></div>
+      <div class="preview-cell"><span class="cell-tag">1968 · Western</span></div>
+      <div class="preview-cell"><span class="cell-tag">1990 · TV</span></div>
+      <div class="preview-cell"><span class="cell-tag">1985 · Sci-Fi</span></div>
+      <div class="preview-cell"><span class="cell-tag">1977 · Horror</span></div>
+      <div class="preview-cell"><span class="cell-tag">1972 · Drama</span></div>
+      <div class="preview-cell"><span class="cell-tag">1988 · Poliziesco</span></div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-wrap">
+    <div class="marquee-track">
+      <span>Cinema Italiano</span><span class="dot">✦</span>
+      <span>Fotogrammi Originali</span><span class="dot">✦</span>
+      <span>Televisione RAI</span><span class="dot">✦</span>
+      <span>Anni '70 · '80 · '90</span><span class="dot">✦</span>
+      <span>Stampa su Tela</span><span class="dot">✦</span>
+      <span>Download HD</span><span class="dot">✦</span>
+      <span>Licenza Digitale</span><span class="dot">✦</span>
+      <span>Archivio Certificato</span><span class="dot">✦</span>
+      <span>Cinema Italiano</span><span class="dot">✦</span>
+      <span>Fotogrammi Originali</span><span class="dot">✦</span>
+      <span>Televisione RAI</span><span class="dot">✦</span>
+      <span>Anni '70 · '80 · '90</span><span class="dot">✦</span>
+      <span>Stampa su Tela</span><span class="dot">✦</span>
+      <span>Download HD</span><span class="dot">✦</span>
+      <span>Licenza Digitale</span><span class="dot">✦</span>
+      <span>Archivio Certificato</span><span class="dot">✦</span>
+    </div>
+  </div>
+
+  <!-- SERVIZI -->
+  <section class="services" id="servizi">
+    <div class="section-eyebrow">I nostri servizi</div>
+    <div class="section-title">Tre modi di portare<br>la storia a casa tua</div>
+    <div class="services-grid">
+
+      <div class="service-card">
+        <div class="service-icon">🖼️</div>
+        <h3>Stampa su Tela Canvas</h3>
+        <p>Ogni immagine viene stampata su tela Canvas Premium con inchiostri pigmentati ad alta durabilità. Personalizzabile in qualsiasi dimensione, con o senza cornice in legno. Spedita arrotolata o già montata su telaio.</p>
+        <div class="service-formats">
+          <span class="tag">Canvas Premium</span>
+          <span class="tag">Cornice legno</span>
+          <span class="tag">Su misura</span>
+          <span class="tag">Senza margini</span>
+        </div>
+        <div class="service-price">
+          Da <strong>€29</strong> · spedizione inclusa
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">🖨️</div>
+        <h3>Stampa Fine Art su Carta</h3>
+        <p>Stampa fotografica professionale su carta satinata da 200 g/m², resa cromatica impeccabile. Disponibile in formati standard e personalizzati. Ideale per collezioni e regali.</p>
+        <div class="service-formats">
+          <span class="tag">Carta 200g</span>
+          <span class="tag">Satinata / Lucida</span>
+          <span class="tag">A4 · A3 · 70×100</span>
+          <span class="tag">Formato custom</span>
+        </div>
+        <div class="service-price">
+          Da <strong>€12</strong> · spedizione inclusa
+        </div>
+      </div>
+
+      <div class="service-card">
+        <div class="service-icon">⬇️</div>
+        <h3>Download Digitale con Licenza</h3>
+        <p>Scarica il file in alta risoluzione per uso personale o commerciale. Ogni download include il certificato di licenza digitale. Scegli tra uso privato, editoriale o commerciale.</p>
+        <div class="service-formats">
+          <span class="tag">File JPEG / TIFF</span>
+          <span class="tag">Alta risoluzione</span>
+          <span class="tag">Licenza inclusa</span>
+          <span class="tag">Uso editoriale</span>
+        </div>
+        <div class="service-price">
+          Da <strong>€5</strong> · download immediato
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- COME FUNZIONA -->
+  <section class="howto" id="come-funziona">
+    <div class="section-eyebrow">Come funziona</div>
+    <div class="section-title">Dal nostro archivio<br>alla tua collezione</div>
+    <div class="steps-grid">
+      <div class="step">
+        <div class="step-circle">01</div>
+        <h3>Cerca nell'archivio</h3>
+        <p>Sfoglia 500.000+ stampe per titolo, anno, regista, attore o genere. Ogni pezzo è catalogato con scheda dettagliata.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">02</div>
+        <h3>Scegli il servizio</h3>
+        <p>Download digitale, stampa su carta o tela canvas. Seleziona il formato e le dimensioni che preferisci.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">03</div>
+        <h3>Acquista in sicurezza</h3>
+        <p>Pagamento sicuro. Ogni acquisto include il certificato di autenticità e la licenza d'uso appropriata.</p>
+      </div>
+      <div class="step">
+        <div class="step-circle">04</div>
+        <h3>Ricevi o scarica</h3>
+        <p>Download immediato oppure spedizione a casa in tutta Italia e Europa, in packaging protettivo dedicato.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CATALOGO CATEGORIE -->
+  <section class="categories" id="catalogo">
+    <div class="section-eyebrow">Il catalogo</div>
+    <div class="section-title">Esplora <span>l'archivio</span><br>per categoria</div>
+    <div class="cat-grid">
+      <div class="cat-card">
+        <span class="cat-icon">🎬</span>
+        <h3>Cinema Italiano</h3>
+        <p>Fellini, Visconti, Leone, Argento e i grandi del cinema italiano</p>
+        <span class="cat-count">120.000+ stampe</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">📺</span>
+        <h3>Televisione RAI</h3>
+        <p>Sceneggiati, varietà e fiction italiane dalla nascita della TV</p>
+        <span class="cat-count">80.000+ stampe</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">📷</span>
+        <h3>Fotografie di Scena</h3>
+        <p>Dietro le quinte, ritratti e momenti unici sul set</p>
+        <span class="cat-count">200.000+ stampe</span>
+      </div>
+      <div class="cat-card">
+        <span class="cat-icon">🏆</span>
+        <h3>Pezzi Rari</h3>
+        <p>Stampe uniche, numerate e certificate — edizioni limitate</p>
+        <span class="cat-count">5.000+ stampe</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- LICENZE -->
+  <section class="licenses" id="licenze">
+    <div class="section-eyebrow">Licenze d'uso</div>
+    <div class="section-title">Acquista i diritti giusti<br>per ogni utilizzo</div>
+    <div class="license-row">
+      <div class="license-card">
+        <h3>Licenza Personale</h3>
+        <p>Per uso privato e decorativo. Stampa a casa, collezione personale, regalo. Non include l'uso commerciale.</p>
+        <div class="license-uses">
+          <div class="license-use">Stampa per uso domestico</div>
+          <div class="license-use">Collezione privata</div>
+          <div class="license-use">Regalo personale</div>
+          <div class="license-use">Uso sui social personali (non sponsorizzato)</div>
+        </div>
+        <button class="btn-outline">Da €5 · Download immediato</button>
+      </div>
+      <div class="license-card">
+        <h3>Licenza Editoriale & Commerciale</h3>
+        <p>Per pubblicazioni, campagne, produzioni audiovisive, mostre ed esposizioni. Include attribuzione e diritti d'uso estesi.</p>
+        <div class="license-uses">
+          <div class="license-use">Pubblicazioni cartacee e digitali</div>
+          <div class="license-use">Campagne pubblicitarie e marketing</div>
+          <div class="license-use">Mostre, esposizioni e musei</div>
+          <div class="license-use">Produzioni audiovisive e documentari</div>
+        </div>
+        <button class="btn-primary">Richiedi preventivo</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- PREZZI -->
+  <section class="pricing" id="prezzi">
+    <div class="section-eyebrow">Prezzi</div>
+    <div class="section-title">Paghi solo quello<br><span>che ti serve</span></div>
+    <p class="price-intro">Nessun abbonamento, nessun costo fisso. Ogni acquisto è singolo e include la licenza d'uso corrispondente. Scegli il formato che preferisci per ogni stampa.</p>
+
+    <div class="price-grid">
+
+      <div class="price-card">
+        <div class="price-card-icon">⬇️</div>
+        <div class="price-card-name">Download Digitale</div>
+        <div class="price-card-desc">Scarica il file originale in alta risoluzione. Ideale per uso personale, stampa domestica o collezione digitale.</div>
+        <div class="price-card-from">A partire da</div>
+        <div class="price-card-amount"><sup>€</sup>5</div>
+        <div class="price-card-note">per immagine · download immediato</div>
+        <ul>
+          <li>File JPEG ad alta risoluzione</li>
+          <li>Licenza personale inclusa</li>
+          <li>Certificato di autenticità digitale</li>
+          <li>Disponibile anche in formato TIFF</li>
+        </ul>
+        <button class="btn-outline">Acquista il download</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-card-icon">🖨️</div>
+        <div class="price-card-name">Stampa Fine Art su Carta</div>
+        <div class="price-card-desc">Stampa professionale su carta fotografica satinata da 200 g/m². Spedita in tubo protettivo rigido, pronta da incorniciare.</div>
+        <div class="price-card-from">A partire da</div>
+        <div class="price-card-amount"><sup>€</sup>12</div>
+        <div class="price-card-note">per stampa · spedizione inclusa</div>
+        <ul>
+          <li>Carta satinata 200 g/m²</li>
+          <li>Formati: A4, A3, 50×70, 70×100</li>
+          <li>Formato personalizzato su richiesta</li>
+          <li>Consegna in 5–7 giorni lavorativi</li>
+        </ul>
+        <button class="btn-outline">Ordina la stampa</button>
+      </div>
+
+      <div class="price-card">
+        <div class="price-card-icon">🖼️</div>
+        <div class="price-card-name">Stampa su Tela Canvas</div>
+        <div class="price-card-desc">Stampa su tela Canvas premium con inchiostri pigmentati. Con o senza telaio in legno, personalizzabile in qualsiasi dimensione.</div>
+        <div class="price-card-from">A partire da</div>
+        <div class="price-card-amount"><sup>€</sup>29</div>
+        <div class="price-card-note">per stampa · spedizione inclusa</div>
+        <ul>
+          <li>Tela Canvas 380 g/m² opaca</li>
+          <li>Telaio in legno massello incluso</li>
+          <li>Qualsiasi dimensione su misura</li>
+          <li>Consegna in 7–10 giorni lavorativi</li>
+        </ul>
+        <button class="btn-primary">Ordina su tela</button>
+      </div>
+
+    </div>
+
+    <div class="price-note-box">
+      💼 <strong>Uso editoriale o commerciale?</strong> Per pubblicazioni, campagne pubblicitarie, mostre o produzioni audiovisive è richiesta una licenza specifica.
+      Il prezzo varia in base all'utilizzo e alla tiratura. <a href="#newsletter" style="color:var(--rust);text-decoration:none;font-weight:500;">Contattaci per un preventivo personalizzato →</a>
+    </div>
+  </section>
+
+
+
+  <!-- NEWSLETTER -->
+  <section class="newsletter" id="newsletter">
+    <div class="section-eyebrow">Resta aggiornato</div>
+    <div class="section-title">Entra per primo<br>nell'archivio</div>
+    <p>Iscriviti per ricevere aggiornamenti sul lancio, anteprime esclusive e nuove stampe selezionate ogni settimana.</p>
+    <div class="email-row">
+      <input type="email" placeholder="la-tua@email.it" />
+      <button>Iscrivimi</button>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="logo" style="font-size:1.3rem">Frame<span style="color:var(--rust)">Vault</span></div>
+    <span>© 2025 FrameVault — Archivio Stampe Originali di Cinema e Televisione</span>
+    <span>Milano, Italia</span>
+  </footer>
+
+  <script>
+
+    // Scroll reveal
+    const io = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.style.opacity = '1';
+          e.target.style.transform = 'translateY(0)';
+        }
+      });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.service-card, .step, .cat-card, .price-card, .license-card').forEach(el => {
+      el.style.opacity = '0';
+      el.style.transform = 'translateY(20px)';
+      el.style.transition = 'opacity 0.55s ease, transform 0.55s ease, border-color 0.25s, box-shadow 0.25s';
+      io.observe(el);
+    });
+  </script>
+
+</body>
+</html>
