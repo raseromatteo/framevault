@@ -624,7 +624,51 @@
     }
     @media (max-width: 900px) {
       nav { padding: 14px 24px; }
-      nav ul { display: none; }
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: fixed;
+        top: 0; left: 0; right: 0; bottom: 0;
+        background: var(--white);
+        z-index: 999;
+        justify-content: center;
+        align-items: center;
+        gap: 32px;
+        padding: 40px;
+      }
+      nav ul.open { display: flex; }
+      nav ul a { font-size: 1.2rem; letter-spacing: 1px; }
+      nav ul .nav-cta { padding: 14px 36px; font-size: 1rem !important; }
+      .hamburger {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+        cursor: pointer;
+        z-index: 1000;
+        background: none;
+        border: none;
+        padding: 4px;
+      }
+      .hamburger span {
+        display: block;
+        width: 24px;
+        height: 2px;
+        background: var(--ink);
+        border-radius: 2px;
+        transition: all 0.3s ease;
+      }
+      .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+      .hamburger.open span:nth-child(2) { opacity: 0; }
+      .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+      .menu-close {
+        position: absolute;
+        top: 20px; right: 24px;
+        font-size: 1.5rem;
+        background: none;
+        border: none;
+        cursor: pointer;
+        color: var(--ash);
+      }
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       section { padding: 60px 24px; }
@@ -633,6 +677,7 @@
       }
       footer { flex-direction: column; gap: 10px; text-align: center; }
     }
+    .hamburger { display: none; }
   </style>
 </head>
 <body>
@@ -642,7 +687,11 @@
   <!-- NAV -->
   <nav>
     <div class="logo">Frame<span>Vault</span></div>
-    <ul>
+    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul id="navMenu">
+      <button class="menu-close" onclick="toggleMenu()">✕</button>
       <li><a href="#servizi">Servizi</a></li>
       <li><a href="#come-funziona">Come funziona</a></li>
       <li><a href="/frameVault_archivio.html">Catalogo</a></li>
@@ -1012,6 +1061,21 @@
   </footer>
 
   <script>
+    // Menu hamburger
+    function toggleMenu() {
+      const menu = document.getElementById('navMenu');
+      const btn = document.getElementById('hamburger');
+      menu.classList.toggle('open');
+      btn.classList.toggle('open');
+      document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+    }
+    document.querySelectorAll('#navMenu a').forEach(a => {
+      a.addEventListener('click', () => {
+        document.getElementById('navMenu').classList.remove('open');
+        document.getElementById('hamburger').classList.remove('open');
+        document.body.style.overflow = '';
+      });
+    });
 
     // Scroll reveal
     const io = new IntersectionObserver(entries => {
