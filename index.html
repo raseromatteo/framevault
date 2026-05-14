@@ -658,12 +658,14 @@
     footer {
       background: var(--white);
       border-top: 1px solid var(--border);
-      padding: 36px 64px;
+      padding: 28px 64px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       font-size: 0.78rem;
       color: var(--ash);
+      gap: 24px;
+      flex-wrap: nowrap;
     }
 
     /* ── UTILS ── */
@@ -1090,11 +1092,11 @@
   <footer>
     <div class="logo" style="font-size:1.3rem">Frame<span style="color:var(--rust)">Vault</span></div>
     <span>© 2025 FrameVault — Archivio Stampe Originali di Cinema e Televisione</span>
-    <div style="display:flex;gap:24px;align-items:center;">
-      <a href="/frameVault_spedizioni.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Spedizione e Resi</a>
-      <a href="/index.html#licenze" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Licenze</a>
-      <a href="/frameVault_chisiamo.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Chi Siamo</a>
-      <a href="/index.html#newsletter" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Contatti</a>
+    <div style="display:flex;gap:24px;align-items:center;flex-wrap:nowrap;">
+      <a href="/frameVault_spedizioni.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Spedizione e Resi</a>
+      <a href="/index.html#licenze" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Licenze</a>
+      <a href="/frameVault_chisiamo.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Chi Siamo</a>
+      <a href="/index.html#newsletter" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Contatti</a>
     </div>
   </footer>
 
