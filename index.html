@@ -72,6 +72,7 @@
       font-size: 1.8rem;
       letter-spacing: 4px;
       color: var(--ink);
+      text-decoration: none;
     }
     .logo span { color: var(--rust); }
     nav ul {
@@ -97,6 +98,42 @@
       font-weight: 500 !important;
     }
     .nav-cta:hover { background: var(--brown) !important; }
+
+    /* ── DROPDOWN ── */
+    .nav-dropdown { position: relative; }
+    .nav-dropdown > a {
+      display: flex; align-items: center; gap: 5px; cursor: pointer;
+    }
+    .nav-dropdown > a::after {
+      content: '▾'; font-size: 0.65rem; color: var(--ash);
+      transition: transform 0.2s;
+    }
+    .nav-dropdown:hover > a::after { transform: rotate(180deg); }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 12px);
+      left: 50%;
+      transform: translateX(-50%);
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      min-width: 200px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+      z-index: 300;
+    }
+    .nav-dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-menu a {
+      display: block;
+      padding: 12px 20px;
+      font-size: 0.82rem;
+      color: var(--ash);
+      text-decoration: none;
+      border-bottom: 1px solid var(--border);
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .dropdown-menu a:last-child { border-bottom: none; }
+    .dropdown-menu a:hover { color: var(--rust); background: #fdf5f0; padding-left: 24px; }
 
     /* ── HERO ── */
     .hero {
@@ -641,6 +678,26 @@
       nav ul.open { display: flex; }
       nav ul a { font-size: 1.1rem; letter-spacing: 1px; color: var(--ink); }
       nav ul .nav-cta { padding: 14px 36px; font-size: 1rem !important; }
+      .nav-dropdown > a::after { display: none; }
+      .dropdown-menu {
+        display: flex !important;
+        position: static;
+        transform: none;
+        box-shadow: none;
+        border: none;
+        background: transparent;
+        flex-direction: column;
+        gap: 0;
+        min-width: unset;
+        align-items: center;
+      }
+      .dropdown-menu a {
+        font-size: 0.9rem !important;
+        color: var(--ash) !important;
+        border: none;
+        padding: 6px 12px !important;
+      }
+      .dropdown-menu a:hover { padding-left: 12px !important; }
       .hamburger {
         display: flex;
         flex-direction: column;
@@ -683,11 +740,18 @@
       <span></span><span></span><span></span>
     </button>
     <ul id="navMenu">
-      <li><a href="#servizi">Servizi</a></li>
-      <li><a href="#come-funziona">Come funziona</a></li>
       <li><a href="/frameVault_archivio.html">Catalogo</a></li>
-      <li><a href="#licenze">Licenze</a></li>
-      <li><a href="#prezzi">Prezzi</a></li>
+      <li class="nav-dropdown">
+        <a href="#">Servizi</a>
+        <div class="dropdown-menu">
+          <a href="#servizi">I nostri servizi</a>
+          <a href="#come-funziona">Come funziona</a>
+          <a href="#prezzi">Prezzi</a>
+          <a href="#licenze">Licenze</a>
+        </div>
+      </li>
+      <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
+      <li><a href="#newsletter">Contatti</a></li>
       <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
     </ul>
   </nav>
@@ -1015,6 +1079,7 @@
     <div style="display:flex;gap:24px;align-items:center;">
       <a href="/frameVault_spedizioni.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Spedizione e Resi</a>
       <a href="/index.html#licenze" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Licenze</a>
+      <a href="/frameVault_chisiamo.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Chi Siamo</a>
       <a href="/index.html#newsletter" style="color:var(--ash);text-decoration:none;font-size:0.78rem;transition:color .2s;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Contatti</a>
     </div>
   </footer>
