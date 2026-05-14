@@ -44,6 +44,22 @@
     nav ul a.active { border-bottom:2px solid var(--rust); padding-bottom:2px; }
     .nav-cta { background:var(--rust)!important; color:#fff!important; padding:8px 20px; border-radius:2px; }
 
+    /* DROPDOWN */
+    .nav-dropdown{position:relative}
+    .nav-dropdown>a{display:flex;align-items:center;gap:5px;cursor:pointer}
+    .nav-dropdown>a::after{content:'▾';font-size:.65rem;color:var(--ash);transition:transform .2s}
+    .nav-dropdown:hover>a::after{transform:rotate(180deg)}
+    .dropdown-menu{display:none;position:absolute;top:100%;left:50%;transform:translateX(-50%);background:var(--white);border:1.5px solid var(--border);min-width:200px;box-shadow:0 8px 24px rgba(0,0,0,.08);z-index:300;padding-top:12px}
+    .dropdown-menu::before{content:'';position:absolute;top:0;left:0;right:0;height:12px;background:transparent}
+    .nav-dropdown:hover .dropdown-menu{display:block}
+    .dropdown-inner{background:var(--white);border-top:2px solid var(--rust)}
+    .dropdown-menu a{display:block;padding:12px 20px;font-size:.82rem;color:var(--ash);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;white-space:nowrap}
+    .dropdown-menu a:last-child{border-bottom:none}
+    .dropdown-menu a:hover{color:var(--rust);background:#fdf5f0;padding-left:24px}
+
+    /* HAMBURGER */
+    .hamburger{display:none}
+
     /* ── PAGE HEADER ── */
     .page-header {
       background:var(--white); border-bottom:1px solid var(--border);
@@ -289,7 +305,20 @@
       .catalog-layout{grid-template-columns:1fr}
       .sidebar{position:relative;height:auto;top:0;border-right:none;border-bottom:1px solid var(--border)}
       nav{padding:14px 20px}
-      nav ul{display:none}
+      nav ul{display:none;flex-direction:column;position:fixed;inset:0;background:var(--white);z-index:999;justify-content:center;align-items:center;gap:24px}
+      nav ul.open{display:flex}
+      nav ul a{font-size:1.1rem;color:var(--ink)}
+      nav ul .nav-cta{padding:12px 32px;font-size:1rem!important}
+      .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:1000}
+      .hamburger span{display:block;width:24px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+      .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+      .hamburger.open span:nth-child(2){opacity:0}
+      .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+      .nav-dropdown>a::after{display:none}
+      .dropdown-menu{display:flex!important;position:static;transform:none;box-shadow:none;border:none;background:transparent;flex-direction:column;padding-top:0;min-width:unset;align-items:center}
+      .dropdown-inner{background:transparent;border-top:none}
+      .dropdown-menu a{font-size:.9rem!important;color:var(--ash)!important;border:none;padding:6px 12px!important}
+      .dropdown-menu a:hover{padding-left:12px!important}
       .search-wrap{padding:14px 20px;flex-wrap:wrap}
       .page-header{padding:24px 20px 18px}
       .main-content{padding:20px}
@@ -305,12 +334,24 @@
 <!-- NAV -->
 <nav>
   <a href="/index.html" class="logo">Frame<span>Vault</span></a>
-  <ul>
-    <li><a href="/index.html#servizi">Servizi</a></li>
-    <li><a href="/index.html#come-funziona">Come funziona</a></li>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="navMenu">
     <li><a href="/frameVault_archivio.html" class="active">Catalogo</a></li>
-    <li><a href="/index.html#licenze">Licenze</a></li>
-    <li><a href="/index.html#prezzi">Prezzi</a></li>
+    <li class="nav-dropdown">
+      <a href="#">Servizi</a>
+      <div class="dropdown-menu">
+        <div class="dropdown-inner">
+          <a href="/index.html#servizi">I nostri servizi</a>
+          <a href="/index.html#come-funziona">Come funziona</a>
+          <a href="/index.html#prezzi">Prezzi</a>
+          <a href="/index.html#licenze">Licenze</a>
+        </div>
+      </div>
+    </li>
+    <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
+    <li><a href="/index.html#newsletter">Contatti</a></li>
     <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
   </ul>
 </nav>
@@ -692,6 +733,22 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDi
 // ── INIT ─────────────────────────────────────────────────────────────────
 renderGrid();
 renderActiveFilterChips();
+
+// ── HAMBURGER ──────────────────────────────────────────────────────────────
+function toggleMenu() {
+  const menu = document.getElementById('navMenu');
+  const btn = document.getElementById('hamburger');
+  menu.classList.toggle('open');
+  btn.classList.toggle('open');
+  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+}
+document.querySelectorAll('#navMenu a').forEach(a => {
+  a.addEventListener('click', () => {
+    document.getElementById('navMenu').classList.remove('open');
+    document.getElementById('hamburger').classList.remove('open');
+    document.body.style.overflow = '';
+  });
+});
 </script>
 <footer style="background:#ffffff;border-top:1px solid #ddd5c5;padding:32px 48px;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:#7a6e62;flex-wrap:wrap;gap:12px;">
   <a href="/index.html" style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:4px;color:#1c1712;text-decoration:none;">Frame<span style="color:#b8420a">Vault</span></a>
