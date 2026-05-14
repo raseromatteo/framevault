@@ -127,6 +127,17 @@
     .contact-value a{color:var(--ink);text-decoration:none;transition:color .2s}
     .contact-value a:hover{color:var(--rust)}
     .contacts-map{border:1.5px solid var(--border);overflow:hidden;min-height:320px}
+
+    /* NEWSLETTER */
+    .newsletter-dark{background:var(--ink);padding:72px 48px;text-align:center;margin-top:0}
+    .newsletter-dark .nl-eyebrow{font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--gold);margin-bottom:16px}
+    .newsletter-dark h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,3.5vw,3rem);font-weight:900;color:#f5eed8;margin-bottom:12px;line-height:1.15}
+    .newsletter-dark p{font-size:.92rem;color:rgba(245,238,216,.6);margin-bottom:36px;max-width:500px;margin-left:auto;margin-right:auto}
+    .nl-row{display:flex;justify-content:center;max-width:480px;margin:0 auto}
+    .nl-row input{flex:1;background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.15);border-right:none;color:#f5eed8;padding:14px 18px;font-family:'DM Sans',sans-serif;font-size:.88rem;outline:none;border-radius:2px 0 0 2px}
+    .nl-row input::placeholder{color:rgba(245,238,216,.35)}
+    .nl-row button{background:var(--rust);color:#fff;border:none;padding:14px 28px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;border-radius:0 2px 2px 0;transition:background .2s;white-space:nowrap}
+    .nl-row button:hover{background:var(--brown)}
     .btn-rust{background:var(--rust);color:#fff;border:none;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;border-radius:2px;transition:background .2s;white-space:nowrap;text-decoration:none;display:inline-block}
     .btn-rust:hover{background:var(--brown)}
 
@@ -186,7 +197,7 @@
       </div>
     </li>
     <li><a href="/frameVault_chisiamo.html" class="active">Chi Siamo</a></li>
-    <li><a href="/index.html#newsletter">Contatti</a></li>
+    <li><a href="#contatti">Contatti</a></li>
     <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
   </ul>
 </nav>
@@ -311,6 +322,7 @@
   </div>
 
   <!-- CONTATTI + MAPPA -->
+  <div id="contatti" style="scroll-margin-top:80px">
   <div class="sec-eyebrow" style="margin-bottom:12px">Dove siamo</div>
   <div class="sec-title" style="margin-bottom:32px">Contatti e <em>sede</em></div>
   <div class="contacts-grid">
@@ -356,8 +368,19 @@
         referrerpolicy="no-referrer-when-downgrade">
       </iframe>
     </div>
-  </div>
+  </div><!-- fine #contatti -->
 
+</div><!-- fine content-wrap -->
+
+<!-- NEWSLETTER -->
+<div class="newsletter-dark">
+  <div class="nl-eyebrow">Resta aggiornato</div>
+  <h2>Entra per primo<br>nell'archivio</h2>
+  <p>Iscriviti per ricevere aggiornamenti sul lancio, anteprime esclusive e nuove stampe selezionate ogni settimana.</p>
+  <div class="nl-row">
+    <input type="email" placeholder="la-tua@email.it" />
+    <button>Iscrivimi</button>
+  </div>
 </div>
 
 <footer>
@@ -367,7 +390,7 @@
     <a href="/frameVault_spedizioni.html" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Spedizione e Resi</a>
     <a href="/index.html#licenze" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Licenze</a>
     <a href="/frameVault_chisiamo.html" style="color:var(--rust);text-decoration:none;font-size:.78rem;">Chi Siamo</a>
-    <a href="/index.html#newsletter" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Contatti</a>
+    <a href="#contatti" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Contatti</a>
   </div>
 </footer>
 
