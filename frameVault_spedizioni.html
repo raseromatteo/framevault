@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FrameVault — Spedizione e Resi</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:     #faf8f4;
+      --bg2:    #f2ede4;
+      --white:  #ffffff;
+      --ink:    #1c1712;
+      --rust:   #b8420a;
+      --gold:   #c8922a;
+      --ash:    #7a6e62;
+      --border: #ddd5c5;
+      --brown:  #5c3a1e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; }
+
+    /* ── FILMSTRIP ── */
+    .filmstrip { width:100%; height:24px; background:var(--ink); overflow:hidden; position:relative; }
+    .filmstrip-inner {
+      position:absolute; top:5px; left:0; width:200%; height:14px;
+      background-image: repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(255,255,255,0.15) 18px, rgba(255,255,255,0.15) 20px, transparent 20px, transparent 38px);
+      animation: filmroll 3s linear infinite;
+    }
+    @keyframes filmroll { from{transform:translateX(0)} to{transform:translateX(-38px)} }
+
+    /* ── NAV ── */
+    nav {
+      display:flex; justify-content:space-between; align-items:center;
+      padding:16px 48px; background:var(--white); border-bottom:1px solid var(--border);
+      position:sticky; top:0; z-index:100;
+    }
+    .logo { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:4px; color:var(--ink); text-decoration:none; }
+    .logo span { color:var(--rust); }
+    nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
+    nav ul a { color:var(--ash); text-decoration:none; font-size:0.82rem; font-weight:500; transition:color .2s; }
+    nav ul a:hover { color:var(--ink); }
+    .nav-cta { background:var(--rust)!important; color:#fff!important; padding:8px 20px; border-radius:2px; }
+
+    /* ── PAGE HEADER ── */
+    .page-header {
+      background:var(--white);
+      border-bottom:1px solid var(--border);
+      padding:56px 48px 48px;
+    }
+    .page-eyebrow {
+      font-size:0.68rem; letter-spacing:3px; text-transform:uppercase;
+      color:var(--rust); margin-bottom:12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .page-eyebrow::before {
+      content:''; display:inline-block; width:28px; height:1px; background:var(--rust);
+    }
+    .page-header h1 {
+      font-family:'Playfair Display',serif;
+      font-size:clamp(2rem, 4vw, 3.5rem);
+      font-weight:900; line-height:1.1;
+    }
+    .page-header p {
+      font-size:0.92rem; color:var(--ash);
+      margin-top:10px; max-width:520px; line-height:1.7;
+    }
+
+    /* ── LAYOUT ── */
+    .content-wrap {
+      max-width:1100px;
+      margin:0 auto;
+      padding:64px 48px;
+      display:grid;
+      grid-template-columns:220px 1fr;
+      gap:64px;
+      align-items:start;
+    }
+
+    /* ── SIDEBAR INDICE ── */
+    .toc {
+      position:sticky;
+      top:80px;
+    }
+    .toc-title {
+      font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase;
+      color:var(--ash); font-weight:600; margin-bottom:16px;
+      padding-bottom:10px; border-bottom:1px solid var(--border);
+    }
+    .toc ul { list-style:none; display:flex; flex-direction:column; gap:4px; }
+    .toc ul li a {
+      font-size:0.82rem; color:var(--ash); text-decoration:none;
+      padding:6px 12px; display:block; border-left:2px solid transparent;
+      transition:all .2s; border-radius:0 2px 2px 0;
+    }
+    .toc ul li a:hover { color:var(--rust); border-left-color:var(--rust); background:rgba(184,66,10,0.04); }
+    .toc ul li a.sub { padding-left:24px; font-size:0.78rem; }
+
+    /* ── MAIN CONTENT ── */
+    .doc { display:flex; flex-direction:column; gap:56px; }
+
+    /* ── CHAPTER ── */
+    .chapter { }
+    .chapter-header {
+      display:flex; align-items:center; gap:16px;
+      margin-bottom:32px; padding-bottom:20px;
+      border-bottom:2px solid var(--border);
+    }
+    .chapter-icon {
+      width:48px; height:48px; border-radius:50%;
+      background:var(--bg2); border:1.5px solid var(--border);
+      display:flex; align-items:center; justify-content:center;
+      font-size:1.3rem; flex-shrink:0;
+    }
+    .chapter-title {
+      font-family:'Playfair Display',serif;
+      font-size:1.8rem; font-weight:900; color:var(--ink);
+    }
+
+    /* ── SECTION ── */
+    .doc-section { margin-bottom:36px; }
+    .doc-section:last-child { margin-bottom:0; }
+    .section-heading {
+      font-family:'Playfair Display',serif;
+      font-size:1.1rem; font-weight:700; color:var(--ink);
+      margin-bottom:12px;
+      display:flex; align-items:center; gap:10px;
+    }
+    .section-heading::before {
+      content:''; display:inline-block;
+      width:20px; height:2px; background:var(--rust); flex-shrink:0;
+    }
+    .doc-section p {
+      font-size:0.9rem; line-height:1.85; color:var(--ash);
+    }
+
+    /* ── INFO BOX ── */
+    .info-box {
+      background:var(--white);
+      border:1.5px solid var(--border);
+      border-left:4px solid var(--gold);
+      padding:20px 24px;
+      margin-top:16px;
+      font-size:0.85rem;
+      color:var(--ash);
+      line-height:1.7;
+    }
+    .info-box strong { color:var(--ink); }
+
+    .warning-box {
+      background:#fff8f5;
+      border:1.5px solid #f0d0c0;
+      border-left:4px solid var(--rust);
+      padding:20px 24px;
+      margin-top:16px;
+      font-size:0.85rem;
+      color:var(--ash);
+      line-height:1.7;
+    }
+    .warning-box strong { color:var(--rust); }
+
+    /* ── STEPS ── */
+    .steps-list {
+      display:flex; flex-direction:column; gap:12px;
+      margin-top:16px;
+    }
+    .step-item {
+      display:flex; gap:16px; align-items:flex-start;
+      background:var(--white); border:1.5px solid var(--border);
+      padding:16px 20px; border-radius:2px;
+      transition:border-color .2s;
+    }
+    .step-item:hover { border-color:var(--gold); }
+    .step-num {
+      font-family:'Bebas Neue',sans-serif;
+      font-size:1.2rem; color:var(--rust);
+      min-width:28px; line-height:1;
+      margin-top:2px;
+    }
+    .step-text { font-size:0.85rem; color:var(--ash); line-height:1.65; }
+    .step-text strong { color:var(--ink); display:block; margin-bottom:2px; }
+
+    /* ── HIGHLIGHT ── */
+    .highlight-row {
+      display:grid; grid-template-columns:repeat(3,1fr); gap:16px;
+      margin-top:20px;
+    }
+    .highlight-card {
+      background:var(--white); border:1.5px solid var(--border);
+      padding:24px 20px; text-align:center;
+      transition:border-color .2s;
+    }
+    .highlight-card:hover { border-color:var(--rust); }
+    .highlight-card .h-icon { font-size:1.6rem; margin-bottom:10px; }
+    .highlight-card h4 {
+      font-family:'Playfair Display',serif;
+      font-size:0.95rem; font-weight:700; color:var(--ink); margin-bottom:6px;
+    }
+    .highlight-card p { font-size:0.78rem; color:var(--ash); line-height:1.6; }
+
+    /* ── CONTATTI ── */
+    .contact-box {
+      background:var(--ink); color:#f5eed8;
+      padding:40px; display:flex;
+      justify-content:space-between; align-items:center;
+      gap:24px; flex-wrap:wrap;
+    }
+    .contact-box h3 {
+      font-family:'Playfair Display',serif;
+      font-size:1.3rem; font-weight:700; margin-bottom:6px;
+    }
+    .contact-box p { font-size:0.85rem; color:rgba(245,238,216,0.6); }
+    .contact-btn {
+      background:var(--rust); color:#fff; border:none;
+      padding:14px 32px; font-family:'DM Sans',sans-serif;
+      font-size:0.85rem; font-weight:500; cursor:pointer;
+      border-radius:2px; transition:background .2s; white-space:nowrap;
+      text-decoration:none; display:inline-block;
+    }
+    .contact-btn:hover { background:#a03808; }
+
+    /* ── FOOTER ── */
+    footer {
+      background:var(--white); border-top:1px solid var(--border);
+      padding:32px 48px; display:flex;
+      justify-content:space-between; align-items:center;
+      font-size:0.78rem; color:var(--ash);
+    }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:768px){
+      nav { padding:14px 20px; }
+      nav ul { display:none; }
+      .page-header { padding:36px 20px 28px; }
+      .content-wrap { grid-template-columns:1fr; padding:36px 20px; gap:0; }
+      .toc { display:none; }
+      .highlight-row { grid-template-columns:1fr; }
+      .contact-box { flex-direction:column; text-align:center; }
+      footer { flex-direction:column; gap:8px; text-align:center; }
+    }
+
+    /* ── ANIMATE ── */
+    @keyframes fadein { from{opacity:0;transform:translateY(16px)} to{opacity:1;transform:translateY(0)} }
+    .chapter { animation: fadein .6s ease both; }
+    .chapter:nth-child(2) { animation-delay: .15s; }
+    .chapter:nth-child(3) { animation-delay: .3s; }
+  </style>
+</head>
+<body>
+
+<div class="filmstrip"><div class="filmstrip-inner"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/index.html" class="logo">Frame<span>Vault</span></a>
+  <ul>
+    <li><a href="/index.html#servizi">Servizi</a></li>
+    <li><a href="/index.html#come-funziona">Come funziona</a></li>
+    <li><a href="/frameVault_archivio.html">Catalogo</a></li>
+    <li><a href="/index.html#licenze">Licenze</a></li>
+    <li><a href="/index.html#prezzi">Prezzi</a></li>
+    <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
+  </ul>
+</nav>
+
+<!-- PAGE HEADER -->
+<div class="page-header">
+  <div class="page-eyebrow">Informazioni sull'ordine</div>
+  <h1>Spedizione e Resi</h1>
+  <p>Tutto quello che devi sapere su imballaggio, consegna e procedura di reso per i tuoi acquisti FrameVault.</p>
+</div>
+
+<!-- CONTENT -->
+<div class="content-wrap">
+
+  <!-- INDICE -->
+  <aside class="toc">
+    <div class="toc-title">In questa pagina</div>
+    <ul>
+      <li><a href="#spedizione">Spedizione</a></li>
+      <li><a href="#imballaggio" class="sub">Imballaggio</a></li>
+      <li><a href="#corriere" class="sub">Affidamento al corriere</a></li>
+      <li><a href="#arrivo" class="sub">All'arrivo</a></li>
+      <li><a href="#resi">Resi</a></li>
+      <li><a href="#danneggiato" class="sub">Ordine danneggiato</a></li>
+      <li><a href="#assistenza">Assistenza</a></li>
+    </ul>
+  </aside>
+
+  <!-- DOCUMENTO -->
+  <div class="doc">
+
+    <!-- SPEDIZIONE -->
+    <div class="chapter" id="spedizione">
+      <div class="chapter-header">
+        <div class="chapter-icon">📦</div>
+        <div class="chapter-title">Spedizione</div>
+      </div>
+
+      <div class="doc-section" id="imballaggio">
+        <div class="section-heading">Imballaggio</div>
+        <p>I nostri prodotti vengono accuratamente imballati per garantire che arrivino a destinazione in condizioni perfette. Utilizziamo materiali di alta qualità e tecniche di imballaggio sicure per proteggere le stampe durante il trasporto. L'attenzione ai dettagli nell'imballaggio assicura che il tuo acquisto arrivi integro, pronto per essere esposto.</p>
+
+        <div class="highlight-row">
+          <div class="highlight-card">
+            <div class="h-icon">🛡️</div>
+            <h4>Protezione totale</h4>
+            <p>Materiali anti-urto e anti-umidità per ogni spedizione</p>
+          </div>
+          <div class="highlight-card">
+            <div class="h-icon">🖼️</div>
+            <h4>Tubo rigido</h4>
+            <p>Le stampe vengono arrotolate in tubi protettivi rigidi</p>
+          </div>
+          <div class="highlight-card">
+            <div class="h-icon">✅</div>
+            <h4>Controllo qualità</h4>
+            <p>Ogni pacco viene verificato prima della spedizione</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="doc-section" id="corriere">
+        <div class="section-heading">Affidamento al corriere</div>
+        <p>Collaboriamo con diversi corrieri per offrirti la migliore opzione di spedizione, in base alla tua destinazione. Tutti gli ordini includono un numero di tracciamento, così puoi monitorare la posizione del pacco in ogni momento. Il nostro obiettivo è garantire consegne puntuali e sicure, indipendentemente dalla destinazione.</p>
+        <div class="info-box">
+          📍 <strong>Tracciamento incluso</strong> — Riceverai via email il numero di tracciamento non appena il pacco viene affidato al corriere. Potrai seguire la spedizione in tempo reale.
+        </div>
+      </div>
+
+      <div class="doc-section" id="arrivo">
+        <div class="section-heading">Come comportarsi all'arrivo della spedizione</div>
+        <p>Al momento della ricezione del pacco, ti consigliamo di verificare attentamente l'integrità dell'imballaggio prima di accettare la consegna. Se noti danni visibili, ti invitiamo a segnalarli immediatamente al corriere e a contattarci per assistenza. Accettare la spedizione integra è la migliore garanzia per evitare problemi.</p>
+
+        <div class="steps-list">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-text">
+              <strong>Verifica l'imballaggio esterno</strong>
+              Prima di firmare per la consegna, controlla che il pacco non presenti danni visibili, ammaccature o segni di umidità.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-text">
+              <strong>Segnala eventuali danni al corriere</strong>
+              Se noti danni, fallo presente immediatamente al corriere e fai annotare la riserva sul documento di consegna.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">03</div>
+            <div class="step-text">
+              <strong>Contattaci subito</strong>
+              Scattate alcune foto del danno e contattaci entro 14 giorni. Ci occuperemo di tutto il resto.
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- RESI -->
+    <div class="chapter" id="resi">
+      <div class="chapter-header">
+        <div class="chapter-icon">🔄</div>
+        <div class="chapter-title">Resi</div>
+      </div>
+
+      <div class="doc-section" id="danneggiato">
+        <div class="section-heading">Cosa fare se il tuo ordine è rovinato</div>
+        <p>Se il tuo ordine arriva danneggiato, ti invitiamo a contattarci immediatamente inviandoci la foto del prodotto danneggiato. Il reso è consentito esclusivamente per articoli danneggiati.</p>
+
+        <div class="warning-box">
+          ⚠️ <strong>Attenzione</strong> — Devi avvisarci entro <strong>14 giorni</strong> dalla data di ricezione e aspettare le nostre istruzioni prima di rispedire il prodotto.
+        </div>
+
+        <div class="steps-list" style="margin-top:20px">
+          <div class="step-item">
+            <div class="step-num">01</div>
+            <div class="step-text">
+              <strong>Fotografa il prodotto danneggiato</strong>
+              Scatta foto chiare del danno, sia dell'imballaggio che del prodotto.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">02</div>
+            <div class="step-text">
+              <strong>Contattaci entro 14 giorni</strong>
+              Inviaci le foto e il numero d'ordine. Valuteremo il danno e ti daremo istruzioni specifiche.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">03</div>
+            <div class="step-text">
+              <strong>Attendi le nostre istruzioni</strong>
+              Non rispedire il prodotto senza aver ricevuto conferma da parte nostra.
+            </div>
+          </div>
+          <div class="step-item">
+            <div class="step-num">04</div>
+            <div class="step-text">
+              <strong>Sostituzione o rimborso</strong>
+              Una volta ricevuto il reso, ti invieremo una nuova spedizione senza costi aggiuntivi. In caso di indisponibilità del prodotto, emetteremo un rimborso completo sul metodo di pagamento originale.
+            </div>
+          </div>
+        </div>
+
+        <div class="info-box" style="margin-top:20px">
+          💳 <strong>Rimborsi</strong> — I rimborsi saranno accreditati sul metodo di pagamento originale utilizzato per l'acquisto, esclusivamente nei casi in cui non sia possibile fornire un prodotto sostitutivo.
+        </div>
+      </div>
+    </div>
+
+    <!-- ASSISTENZA -->
+    <div class="chapter" id="assistenza">
+      <div class="contact-box">
+        <div>
+          <h3>Hai bisogno di assistenza?</h3>
+          <p>Per qualsiasi domanda o necessità, il nostro team è a disposizione.</p>
+        </div>
+        <a href="/index.html#newsletter" class="contact-btn">Contattaci</a>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <a href="/index.html" class="logo" style="font-size:1.2rem">Frame<span style="color:var(--rust)">Vault</span></a>
+  <span>© 2025 FrameVault — Archivio Stampe Originali di Cinema e Televisione</span>
+  <span>Italia</span>
+</footer>
+
+</body>
+</html>
