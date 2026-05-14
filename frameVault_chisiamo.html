@@ -114,6 +114,19 @@
     .contact-strip{background:var(--bg2);border:1.5px solid var(--border);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
     .contact-strip h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:6px}
     .contact-strip p{font-size:.85rem;color:var(--ash)}
+
+    /* CONTATTI + MAPPA */
+    .contacts-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin-bottom:64px}
+    .contacts-info{background:var(--white);border:1.5px solid var(--border);padding:40px}
+    .contacts-info h3{font-family:'Playfair Display',serif;font-size:1.3rem;font-weight:700;color:var(--ink);margin-bottom:24px}
+    .contact-item{display:flex;gap:14px;align-items:flex-start;margin-bottom:20px}
+    .contact-item:last-child{margin-bottom:0}
+    .contact-icon{font-size:1.1rem;margin-top:2px;min-width:24px}
+    .contact-label{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--rust);margin-bottom:4px}
+    .contact-value{font-size:.9rem;color:var(--ink);font-weight:500}
+    .contact-value a{color:var(--ink);text-decoration:none;transition:color .2s}
+    .contact-value a:hover{color:var(--rust)}
+    .contacts-map{border:1.5px solid var(--border);overflow:hidden;min-height:320px}
     .btn-rust{background:var(--rust);color:#fff;border:none;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;border-radius:2px;transition:background .2s;white-space:nowrap;text-decoration:none;display:inline-block}
     .btn-rust:hover{background:var(--brown)}
 
@@ -142,6 +155,7 @@
       .timeline-items::before{left:50px}
       .timeline-item{grid-template-columns:50px 1fr;gap:14px}
       .contact-strip{flex-direction:column;text-align:center;padding:28px 20px}
+      .contacts-grid{grid-template-columns:1fr}
       footer{flex-direction:column;text-align:center}
     }
     @keyframes fadein{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
@@ -296,13 +310,52 @@
     </div>
   </div>
 
-  <!-- CONTATTI -->
-  <div class="contact-strip">
-    <div>
-      <h3>Vuoi collaborare o saperne di più?</h3>
-      <p>Per licenze editoriali, collaborazioni o informazioni sull'archivio siamo a disposizione.</p>
+  <!-- CONTATTI + MAPPA -->
+  <div class="sec-eyebrow" style="margin-bottom:12px">Dove siamo</div>
+  <div class="sec-title" style="margin-bottom:32px">Contatti e <em>sede</em></div>
+  <div class="contacts-grid">
+    <div class="contacts-info">
+      <h3>FrameVault · GRM Foto</h3>
+      <div class="contact-item">
+        <div class="contact-icon">📍</div>
+        <div>
+          <div class="contact-label">Indirizzo</div>
+          <div class="contact-value">Lungotevere della Vittoria, 10<br>00195 Roma, Italia</div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">✉️</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:framevault@gmail.com">framevault@gmail.com</a></div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">📱</div>
+        <div>
+          <div class="contact-label">Cellulare</div>
+          <div class="contact-value">
+            <a href="tel:+393387200915">+39 338 720 0915</a><br>
+            <a href="tel:+393383304889">+39 338 330 4889</a>
+          </div>
+        </div>
+      </div>
+      <div class="contact-item">
+        <div class="contact-icon">🕐</div>
+        <div>
+          <div class="contact-label">Disponibilità</div>
+          <div class="contact-value">Lun – Ven, 9:00 – 18:00</div>
+        </div>
+      </div>
     </div>
-    <a href="/index.html#newsletter" class="btn-rust">Contattaci</a>
+    <div class="contacts-map">
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2969.5!2d12.4634!3d41.9109!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x132f60600b5b5555%3A0x0!2sLungotevere+della+Vittoria%2C+10%2C+00195+Roma!5e0!3m2!1sit!2sit!4v1"
+        width="100%" height="100%" style="border:0;min-height:320px;display:block;"
+        allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
   </div>
 
 </div>
