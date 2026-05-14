@@ -112,7 +112,7 @@
     .dropdown-menu {
       display: none;
       position: absolute;
-      top: calc(100% + 12px);
+      top: 100%;
       left: 50%;
       transform: translateX(-50%);
       background: var(--white);
@@ -120,8 +120,20 @@
       min-width: 200px;
       box-shadow: 0 8px 24px rgba(0,0,0,0.08);
       z-index: 300;
+      padding-top: 12px;
+    }
+    .dropdown-menu::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 12px;
+      background: transparent;
     }
     .nav-dropdown:hover .dropdown-menu { display: block; }
+    .dropdown-inner {
+      background: var(--white);
+      border-top: 2px solid var(--rust);
+    }
     .dropdown-menu a {
       display: block;
       padding: 12px 20px;
@@ -744,10 +756,12 @@
       <li class="nav-dropdown">
         <a href="#">Servizi</a>
         <div class="dropdown-menu">
-          <a href="#servizi">I nostri servizi</a>
-          <a href="#come-funziona">Come funziona</a>
-          <a href="#prezzi">Prezzi</a>
-          <a href="#licenze">Licenze</a>
+          <div class="dropdown-inner">
+            <a href="#servizi">I nostri servizi</a>
+            <a href="#come-funziona">Come funziona</a>
+            <a href="#prezzi">Prezzi</a>
+            <a href="#licenze">Licenze</a>
+          </div>
         </div>
       </li>
       <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
