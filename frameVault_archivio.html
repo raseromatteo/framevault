@@ -377,36 +377,28 @@
     </div>
 
     <div class="filter-section">
-      <div class="filter-title">Genere</div>
+      <div class="filter-title">Tipologia</div>
       <select class="filter-select" id="genreSelect" onchange="renderGrid()">
-        <option value="">Tutti i generi</option>
-        <option>Drammatico</option>
-        <option>Commedia</option>
-        <option>Thriller</option>
-        <option>Horror</option>
-        <option>Poliziesco</option>
-        <option>Western</option>
-        <option>Fantascienza</option>
-        <option>Documentario</option>
-        <option>Musicale</option>
-        <option>Sentimentale</option>
-        <option>Azione</option>
-        <option>Spionaggio</option>
+        <option value="">Tutte le tipologie</option>
+        <option>Trasmissione TV</option>
+        <option>Fiction RAI</option>
+        <option>Photocall</option>
+        <option>Posati</option>
+        <option>Foto di Scena</option>
       </select>
     </div>
 
     <div class="filter-section">
-      <div class="filter-title">Regista</div>
+      <div class="filter-title">Personaggio</div>
       <select class="filter-select" id="regSelect" onchange="renderGrid()">
-        <option value="">Tutti i registi</option>
-        <option>Federico Fellini</option>
-        <option>Luchino Visconti</option>
-        <option>Sergio Leone</option>
-        <option>Dario Argento</option>
-        <option>Vittorio De Sica</option>
-        <option>Mario Monicelli</option>
-        <option>Bernardo Bertolucci</option>
-        <option>Francesco Rosi</option>
+        <option value="">Tutti i personaggi</option>
+        <option>Pippo Baudo</option>
+        <option>Raffaella Carrà</option>
+        <option>Fabrizio Frizzi</option>
+        <option>Massimo Troisi</option>
+        <option>Roberto Benigni</option>
+        <option>Carlo Verdone</option>
+        <option>Milly Carlucci</option>
       </select>
     </div>
 
@@ -461,36 +453,36 @@ const gradients = [
 ];
 
 const rawData = [
-  {id:1,  title:'Roma città aperta',    year:1945, regista:'Roberto Rossellini', genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:28, fmt:['Stampa Carta','Download HD']},
-  {id:2,  title:'Ladri di biciclette',  year:1948, regista:'Vittorio De Sica',   genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:24, fmt:['Stampa Carta','Stampa Tela','Download HD']},
-  {id:3,  title:'La dolce vita',        year:1960, regista:'Federico Fellini',   genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:18, fmt:['Stampa Tela','Download HD']},
-  {id:4,  title:'8½',                   year:1963, regista:'Federico Fellini',   genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:22, fmt:['Stampa Carta','Download HD']},
-  {id:5,  title:'C\'era una volta il West', year:1968, regista:'Sergio Leone',   genere:'Western',    cat:'Cinema Italiano', anni:'Anni \'60', prezzo:15, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:6,  title:'Profondo rosso',       year:1975, regista:'Dario Argento',      genere:'Horror',     cat:'Cinema Italiano', anni:'Anni \'70', prezzo:12, fmt:['Stampa Carta','Download HD']},
-  {id:7,  title:'Suspiria',             year:1977, regista:'Dario Argento',      genere:'Horror',     cat:'Cinema Italiano', anni:'Anni \'70', prezzo:15, fmt:['Stampa Tela','Download HD']},
-  {id:8,  title:'Il commissario Cattani', year:1986, regista:'Florestano Vancini', genere:'Poliziesco', cat:'Televisione RAI', anni:'Anni \'80', prezzo:8, fmt:['Download HD']},
-  {id:9,  title:'La piovra',            year:1984, regista:'Damiano Damiani',    genere:'Poliziesco', cat:'Televisione RAI', anni:'Anni \'80', prezzo:8, fmt:['Download HD','Stampa Carta']},
-  {id:10, title:'Fantozzi',             year:1975, regista:'Luciano Salce',      genere:'Commedia',   cat:'Cinema Italiano', anni:'Anni \'70', prezzo:10, fmt:['Stampa Carta','Stampa Tela','Download HD']},
-  {id:11, title:'Amarcord',             year:1973, regista:'Federico Fellini',   genere:'Commedia',   cat:'Cinema Italiano', anni:'Anni \'70', prezzo:20, fmt:['Stampa Tela','Download HD']},
-  {id:12, title:'Il Gattopardo',        year:1963, regista:'Luchino Visconti',   genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:35, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:13, title:'Novecento',            year:1976, regista:'Bernardo Bertolucci',genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'70', prezzo:18, fmt:['Stampa Carta','Download HD']},
-  {id:14, title:'Indagine su un cittadino', year:1970, regista:'Elio Petri',     genere:'Thriller',   cat:'Cinema Italiano', anni:'Anni \'70', prezzo:14, fmt:['Stampa Carta','Download HD']},
-  {id:15, title:'Milano calibro 9',     year:1972, regista:'Fernando Di Leo',    genere:'Poliziesco', cat:'Cinema Italiano', anni:'Anni \'70', prezzo:12, fmt:['Stampa Carta','Download HD']},
-  {id:16, title:'Carosello',            year:1978, regista:'Vari autori RAI',    genere:'Musicale',   cat:'Televisione RAI', anni:'Anni \'70', prezzo:6,  fmt:['Download HD']},
-  {id:17, title:'Il sorpasso',          year:1962, regista:'Dino Risi',          genere:'Commedia',   cat:'Cinema Italiano', anni:'Anni \'60', prezzo:16, fmt:['Stampa Tela','Download HD']},
-  {id:18, title:'Divorzio all\'italiana', year:1961, regista:'Pietro Germi',     genere:'Commedia',   cat:'Cinema Italiano', anni:'Anni \'60', prezzo:22, fmt:['Stampa Carta','Stampa Tela','Download HD']},
-  {id:19, title:'Viaggio in Italia',    year:1954, regista:'Roberto Rossellini', genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'50', prezzo:30, fmt:['Stampa Carta','Download HD']},
-  {id:20, title:'Rocco e i suoi fratelli', year:1960, regista:'Luchino Visconti',genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:28, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:21, title:'Uccellacci e uccellini', year:1966, regista:'Pier Paolo Pasolini', genere:'Commedia', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:20, fmt:['Download HD','Stampa Carta']},
-  {id:22, title:'Le notti di Cabiria',  year:1957, regista:'Federico Fellini',   genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'50', prezzo:25, fmt:['Stampa Tela','Download HD']},
-  {id:23, title:'Il posto',             year:1961, regista:'Ermanno Olmi',       genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:18, fmt:['Download HD']},
-  {id:24, title:'Metti una sera a cena', year:1969, regista:'Giuseppe Patroni Griffi', genere:'Drammatico', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:15, fmt:['Stampa Carta','Download HD']},
-  {id:25, title:'Operazione San Gennaro', year:1966, regista:'Dino Risi',        genere:'Commedia',   cat:'Cinema Italiano', anni:'Anni \'60', prezzo:12, fmt:['Stampa Carta','Download HD']},
-  {id:26, title:'Ieri, oggi, domani',   year:1963, regista:'Vittorio De Sica',   genere:'Commedia',   cat:'Cinema Italiano', anni:'Anni \'60', prezzo:14, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:27, title:'Per un pugno di dollari', year:1964, regista:'Sergio Leone',    genere:'Western',    cat:'Cinema Italiano', anni:'Anni \'60', prezzo:16, fmt:['Stampa Tela','Download HD']},
-  {id:28, title:'Il buono, il brutto, il cattivo', year:1966, regista:'Sergio Leone', genere:'Western', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:20, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:29, title:'Fuga di mezzanotte RAI', year:1983, regista:'Vari registi RAI', genere:'Thriller',   cat:'Televisione RAI', anni:'Anni \'80', prezzo:7,  fmt:['Download HD']},
-  {id:30, title:'Ritratto: Mastroianni', year:1975, regista:'Set fotografico',   genere:'Documentario', cat:'Fotografie di Scena', anni:'Anni \'70', prezzo:45, fmt:['Stampa Tela','Stampa Carta','Download HD']},
+  {id:1,  title:'Roma città aperta',    year:1945, regista:'', genere:'Fiction RAI', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:28, fmt:['Stampa Carta','Download HD']},
+  {id:2,  title:'Ladri di biciclette',  year:1948, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:24, fmt:['Stampa Carta','Stampa Tela','Download HD']},
+  {id:3,  title:'La dolce vita',        year:1960, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:18, fmt:['Stampa Tela','Download HD']},
+  {id:4,  title:'Fantastico',           year:1983, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:12, fmt:['Stampa Carta','Download HD']},
+  {id:5,  title:'C\'era una volta il West', year:1968, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:15, fmt:['Stampa Tela','Stampa Carta','Download HD']},
+  {id:6,  title:'Carramba che sorpresa', year:1995, regista:'Raffaella Carrà', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'90', prezzo:10, fmt:['Stampa Carta','Download HD']},
+  {id:7,  title:'Io e mia sorella',     year:1987, regista:'Carlo Verdone', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:15, fmt:['Stampa Tela','Download HD']},
+  {id:8,  title:'Il commissario Cattani', year:1986, regista:'', genere:'Fiction RAI', cat:'Televisione RAI', anni:'Anni \'80', prezzo:8, fmt:['Download HD']},
+  {id:9,  title:'La piovra',            year:1984, regista:'', genere:'Fiction RAI', cat:'Televisione RAI', anni:'Anni \'80', prezzo:8, fmt:['Download HD','Stampa Carta']},
+  {id:10, title:'Non ci resta che piangere', year:1984, regista:'Roberto Benigni', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:18, fmt:['Stampa Carta','Stampa Tela','Download HD']},
+  {id:11, title:'Scusate il ritardo',   year:1983, regista:'Massimo Troisi', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:20, fmt:['Stampa Tela','Download HD']},
+  {id:12, title:'Il Gattopardo',        year:1963, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:35, fmt:['Stampa Tela','Stampa Carta','Download HD']},
+  {id:13, title:'Domenica In',          year:1988, regista:'Milly Carlucci', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:9, fmt:['Stampa Carta','Download HD']},
+  {id:14, title:'Azzurro',              year:1982, regista:'Raffaella Carrà', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:14, fmt:['Stampa Carta','Download HD']},
+  {id:15, title:'Milano calibro 9',     year:1972, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'70', prezzo:12, fmt:['Stampa Carta','Download HD']},
+  {id:16, title:'Sanremo',              year:1992, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'90', prezzo:11, fmt:['Download HD','Stampa Carta']},
+  {id:17, title:'Il postino',           year:1994, regista:'Massimo Troisi', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'90', prezzo:22, fmt:['Stampa Tela','Download HD']},
+  {id:18, title:'La vita è bella',      year:1997, regista:'Roberto Benigni', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'90', prezzo:25, fmt:['Stampa Carta','Stampa Tela','Download HD']},
+  {id:19, title:'Sette chili in sette giorni', year:1986, regista:'Carlo Verdone', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:16, fmt:['Stampa Carta','Download HD']},
+  {id:20, title:'Ritratto: Frizzi',     year:1990, regista:'Fabrizio Frizzi', genere:'Posati', cat:'Fotografie di Scena', anni:'Anni \'90', prezzo:30, fmt:['Stampa Tela','Stampa Carta','Download HD']},
+  {id:21, title:'Domenica In — Frizzi', year:1993, regista:'Fabrizio Frizzi', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'90', prezzo:12, fmt:['Download HD','Stampa Carta']},
+  {id:22, title:'Ballando con le stelle', year:2005, regista:'Milly Carlucci', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni 2000', prezzo:10, fmt:['Stampa Tela','Download HD']},
+  {id:23, title:'Johnny Stecchino',     year:1991, regista:'Roberto Benigni', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'90', prezzo:18, fmt:['Download HD','Stampa Carta']},
+  {id:24, title:'Ricomincio da tre',    year:1981, regista:'Massimo Troisi', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:20, fmt:['Stampa Carta','Download HD']},
+  {id:25, title:'Un sacco bello',       year:1980, regista:'Carlo Verdone', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:15, fmt:['Stampa Carta','Download HD']},
+  {id:26, title:'Pronto, Raffaella?',   year:1983, regista:'Raffaella Carrà', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:12, fmt:['Stampa Tela','Stampa Carta','Download HD']},
+  {id:27, title:'Gran Premio',          year:1978, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'70', prezzo:9, fmt:['Stampa Tela','Download HD']},
+  {id:28, title:'Photocall Festival',   year:1995, regista:'Carlo Verdone', genere:'Photocall', cat:'Fotografie di Scena', anni:'Anni \'90', prezzo:14, fmt:['Stampa Tela','Stampa Carta','Download HD']},
+  {id:29, title:'Carosello RAI',        year:1975, regista:'', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'70', prezzo:7, fmt:['Download HD']},
+  {id:30, title:'Ritratto: Carrà',      year:1980, regista:'Raffaella Carrà', genere:'Posati', cat:'Fotografie di Scena', anni:'Anni \'80', prezzo:45, fmt:['Stampa Tela','Stampa Carta','Download HD']},
 ];
 
 // ── STATE ────────────────────────────────────────────────────────────────
@@ -592,7 +584,7 @@ function renderGrid() {
         </div>
         <div class="card-body">
           <div class="card-title">${item.title}</div>
-          <div class="card-meta">${item.regista} · ${item.genere}</div>
+          <div class="card-meta">${item.regista ? item.regista + ' · ' : ''}${item.genere}</div>
           <div class="card-footer">
             <div class="card-price">da €${item.prezzo}</div>
             <span class="card-category">${item.cat === 'Televisione RAI' ? 'TV RAI' : item.cat === 'Fotografie di Scena' ? 'Foto' : item.cat === 'Pezzi Rari' ? 'Raro' : 'Cinema'}</span>
@@ -653,8 +645,8 @@ function openModal(id) {
   document.getElementById('modalEyebrow').textContent = `${item.cat} · ${item.year}`;
   document.getElementById('modalTitle').textContent = item.title;
   document.getElementById('modalMeta').innerHTML = `
-    <span><strong>Regista:</strong> ${item.regista}</span>
-    <span><strong>Genere:</strong> ${item.genere}</span>
+    <span><strong>Personaggio:</strong> ${item.regista || '—'}</span>
+    <span><strong>Tipologia:</strong> ${item.genere}</span>
     <span><strong>Anni:</strong> ${item.anni}</span>
   `;
   const services = [];
