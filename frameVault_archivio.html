@@ -441,6 +441,8 @@
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
+const BASE_URL = 'https://grmfoto.myds.me/framevault-media/anteprime/';
+
 const gradients = [
   'linear-gradient(145deg,#ddd3c2,#b8a88a)',
   'linear-gradient(160deg,#c9bfad,#a89880)',
@@ -453,7 +455,7 @@ const gradients = [
 ];
 
 const rawData = [
-  {id:1,  title:'Roma città aperta',    year:1945, regista:'', genere:'Fiction RAI', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:28, fmt:['Stampa Carta','Download HD']},
+  {id:1,  title:'Roma città aperta',    year:1945, regista:'', genere:'Fiction RAI', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:28, fmt:['Stampa Carta','Download HD'], img:'_V9U0741bassa.jpg'},
   {id:2,  title:'Ladri di biciclette',  year:1948, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:24, fmt:['Stampa Carta','Stampa Tela','Download HD']},
   {id:3,  title:'La dolce vita',        year:1960, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:18, fmt:['Stampa Tela','Download HD']},
   {id:4,  title:'Fantastico',           year:1983, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:12, fmt:['Stampa Carta','Download HD']},
@@ -575,9 +577,12 @@ function renderGrid() {
   } else {
     grid.innerHTML = paged.map((item, i) => {
       const g = gradients[item.id % gradients.length];
+      const thumbStyle = item.img
+        ? `background-image:url('${BASE_URL}${item.img}');background-size:cover;background-position:center;`
+        : `--grad:${g}`;
       return `
       <div class="card" onclick="openModal(${item.id})" style="animation-delay:${i*0.04}s">
-        <div class="card-thumb" style="--grad:${g}">
+        <div class="card-thumb" style="${thumbStyle}">
           <div class="card-year-badge">${item.year}</div>
           <div class="card-formats">${item.fmt.map(f => `<span class="fmt-badge">${f === 'Download HD' ? '⬇' : f === 'Stampa Tela' ? '🖼' : '🖨'}</span>`).join('')}</div>
           <div class="card-overlay"><button class="overlay-btn">Vedi dettagli</button></div>
@@ -641,7 +646,18 @@ function openModal(id) {
   const item = rawData.find(x => x.id === id);
   if (!item) return;
   const g = gradients[item.id % gradients.length];
-  document.getElementById('modalImage').style.setProperty('--modal-grad', g);
+  const modalImg = document.getElementById('modalImage');
+  if (item.img) {
+    modalImg.style.backgroundImage = `url('${BASE_URL}${item.img}')`;
+    modalImg.style.backgroundSize = 'cover';
+    modalImg.style.backgroundPosition = 'center';
+    modalImg.style.setProperty('--modal-grad', 'none');
+  } else {
+    modalImg.style.backgroundImage = '';
+    modalImg.style.backgroundSize = '';
+    modalImg.style.backgroundPosition = '';
+    modalImg.style.setProperty('--modal-grad', g);
+  }
   document.getElementById('modalEyebrow').textContent = `${item.cat} · ${item.year}`;
   document.getElementById('modalTitle').textContent = item.title;
   document.getElementById('modalMeta').innerHTML = `
