@@ -622,6 +622,8 @@
       from { opacity: 0; transform: translateY(16px); }
       to   { opacity: 1; transform: translateY(0); }
     }
+    .hamburger { display: none; }
+
     @media (max-width: 900px) {
       nav { padding: 14px 24px; }
       nav ul {
@@ -633,11 +635,11 @@
         z-index: 999;
         justify-content: center;
         align-items: center;
-        gap: 32px;
+        gap: 28px;
         padding: 40px;
       }
       nav ul.open { display: flex; }
-      nav ul a { font-size: 1.2rem; letter-spacing: 1px; }
+      nav ul a { font-size: 1.1rem; letter-spacing: 1px; color: var(--ink); }
       nav ul .nav-cta { padding: 14px 36px; font-size: 1rem !important; }
       .hamburger {
         display: flex;
@@ -647,11 +649,11 @@
         z-index: 1000;
         background: none;
         border: none;
-        padding: 4px;
+        padding: 6px;
       }
       .hamburger span {
         display: block;
-        width: 24px;
+        width: 26px;
         height: 2px;
         background: var(--ink);
         border-radius: 2px;
@@ -660,15 +662,6 @@
       .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
       .hamburger.open span:nth-child(2) { opacity: 0; }
       .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-      .menu-close {
-        position: absolute;
-        top: 20px; right: 24px;
-        font-size: 1.5rem;
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--ash);
-      }
       .hero { grid-template-columns: 1fr; }
       .hero-right { display: none; }
       section { padding: 60px 24px; }
@@ -677,7 +670,6 @@
       }
       footer { flex-direction: column; gap: 10px; text-align: center; }
     }
-    .hamburger { display: none; }
   </style>
 </head>
 <body>
@@ -691,7 +683,6 @@
       <span></span><span></span><span></span>
     </button>
     <ul id="navMenu">
-      <button class="menu-close" onclick="toggleMenu()">✕</button>
       <li><a href="#servizi">Servizi</a></li>
       <li><a href="#come-funziona">Come funziona</a></li>
       <li><a href="/frameVault_archivio.html">Catalogo</a></li>
