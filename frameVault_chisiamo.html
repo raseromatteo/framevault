@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FrameVault — Chi Siamo</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#faf8f4; --bg2:#f2ede4; --white:#ffffff; --ink:#1c1712;
+      --rust:#b8420a; --gold:#c8922a; --ash:#7a6e62; --border:#ddd5c5; --brown:#5c3a1e;
+    }
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    html{scroll-behavior:smooth}
+    body{background:var(--bg);color:var(--ink);font-family:'DM Sans',sans-serif}
+
+    .filmstrip{width:100%;height:24px;background:var(--ink);overflow:hidden;position:relative}
+    .filmstrip-inner{position:absolute;top:5px;left:0;width:200%;height:14px;background-image:repeating-linear-gradient(90deg,transparent 0,transparent 18px,rgba(255,255,255,.15) 18px,rgba(255,255,255,.15) 20px,transparent 20px,transparent 38px);animation:filmroll 3s linear infinite}
+    @keyframes filmroll{from{transform:translateX(0)}to{transform:translateX(-38px)}}
+
+    nav{display:flex;justify-content:space-between;align-items:center;padding:16px 48px;background:var(--white);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:200}
+    .logo{font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:4px;color:var(--ink);text-decoration:none}
+    .logo span{color:var(--rust)}
+    nav ul{list-style:none;display:flex;gap:28px;align-items:center}
+    nav ul a{color:var(--ash);text-decoration:none;font-size:.82rem;font-weight:500;transition:color .2s}
+    nav ul a:hover{color:var(--ink)}
+    nav ul a.active{color:var(--ink);border-bottom:2px solid var(--rust);padding-bottom:2px}
+    .nav-cta{background:var(--rust)!important;color:#fff!important;padding:8px 20px;border-radius:2px}
+    .hamburger{display:none}
+
+    /* PAGE HEADER */
+    .page-header{background:var(--white);border-bottom:1px solid var(--border);padding:64px 48px 56px}
+    .page-eyebrow{font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--rust);margin-bottom:14px;display:flex;align-items:center;gap:10px}
+    .page-eyebrow::before{content:'';display:inline-block;width:28px;height:1px;background:var(--rust)}
+    .page-header h1{font-family:'Playfair Display',serif;font-size:clamp(2.2rem,4vw,4rem);font-weight:900;line-height:1.1;max-width:720px}
+    .page-header h1 em{font-style:italic;color:var(--rust)}
+    .page-header p{font-size:1rem;line-height:1.8;color:var(--ash);max-width:600px;margin-top:16px}
+
+    /* NUMERI */
+    .numbers-wrap{background:var(--bg2);border-bottom:1px solid var(--border)}
+    .numbers-row{display:grid;grid-template-columns:repeat(4,1fr)}
+    .number-card{padding:40px 32px;text-align:center;border-right:1px solid var(--border);transition:background .2s}
+    .number-card:last-child{border-right:none}
+    .number-card:hover{background:var(--white)}
+    .number-val{font-family:'Playfair Display',serif;font-size:2.6rem;font-weight:900;color:var(--ink);line-height:1;margin-bottom:8px}
+    .number-val span{color:var(--rust)}
+    .number-label{font-size:.72rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--ash)}
+
+    /* CONTENT */
+    .content-wrap{max-width:1060px;margin:0 auto;padding:72px 48px}
+
+    .sec-eyebrow{font-size:.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--rust);margin-bottom:12px;display:flex;align-items:center;gap:10px}
+    .sec-eyebrow::before{content:'';display:inline-block;width:24px;height:1px;background:var(--rust)}
+    .sec-title{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,2.5vw,2.2rem);font-weight:900;line-height:1.2;margin-bottom:28px}
+    .sec-title em{font-style:italic;color:var(--rust)}
+
+    /* STORIA */
+    .story-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;padding-bottom:64px;border-bottom:1px solid var(--border);margin-bottom:48px}
+    .story-text p{font-size:.92rem;line-height:1.9;color:var(--ash);margin-bottom:16px}
+    .story-text p:last-child{margin-bottom:0}
+    .story-text p strong{color:var(--ink)}
+
+    /* GEN2 */
+    .gen2-box{background:var(--white);border:1.5px solid var(--border);border-left:4px solid var(--gold);padding:28px 32px;margin-bottom:48px}
+    .gen2-box h3{font-family:'Playfair Display',serif;font-size:1.05rem;font-weight:700;color:var(--ink);margin-bottom:10px}
+    .gen2-box p{font-size:.88rem;line-height:1.8;color:var(--ash)}
+    .gen2-box p strong{color:var(--ink)}
+
+    /* DIGITAL */
+    .digital-section{padding-bottom:64px;border-bottom:1px solid var(--border);margin-bottom:64px}
+    .digital-grid{display:grid;grid-template-columns:1fr 1fr;gap:64px;align-items:start;margin-top:36px}
+    .digital-grid p{font-size:.92rem;line-height:1.9;color:var(--ash);margin-bottom:16px}
+    .digital-grid p strong{color:var(--ink)}
+
+    .progress-wrap{margin-top:4px}
+    .progress-label{display:flex;justify-content:space-between;font-size:.72rem;letter-spacing:1px;text-transform:uppercase;color:var(--ash);margin-bottom:8px}
+    .progress-bar{height:3px;background:var(--border);border-radius:2px;overflow:hidden}
+    .progress-fill{height:100%;width:35%;background:linear-gradient(90deg,var(--rust),var(--gold));border-radius:2px;animation:grow 2s ease .5s both}
+    @keyframes grow{from{width:0}to{width:35%}}
+    .progress-note{font-size:.75rem;color:var(--ash);margin-top:8px;font-style:italic}
+
+    .info-list{display:flex;flex-direction:column;gap:10px;margin-top:28px}
+    .info-item{display:flex;gap:14px;align-items:flex-start;padding:14px 16px;background:var(--white);border:1.5px solid var(--border)}
+    .info-item-icon{font-size:1.1rem;margin-top:1px}
+    .info-item-title{font-size:.82rem;font-weight:500;color:var(--ink);margin-bottom:2px}
+    .info-item-desc{font-size:.75rem;color:var(--ash)}
+
+    /* TIMELINE */
+    .timeline-section{margin-bottom:64px}
+    .timeline-items{margin-top:32px;position:relative}
+    .timeline-items::before{content:'';position:absolute;left:68px;top:8px;bottom:8px;width:1px;background:var(--border)}
+    .timeline-item{display:grid;grid-template-columns:68px 1fr;gap:24px;padding:20px 0;border-bottom:1px solid var(--border)}
+    .timeline-item:last-child{border-bottom:none}
+    .t-year{font-family:'Bebas Neue',sans-serif;font-size:1rem;letter-spacing:2px;color:var(--rust);text-align:right;padding-right:18px;position:relative;line-height:1.6}
+    .t-year::after{content:'';position:absolute;right:-5px;top:6px;width:8px;height:8px;border-radius:50%;background:var(--rust);border:2px solid var(--bg)}
+    .t-content h4{font-family:'Playfair Display',serif;font-size:.95rem;font-weight:700;color:var(--ink);margin-bottom:4px}
+    .t-content p{font-size:.83rem;line-height:1.7;color:var(--ash)}
+
+    /* CONTACT */
+    .contact-strip{background:var(--bg2);border:1.5px solid var(--border);padding:40px 48px;display:flex;justify-content:space-between;align-items:center;gap:24px;flex-wrap:wrap}
+    .contact-strip h3{font-family:'Playfair Display',serif;font-size:1.2rem;font-weight:700;margin-bottom:6px}
+    .contact-strip p{font-size:.85rem;color:var(--ash)}
+    .btn-rust{background:var(--rust);color:#fff;border:none;padding:14px 32px;font-family:'DM Sans',sans-serif;font-size:.85rem;font-weight:500;cursor:pointer;border-radius:2px;transition:background .2s;white-space:nowrap;text-decoration:none;display:inline-block}
+    .btn-rust:hover{background:var(--brown)}
+
+    footer{background:var(--white);border-top:1px solid var(--border);padding:32px 48px;display:flex;justify-content:space-between;align-items:center;font-size:.78rem;color:var(--ash);flex-wrap:wrap;gap:12px}
+
+    @media(max-width:768px){
+      nav{padding:14px 20px}
+      nav ul{display:none;flex-direction:column;position:fixed;inset:0;background:var(--white);z-index:999;justify-content:center;align-items:center;gap:28px}
+      nav ul.open{display:flex}
+      nav ul a{font-size:1.1rem}
+      .hamburger{display:flex;flex-direction:column;gap:5px;cursor:pointer;background:none;border:none;padding:6px;z-index:1000}
+      .hamburger span{display:block;width:24px;height:2px;background:var(--ink);border-radius:2px;transition:all .3s}
+      .hamburger.open span:nth-child(1){transform:translateY(7px) rotate(45deg)}
+      .hamburger.open span:nth-child(2){opacity:0}
+      .hamburger.open span:nth-child(3){transform:translateY(-7px) rotate(-45deg)}
+      .page-header{padding:40px 20px 32px}
+      .numbers-row{grid-template-columns:repeat(2,1fr)}
+      .number-card:nth-child(2){border-right:none}
+      .content-wrap{padding:40px 20px}
+      .story-grid,.digital-grid{grid-template-columns:1fr;gap:28px}
+      .timeline-items::before{left:50px}
+      .timeline-item{grid-template-columns:50px 1fr;gap:14px}
+      .contact-strip{flex-direction:column;text-align:center;padding:28px 20px}
+      footer{flex-direction:column;text-align:center}
+    }
+    @keyframes fadein{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+    .fade{animation:fadein .6s ease both}
+    .fade-2{animation:fadein .6s ease .15s both}
+  </style>
+</head>
+<body>
+
+<div class="filmstrip"><div class="filmstrip-inner"></div></div>
+
+<nav>
+  <a href="/index.html" class="logo">Frame<span>Vault</span></a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
+    <span></span><span></span><span></span>
+  </button>
+  <ul id="navMenu">
+    <li><a href="/index.html#servizi">Servizi</a></li>
+    <li><a href="/index.html#come-funziona">Come funziona</a></li>
+    <li><a href="/frameVault_archivio.html">Catalogo</a></li>
+    <li><a href="/index.html#licenze">Licenze</a></li>
+    <li><a href="/index.html#prezzi">Prezzi</a></li>
+    <li><a href="/frameVault_chisiamo.html" class="active">Chi Siamo</a></li>
+    <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
+  </ul>
+</nav>
+
+<div class="page-header">
+  <div class="page-eyebrow">Chi siamo</div>
+  <h1 class="fade">Un archivio di famiglia,<br><em>aperto al mondo.</em></h1>
+  <p class="fade-2">GRM Foto è un'agenzia fotogiornalistica romana fondata nel 1988. Oggi, con FrameVault, la seconda generazione porta online oltre trent'anni di storia visiva dello spettacolo italiano.</p>
+</div>
+
+<div class="numbers-wrap">
+  <div class="numbers-row">
+    <div class="number-card">
+      <div class="number-val">1988</div>
+      <div class="number-label">Anno di fondazione</div>
+    </div>
+    <div class="number-card">
+      <div class="number-val">35<span>+</span></div>
+      <div class="number-label">Anni di attività</div>
+    </div>
+    <div class="number-card">
+      <div class="number-val">500<span>K+</span></div>
+      <div class="number-label">Immagini in archivio</div>
+    </div>
+    <div class="number-card">
+      <div class="number-val">2<span>ª</span></div>
+      <div class="number-label">Generazione al lavoro</div>
+    </div>
+  </div>
+</div>
+
+<div class="content-wrap">
+
+  <!-- STORIA -->
+  <div class="story-grid">
+    <div>
+      <div class="sec-eyebrow">Le origini</div>
+      <div class="sec-title">Una storia nata<br>dalla <em>passione</em><br>per l'immagine.</div>
+    </div>
+    <div class="story-text">
+      <p>La <strong>GRM Foto</strong> nasce nel <strong>1988</strong> a Roma dalla collaborazione di <strong>Roberto Guberti</strong> e <strong>Luciano Rasero</strong>, fotografi accomunati dalla passione per l'immagine e dalla curiosità giornalistica. Fin dai primi anni l'agenzia si afferma come punto di riferimento per la fotografia di spettacolo: cinema, televisione, eventi e ritrattistica.</p>
+      <p>Nel corso dei decenni l'archivio cresce ininterrottamente documentando programmi RAI, set cinematografici, festival, red carpet e posati esclusivi di alcuni tra i più grandi nomi dello spettacolo italiano — da <strong>Fabrizio Frizzi</strong> a <strong>Raffaella Carrà</strong>, da <strong>Paolo Villaggio</strong> a <strong>Michelle Hunziker</strong>. Con il passaggio al digitale, GRM Foto si rinnova costruendo un secondo archivio altrettanto ricco che abbraccia gli anni 2000 fino ad oggi.</p>
+    </div>
+  </div>
+
+  <!-- SECONDA GENERAZIONE -->
+  <div class="gen2-box">
+    <h3>🎞️ Oggi il progetto è portato avanti dalla seconda generazione</h3>
+    <p>I professionisti formatisi all'interno dello studio continuano con la stessa dedizione il lavoro iniziato dai fondatori. È proprio questa nuova generazione che ha dato vita a <strong>FrameVault</strong> — il progetto che trasforma un archivio privato in un patrimonio accessibile, valorizzando decenni di lavoro e rendendoli disponibili a collezionisti, appassionati, editori e creativi di tutto il mondo.</p>
+  </div>
+
+  <!-- DIGITALIZZAZIONE -->
+  <div class="digital-section">
+    <div class="sec-eyebrow">Il progetto FrameVault</div>
+    <div class="sec-title">Stiamo portando<br><em>l'intero archivio</em> online.</div>
+    <div class="digital-grid">
+      <div>
+        <p>FrameVault nasce con un obiettivo preciso: <strong>digitalizzare e rendere accessibile l'intero archivio storico GRM Foto</strong>. Ogni immagine viene scansionata in alta risoluzione, catalogata con cura e caricata sulla piattaforma con i propri metadati.</p>
+        <p>Il lavoro è in corso e procede rapidamente. <strong>L'obiettivo è completare l'intero archivio nel minor tempo possibile</strong>, rendendo disponibili tutte le 500.000+ immagini — dalle stampe analogiche degli anni '70 agli scatti digitali più recenti, passando per le diapositive d'epoca. Nel frattempo il catalogo cresce ogni settimana con nuovi arrivi.</p>
+      </div>
+      <div>
+        <div class="progress-wrap">
+          <div class="progress-label">
+            <span>Digitalizzazione in corso</span>
+            <span>~35%</span>
+          </div>
+          <div class="progress-bar"><div class="progress-fill"></div></div>
+          <p class="progress-note">Nuove immagini aggiunte ogni settimana</p>
+        </div>
+        <div class="info-list">
+          <div class="info-item">
+            <div class="info-item-icon">📷</div>
+            <div><div class="info-item-title">Stampe originali & diapositive</div><div class="info-item-desc">Archivio analogico anni '70 – 2000</div></div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-icon">🖼️</div>
+            <div><div class="info-item-title">Scatti digitali</div><div class="info-item-desc">Archivio digitale anni 2000 – oggi</div></div>
+          </div>
+          <div class="info-item">
+            <div class="info-item-icon">🔍</div>
+            <div><div class="info-item-title">Alta risoluzione</div><div class="info-item-desc">Ogni immagine scansionata e catalogata</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section">
+    <div class="sec-eyebrow">Le tappe</div>
+    <div class="sec-title">Dalla fondazione<br>a <em>FrameVault</em></div>
+    <div class="timeline-items">
+      <div class="timeline-item">
+        <div class="t-year">1988</div>
+        <div class="t-content">
+          <h4>Nasce GRM Foto</h4>
+          <p>Roberto Guberti e Luciano Rasero fondano l'agenzia a Roma. Inizia l'attività fotogiornalistica nel mondo del cinema e dello spettacolo.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-year">Anni '90</div>
+        <div class="t-content">
+          <h4>L'archivio cresce</h4>
+          <p>Collaborazioni con i principali programmi RAI, set cinematografici e grandi eventi. Migliaia di scatti ogni anno tra posati, foto di scena e reportage.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-year">Anni 2000</div>
+        <div class="t-content">
+          <h4>La transizione al digitale</h4>
+          <p>GRM Foto abbraccia il digitale e costruisce un nuovo archivio parallelo. La qualità rimane invariata, i volumi crescono ulteriormente.</p>
+        </div>
+      </div>
+      <div class="timeline-item">
+        <div class="t-year">Oggi</div>
+        <div class="t-content">
+          <h4>Nasce FrameVault</h4>
+          <p>La seconda generazione avvia la digitalizzazione dell'intero archivio storico e lancia FrameVault — per rendere accessibile a tutti un patrimonio visivo unico dello spettacolo italiano.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- CONTATTI -->
+  <div class="contact-strip">
+    <div>
+      <h3>Vuoi collaborare o saperne di più?</h3>
+      <p>Per licenze editoriali, collaborazioni o informazioni sull'archivio siamo a disposizione.</p>
+    </div>
+    <a href="/index.html#newsletter" class="btn-rust">Contattaci</a>
+  </div>
+
+</div>
+
+<footer>
+  <a href="/index.html" class="logo" style="font-size:1.2rem">Frame<span style="color:var(--rust)">Vault</span></a>
+  <span>© 2025 FrameVault — GRM Foto · Roma, Italia</span>
+  <div style="display:flex;gap:24px;flex-wrap:wrap;">
+    <a href="/frameVault_spedizioni.html" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Spedizione e Resi</a>
+    <a href="/index.html#licenze" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Licenze</a>
+    <a href="/frameVault_chisiamo.html" style="color:var(--rust);text-decoration:none;font-size:.78rem;">Chi Siamo</a>
+    <a href="/index.html#newsletter" style="color:var(--ash);text-decoration:none;font-size:.78rem;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Contatti</a>
+  </div>
+</footer>
+
+<script>
+  function toggleMenu() {
+    const menu = document.getElementById('navMenu');
+    const btn = document.getElementById('hamburger');
+    menu.classList.toggle('open');
+    btn.classList.toggle('open');
+    document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+  }
+  document.querySelectorAll('#navMenu a').forEach(a => {
+    a.addEventListener('click', () => {
+      document.getElementById('navMenu').classList.remove('open');
+      document.getElementById('hamburger').classList.remove('open');
+      document.body.style.overflow = '';
+    });
+  });
+</script>
+</body>
+</html>
