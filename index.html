@@ -151,16 +151,12 @@
     .hero {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      min-height: 75vh;
+      height: 100vh;
+      max-height: 780px;
       background: var(--white);
     }
     .hero-left {
-      padding: 40px 64px;
-      display: flex;
-      flex-direction: column;
-      justify-content: flex-start;
-      padding-top: 60px;
-    }
+      padding: 60px 64px;
       display: flex;
       flex-direction: column;
       justify-content: center;
@@ -257,13 +253,13 @@
     /* ── HERO RIGHT — grid preview ── */
     .hero-right {
       background: var(--bg2);
-      position: relative;
       overflow: hidden;
       display: grid;
       grid-template-columns: repeat(3, 1fr);
       grid-template-rows: repeat(3, 1fr);
       gap: 4px;
       padding: 4px;
+      height: 100%;
     }
     .preview-cell {
       position: relative;
