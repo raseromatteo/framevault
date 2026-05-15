@@ -732,12 +732,49 @@
       .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
       .hamburger.open span:nth-child(2) { opacity: 0; }
       .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-      .hero { grid-template-columns: 1fr; }
+
+      /* Hero mobile */
+      .hero { grid-template-columns: 1fr; height: auto; max-height: none; }
       .hero-right { display: none; }
-      section { padding: 60px 24px; }
-      .services-grid, .steps-grid, .cat-grid, .price-grid, .license-row {
-        grid-template-columns: 1fr;
+      .hero-left { padding: 32px 24px 40px; justify-content: flex-start; }
+      .hero-left h1 { font-size: 2.4rem; }
+      .hero-desc { font-size: 0.88rem; margin-top: 16px; }
+      .hero-stats { gap: 24px; margin-top: 28px; padding-top: 20px; }
+      .stat-num { font-size: 1.6rem; }
+
+      /* Bottoni hero su mobile — piccoli e in riga */
+      .cta-row {
+        flex-direction: row;
+        gap: 10px;
+        margin-top: 28px;
       }
+      .btn-primary, .btn-outline {
+        padding: 11px 18px;
+        font-size: 0.78rem;
+      }
+
+      /* Fix bottone scopri servizi */
+      .btn-outline[onclick] { cursor: pointer; }
+
+      /* Sections */
+      section { padding: 48px 20px; }
+      .services-grid { grid-template-columns: 1fr; gap: 16px; }
+      .steps-grid { grid-template-columns: 1fr; }
+      .cat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+      .price-grid, .license-row { grid-template-columns: 1fr; }
+
+      /* Service cards mobile — testo più corto */
+      .service-card { padding: 28px 20px; }
+      .service-card p { font-size: 0.83rem; line-height: 1.6; }
+      .service-formats { display: none; } /* Nasconde i tag su mobile */
+      .service-price { margin-top: 16px; padding-top: 14px; }
+
+      /* Cat cards mobile */
+      .cat-card { padding: 20px 14px; }
+      .cat-icon { font-size: 1.4rem; margin-bottom: 8px; }
+      .cat-card h3 { font-size: 0.82rem; }
+      .cat-card p { display: none; } /* Nasconde descrizione su mobile */
+
       footer { flex-direction: column; gap: 10px; text-align: center; }
     }
   </style>
@@ -792,7 +829,7 @@
       </div>
       <div class="cta-row">
         <button class="btn-primary" onclick="window.location='/frameVault_archivio.html'">Esplora l'archivio</button>
-        <button class="btn-outline">Scopri i servizi</button>
+        <button class="btn-outline" onclick="window.location='/frameVault_servizi.html'">Scopri i servizi</button>
       </div>
     </div>
     <div class="hero-right">
