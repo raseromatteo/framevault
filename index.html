@@ -271,6 +271,7 @@
     .preview-cell img {
       width: 100%; height: 100%;
       object-fit: cover;
+      object-position: center 20%;
       display: block;
       transition: transform .4s ease;
     }
@@ -281,7 +282,8 @@
     .preview-cell:nth-child(4)  { animation-delay: .20s; background: linear-gradient(120deg,#d8cebb,#c9bca5); }
     .preview-cell:nth-child(5)  { animation-delay: .25s; grid-row: span 2; background: linear-gradient(200deg,#e5ddd0,#d4c9b2); }
     .preview-cell:nth-child(6)  { animation-delay: .30s; background: linear-gradient(140deg,#dacfc0,#c8bba4); }
-    .preview-cell:nth-child(7)  { animation-delay: .35s; background: linear-gradient(160deg,#e0d8ca,#cfc4b0); }
+    .preview-cell:nth-child(7)  { animation-delay: .35s; grid-row: span 2; background: linear-gradient(160deg,#e0d8ca,#cfc4b0); }
+    .preview-cell:nth-child(7) img { object-fit: contain; object-position: center center; background: var(--bg2); }
     .preview-cell:nth-child(8)  { animation-delay: .40s; background: linear-gradient(180deg,#d6cbb8,#c4b99f); }
     .preview-cell::after {
       content: '';
