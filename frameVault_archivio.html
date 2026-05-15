@@ -476,7 +476,7 @@
       <hr class="modal-divider"/>
       <div style="font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--ash);font-weight:600;">Scegli il servizio</div>
       <div class="modal-services" id="modalServices"></div>
-      <button class="modal-cta">Aggiungi al carrello</button>
+      <a href="/frameVault_chisiamo.html#contatti" class="modal-cta" style="text-align:center;text-decoration:none;display:block;">Richiedi preventivo →</a>
     </div>
   </div>
 </div>
@@ -710,7 +710,6 @@ function openModal(id) {
   const services = [];
   if (item.fmt.includes('Download HD'))  services.push({name:'Download Digitale HD', desc:'File JPEG/TIFF + Licenza personale', price:`€${Math.round(item.prezzo*0.3)}`});
   if (item.fmt.includes('Stampa Carta')) services.push({name:'Stampa Fine Art su Carta', desc:'Carta 200g satinata · Spedizione inclusa', price:`da €${item.prezzo}`});
-  if (item.fmt.includes('Stampa Tela'))  services.push({name:'Stampa su Tela Canvas', desc:'Canvas premium · Varie dimensioni', price:`da €${item.prezzo + 15}`});
   document.getElementById('modalServices').innerHTML = services.map(s => `
     <div class="modal-service">
       <div class="modal-service-info"><strong>${s.name}</strong><span>${s.desc}</span></div>
