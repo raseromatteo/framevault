@@ -389,21 +389,12 @@
     <div class="filter-section">
       <div class="filter-title">Categoria</div>
       <div class="filter-tags">
-        <span class="filter-tag" onclick="toggleFilter('cat','Cinema Italiano')">Cinema Italiano</span>
+        <span class="filter-tag" onclick="toggleFilter('cat','Stampe Originali')">Stampe Originali</span>
         <span class="filter-tag" onclick="toggleFilter('cat','Televisione RAI')">Televisione RAI</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Foto di Scena')">Foto di Scena</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Pezzi Rari')">Pezzi Rari</span>
+        <span class="filter-tag" onclick="toggleFilter('cat','Cinema Italiano')">Cinema Italiano</span>
+        <span class="filter-tag" onclick="toggleFilter('cat','Fotografie di Scena')">Fotografie di Scena</span>
         <span class="filter-tag" onclick="toggleFilter('cat','Attualità & Eventi')">Attualità & Eventi</span>
         <span class="filter-tag" onclick="toggleFilter('cat','Posati Esclusivi')">Posati Esclusivi</span>
-      </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-title">Formato</div>
-      <div class="filter-tags">
-        <span class="filter-tag" onclick="toggleFilter('fmt','Stampa Tela')">Stampa Tela</span>
-        <span class="filter-tag" onclick="toggleFilter('fmt','Stampa Carta')">Stampa Carta</span>
-        <span class="filter-tag" onclick="toggleFilter('fmt','Download HD')">Download HD</span>
       </div>
     </div>
 
@@ -442,15 +433,6 @@
         <option>Carlo Verdone</option>
         <option>Milly Carlucci</option>
       </select>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-title">Prezzo</div>
-      <div class="filter-tags">
-        <span class="filter-tag" onclick="toggleFilter('price','€0–€10')">€0–€10</span>
-        <span class="filter-tag" onclick="toggleFilter('price','€10–€30')">€10–€30</span>
-        <span class="filter-tag" onclick="toggleFilter('price','€30+')">€30+</span>
-      </div>
     </div>
 
     <button class="clear-btn" onclick="clearFilters()">✕ Cancella tutti i filtri</button>
@@ -522,7 +504,7 @@ async function caricaCatalogo() {
       year: item.anno || 0,
       regista: item.autore || '',
       genere: item.tipologia || 'Foto di Scena',
-      cat: item.categoria || 'Archivio Storico',
+      cat: item.categoria === 'Archivio Storico' ? 'Stampe Originali' : (item.categoria || 'Stampe Originali'),
       anni: item.anni || '',
       prezzo: item.prezzo_stampa || 12,
       fmt: ['Stampa Carta', 'Download HD'],
@@ -630,22 +612,22 @@ function renderGrid() {
     grid.innerHTML = paged.map((item, i) => {
       const g = gradients[item.id % gradients.length];
       const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
-      const thumbStyle = imgUrl
-        ? `background-image:url('${imgUrl}');background-size:contain;background-position:center center;background-repeat:no-repeat;background-color:#ede8df;`
-        : `--grad:${g}`;
+      const thumbStyle = imgUrl ? '' : `--grad:${g}`;
+      const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;" onerror="this.style.display='none'">` : '';
       return `
       <div class="card" onclick="openModal(${item.id})" style="animation-delay:${i*0.04}s">
-        <div class="card-thumb" style="${thumbStyle}">
-          <div class="card-year-badge">${item.year}</div>
-          <div class="card-formats">${item.fmt.map(f => `<span class="fmt-badge">${f === 'Download HD' ? '⬇' : f === 'Stampa Tela' ? '🖼' : '🖨'}</span>`).join('')}</div>
-          <div class="card-overlay"><button class="overlay-btn">Vedi dettagli</button></div>
+        <div class="card-thumb" style="${thumbStyle};position:relative;">
+          ${imgTag}
+          <div class="card-year-badge" style="position:absolute;top:8px;left:8px;z-index:2;">${item.year}</div>
+          <div class="card-formats" style="position:absolute;top:8px;right:8px;z-index:2;">${item.fmt.map(f => `<span class="fmt-badge">${f === 'Download HD' ? '⬇' : '🖨'}</span>`).join('')}</div>
+          <div class="card-overlay" style="z-index:3;"><button class="overlay-btn">Vedi dettagli</button></div>
         </div>
         <div class="card-body">
           <div class="card-title">${item.personaggio || 'Archivio GRM Foto'}</div>
           <div class="card-meta">${item.genere}</div>
           <div class="card-footer">
             <div class="card-price">da €${item.prezzo}</div>
-            <span class="card-category">${item.cat === 'Televisione RAI' ? 'TV RAI' : item.cat === 'Fotografie di Scena' ? 'Foto' : item.cat === 'Pezzi Rari' ? 'Raro' : 'Cinema'}</span>
+            <span class="card-category">${item.cat === 'Televisione RAI' ? 'TV RAI' : item.cat === 'Fotografie di Scena' ? 'Foto' : item.cat === 'Stampe Originali' ? 'Stampe' : item.cat}</span>
           </div>
         </div>
       </div>`;
