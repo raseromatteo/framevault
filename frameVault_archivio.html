@@ -631,7 +631,7 @@ function renderGrid() {
       const g = gradients[item.id % gradients.length];
       const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
       const thumbStyle = imgUrl
-        ? `background-image:url('${imgUrl}');background-size:cover;background-position:center top;`
+        ? `background-image:url('${imgUrl}');background-size:contain;background-position:center center;background-repeat:no-repeat;background-color:#ede8df;`
         : `--grad:${g}`;
       return `
       <div class="card" onclick="openModal(${item.id})" style="animation-delay:${i*0.04}s">
@@ -641,8 +641,8 @@ function renderGrid() {
           <div class="card-overlay"><button class="overlay-btn">Vedi dettagli</button></div>
         </div>
         <div class="card-body">
-          <div class="card-title">${item.title}</div>
-          <div class="card-meta">${item.regista ? item.regista + ' · ' : ''}${item.genere}</div>
+          <div class="card-title">${item.personaggio || 'Archivio GRM Foto'}</div>
+          <div class="card-meta">${item.genere}</div>
           <div class="card-footer">
             <div class="card-price">da €${item.prezzo}</div>
             <span class="card-category">${item.cat === 'Televisione RAI' ? 'TV RAI' : item.cat === 'Fotografie di Scena' ? 'Foto' : item.cat === 'Pezzi Rari' ? 'Raro' : 'Cinema'}</span>
