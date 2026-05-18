@@ -172,7 +172,6 @@
       width:100%; aspect-ratio:3/4; background:var(--bg2);
       position:relative; overflow:hidden;
     }
-    /* Simulated poster placeholder with grain */
     .card-thumb::before {
       content:''; position:absolute; inset:0;
       background: var(--grad, linear-gradient(160deg,#e8dfd0,#c9bca5));
@@ -298,6 +297,17 @@
       cursor:pointer; border-radius:2px; transition:background .2s; margin-top:4px;
     }
     .modal-cta:hover { background:var(--brown); }
+
+    /* ── TIMBRO BADGE ── */
+    .timbro-badge {
+      display:inline-flex; align-items:center; gap:5px;
+      border:1.5px solid var(--rust); color:var(--rust);
+      font-size:0.6rem; letter-spacing:2px; text-transform:uppercase;
+      padding:4px 10px; border-radius:1px; font-weight:600;
+    }
+    .timbro-badge::before {
+      content:'⬡'; font-size:0.65rem;
+    }
 
     /* ── UTILS ── */
     @keyframes fadein { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
@@ -486,7 +496,6 @@ function estraiPersonaggio(titolo) {
   if (!titolo) return '';
   const match = titolo.match(/[Nn]ella foto[:\s]+(.+?)(?:\r|\n|$)/);
   if (match) return match[1].trim();
-  // Prova anche "in the picture:"
   const match2 = titolo.match(/[Ii]n the picture[:\s]+(.+?)(?:\r|\n|$)/);
   if (match2) return match2[1].trim();
   return '';
@@ -524,7 +533,7 @@ caricaCatalogo();
 // ── STATE ────────────────────────────────────────────────────────────────
 const ITEMS_PER_PAGE = 12;
 let currentPage = 1;
-let activeFilters = {}; // {cat: 'Cinema Italiano', anni: "Anni '70", ...}
+let activeFilters = {};
 let searchQuery = '';
 
 function toggleFilter(key, val) {
@@ -533,7 +542,6 @@ function toggleFilter(key, val) {
   } else {
     activeFilters[key] = val;
   }
-  // Update tag UI
   document.querySelectorAll('.filter-tag').forEach(t => {
     t.classList.toggle('active', t.textContent.trim() === activeFilters[key]);
   });
@@ -627,7 +635,7 @@ function renderGrid() {
           <div class="card-meta">${item.genere}</div>
           <div class="card-footer">
             <div class="card-price">da €${item.prezzo}</div>
-            <span class="card-category">${item.cat === 'Televisione RAI' ? 'TV RAI' : item.cat === 'Fotografie di Scena' ? 'Foto' : item.cat === 'Stampe Originali' ? 'Stampe' : item.cat}</span>
+            <span class="card-category">Stampa Orig.</span>
           </div>
         </div>
       </div>`;
@@ -693,13 +701,19 @@ function openModal(id) {
     modalImg.style.backgroundPosition = '';
     modalImg.style.setProperty('--modal-grad', g);
   }
-  document.getElementById('modalEyebrow').textContent = `${item.cat} · ${item.year}`;
+
+  // ── MODIFICA: eyebrow con "Stampa Originale Timbrata" ──
+  document.getElementById('modalEyebrow').innerHTML = `
+    <span class="timbro-badge">Stampa Originale Timbrata</span>
+    &nbsp;·&nbsp; ${item.year}
+  `;
+
   document.getElementById('modalTitle').textContent = 'Archivio GRM Foto Guberti Rasero — Stampe d\'epoca originali';
   document.getElementById('modalMeta').innerHTML = `
     <span><strong>Personaggio:</strong> <input type="text" value="${item.personaggio || ''}" placeholder="Nome personaggio"
       style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
       onchange="aggiornaPersonaggio(${item.id}, this.value)"></span>
-    <span><strong>Tipologia:</strong> Stampe Originali</span>
+    <span><strong>Tipologia:</strong> Stampe Originali Uniche</span>
     <span><strong>Anno:</strong> <input type="number" value="${item.year}" min="1900" max="2030" 
       style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
       onchange="aggiornaAnno(${item.id}, this.value)"></span>
@@ -720,7 +734,10 @@ function aggiornaAnno(id, anno) {
   const item = rawData.find(x => x.id === id);
   if (item) {
     item.year = parseInt(anno);
-    document.getElementById('modalEyebrow').textContent = `${item.cat} · ${item.year}`;
+    document.getElementById('modalEyebrow').innerHTML = `
+      <span class="timbro-badge">Stampa Originale Timbrata</span>
+      &nbsp;·&nbsp; ${item.year}
+    `;
   }
 }
 
@@ -728,7 +745,6 @@ function aggiornaPersonaggio(id, nome) {
   const item = rawData.find(x => x.id === id);
   if (item) {
     item.personaggio = nome;
-    // Aggiorna anche il titolo della card nella griglia
     renderGrid();
   }
 }
