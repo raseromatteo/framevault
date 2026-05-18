@@ -459,7 +459,7 @@
   <!-- MAIN -->
   <main class="main-content">
     <div class="active-filters" id="activeFilters"></div>
-    <div class="cards-grid" id="cardsGrid"></div>
+    <div class="cards-grid" id="cardsGrid"><p style="text-align:center;color:var(--ash);padding:60px;grid-column:1/-1;">⏳ Caricamento archivio in corso...</p></div>
     <div class="pagination" id="pagination"></div>
   </main>
 </div>
@@ -483,7 +483,7 @@
 
 <script>
 // ── DATA ──────────────────────────────────────────────────────────────────
-const BASE_URL = 'https://grmfoto.myds.me/framevault-media/anteprime/';
+const BASE_URL = 'https://grmfoto.myds.me/framevault-media/anteprime/catalogo/';
 
 const gradients = [
   'linear-gradient(145deg,#ddd3c2,#b8a88a)',
@@ -496,38 +496,37 @@ const gradients = [
   'linear-gradient(155deg,#dbd0be,#b8a48a)',
 ];
 
-const rawData = [
-  {id:1,  title:'Roma città aperta',    year:1945, regista:'', genere:'Fiction RAI', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:28, fmt:['Stampa Carta','Download HD'], img:'_V9U0741bassa.jpg'},
-  {id:2,  title:'Ladri di biciclette',  year:1948, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'40', prezzo:24, fmt:['Stampa Carta','Stampa Tela','Download HD']},
-  {id:3,  title:'La dolce vita',        year:1960, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:18, fmt:['Stampa Tela','Download HD']},
-  {id:4,  title:'Fantastico',           year:1983, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:12, fmt:['Stampa Carta','Download HD']},
-  {id:5,  title:'C\'era una volta il West', year:1968, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:15, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:6,  title:'Carramba che sorpresa', year:1995, regista:'Raffaella Carrà', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'90', prezzo:10, fmt:['Stampa Carta','Download HD']},
-  {id:7,  title:'Io e mia sorella',     year:1987, regista:'Carlo Verdone', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:15, fmt:['Stampa Tela','Download HD']},
-  {id:8,  title:'Il commissario Cattani', year:1986, regista:'', genere:'Fiction RAI', cat:'Televisione RAI', anni:'Anni \'80', prezzo:8, fmt:['Download HD']},
-  {id:9,  title:'La piovra',            year:1984, regista:'', genere:'Fiction RAI', cat:'Televisione RAI', anni:'Anni \'80', prezzo:8, fmt:['Download HD','Stampa Carta']},
-  {id:10, title:'Non ci resta che piangere', year:1984, regista:'Roberto Benigni', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:18, fmt:['Stampa Carta','Stampa Tela','Download HD']},
-  {id:11, title:'Scusate il ritardo',   year:1983, regista:'Massimo Troisi', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:20, fmt:['Stampa Tela','Download HD']},
-  {id:12, title:'Il Gattopardo',        year:1963, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'60', prezzo:35, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:13, title:'Domenica In',          year:1988, regista:'Milly Carlucci', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:9, fmt:['Stampa Carta','Download HD']},
-  {id:14, title:'Azzurro',              year:1982, regista:'Raffaella Carrà', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:14, fmt:['Stampa Carta','Download HD']},
-  {id:15, title:'Milano calibro 9',     year:1972, regista:'', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'70', prezzo:12, fmt:['Stampa Carta','Download HD']},
-  {id:16, title:'Sanremo',              year:1992, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'90', prezzo:11, fmt:['Download HD','Stampa Carta']},
-  {id:17, title:'Il postino',           year:1994, regista:'Massimo Troisi', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'90', prezzo:22, fmt:['Stampa Tela','Download HD']},
-  {id:18, title:'La vita è bella',      year:1997, regista:'Roberto Benigni', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'90', prezzo:25, fmt:['Stampa Carta','Stampa Tela','Download HD']},
-  {id:19, title:'Sette chili in sette giorni', year:1986, regista:'Carlo Verdone', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:16, fmt:['Stampa Carta','Download HD']},
-  {id:20, title:'Ritratto: Frizzi',     year:1990, regista:'Fabrizio Frizzi', genere:'Posati', cat:'Fotografie di Scena', anni:'Anni \'90', prezzo:30, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:21, title:'Domenica In — Frizzi', year:1993, regista:'Fabrizio Frizzi', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'90', prezzo:12, fmt:['Download HD','Stampa Carta']},
-  {id:22, title:'Ballando con le stelle', year:2005, regista:'Milly Carlucci', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni 2000', prezzo:10, fmt:['Stampa Tela','Download HD']},
-  {id:23, title:'Johnny Stecchino',     year:1991, regista:'Roberto Benigni', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'90', prezzo:18, fmt:['Download HD','Stampa Carta']},
-  {id:24, title:'Ricomincio da tre',    year:1981, regista:'Massimo Troisi', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:20, fmt:['Stampa Carta','Download HD']},
-  {id:25, title:'Un sacco bello',       year:1980, regista:'Carlo Verdone', genere:'Foto di Scena', cat:'Cinema Italiano', anni:'Anni \'80', prezzo:15, fmt:['Stampa Carta','Download HD']},
-  {id:26, title:'Pronto, Raffaella?',   year:1983, regista:'Raffaella Carrà', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'80', prezzo:12, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:27, title:'Gran Premio',          year:1978, regista:'Pippo Baudo', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'70', prezzo:9, fmt:['Stampa Tela','Download HD']},
-  {id:28, title:'Photocall Festival',   year:1995, regista:'Carlo Verdone', genere:'Photocall', cat:'Fotografie di Scena', anni:'Anni \'90', prezzo:14, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-  {id:29, title:'Carosello RAI',        year:1975, regista:'', genere:'Trasmissione TV', cat:'Televisione RAI', anni:'Anni \'70', prezzo:7, fmt:['Download HD']},
-  {id:30, title:'Ritratto: Carrà',      year:1980, regista:'Raffaella Carrà', genere:'Posati', cat:'Fotografie di Scena', anni:'Anni \'80', prezzo:45, fmt:['Stampa Tela','Stampa Carta','Download HD']},
-];
+const NAS_URL = 'https://grmfoto.myds.me/framevault-media';
+let rawData = [];
+
+// Carica il catalogo dal NAS
+async function caricaCatalogo() {
+  try {
+    const res = await fetch(`${NAS_URL}/catalogo.json`);
+    const json = await res.json();
+    // Adatta i campi del JSON allo schema usato dall'archivio
+    rawData = json.map(item => ({
+      id: item.id,
+      title: item.titolo || item.img,
+      year: item.anno || 0,
+      regista: item.autore || '',
+      genere: item.tipologia || 'Foto di Scena',
+      cat: item.categoria || 'Archivio Storico',
+      anni: item.anni || '',
+      prezzo: item.prezzo_stampa || 12,
+      fmt: ['Stampa Carta', 'Download HD'],
+      img: item.img,
+      parole_chiave: item.parole_chiave || []
+    }));
+  } catch(e) {
+    console.error('Errore caricamento catalogo:', e);
+    rawData = [];
+  }
+  renderGrid();
+  renderActiveFilterChips();
+}
+
+caricaCatalogo();
 
 // ── STATE ────────────────────────────────────────────────────────────────
 const ITEMS_PER_PAGE = 12;
