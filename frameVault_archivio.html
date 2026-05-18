@@ -696,8 +696,10 @@ function openModal(id) {
   document.getElementById('modalEyebrow').textContent = `${item.cat} · ${item.year}`;
   document.getElementById('modalTitle').textContent = 'Archivio GRM Foto Guberti Rasero — Stampe d\'epoca originali';
   document.getElementById('modalMeta').innerHTML = `
-    <span><strong>Personaggio:</strong> ${item.personaggio || '—'}</span>
-    <span><strong>Tipologia:</strong> ${item.genere}</span>
+    <span><strong>Personaggio:</strong> <input type="text" value="${item.personaggio || ''}" placeholder="Nome personaggio"
+      style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
+      onchange="aggiornaPersonaggio(${item.id}, this.value)"></span>
+    <span><strong>Tipologia:</strong> Stampe Originali</span>
     <span><strong>Anno:</strong> <input type="number" value="${item.year}" min="1900" max="2030" 
       style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
       onchange="aggiornaAnno(${item.id}, this.value)"></span>
@@ -719,6 +721,15 @@ function aggiornaAnno(id, anno) {
   if (item) {
     item.year = parseInt(anno);
     document.getElementById('modalEyebrow').textContent = `${item.cat} · ${item.year}`;
+  }
+}
+
+function aggiornaPersonaggio(id, nome) {
+  const item = rawData.find(x => x.id === id);
+  if (item) {
+    item.personaggio = nome;
+    // Aggiorna anche il titolo della card nella griglia
+    renderGrid();
   }
 }
 
