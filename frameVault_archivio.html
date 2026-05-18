@@ -502,7 +502,7 @@ let rawData = [];
 // Carica il catalogo dal NAS
 async function caricaCatalogo() {
   try {
-    const res = await fetch(`${NAS_URL}/catalogo.json`);
+    const res = await fetch('/api/catalogo');
     const json = await res.json();
     // Adatta i campi del JSON allo schema usato dall'archivio
     rawData = json.map(item => ({
