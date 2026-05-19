@@ -63,13 +63,11 @@
     }
     .mockup-tab {
       padding:12px 20px; font-size:0.65rem; letter-spacing:2px;
-      text-transform:uppercase; color:var(--ash); cursor:pointer;
-      border-bottom:2px solid transparent; transition:all .2s;
+      text-transform:uppercase; color:var(--ink);
+      border-bottom:2px solid var(--rust);
       background:transparent; border-top:none; border-left:none; border-right:none;
-      font-family:'DM Sans',sans-serif; font-weight:600;
+      font-family:'DM Sans',sans-serif; font-weight:600; cursor:default;
     }
-    .mockup-tab:hover { color:var(--ink); }
-    .mockup-tab.active { color:var(--ink); border-bottom-color:var(--rust); }
 
     /* Pannelli mockup */
     .mockup-panels { flex:1; position:relative; }
@@ -84,22 +82,20 @@
     .mock-gallery {
       background: #e8e5e0;
       width:100%; height:100%; display:flex; align-items:center; justify-content:center;
-      padding:48px;
+      padding:60px 80px;
       background-image:
         repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,.012) 4px, rgba(0,0,0,.012) 5px),
         repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0,0,0,.008) 10px, rgba(0,0,0,.008) 11px);
     }
     .mock-gallery-frame {
-      /* cornice nera sottile */
       border: 10px solid #1a1a1a;
       background: #f8f6f2;
-      /* passepartout bianco generoso */
-      padding: 32px;
+      padding: 28px;
       box-shadow:
         0 20px 60px rgba(0,0,0,.25),
         0 6px 20px rgba(0,0,0,.15),
         inset 0 0 0 1px rgba(0,0,0,.08);
-      max-width: 300px; width: 100%;
+      max-width: 240px; width: 100%;
       transition: transform .3s ease, box-shadow .3s ease;
       position: relative;
     }
@@ -107,7 +103,6 @@
       transform: translateY(-4px);
       box-shadow: 0 32px 80px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.18);
     }
-    /* ombra sotto cornice sul muro */
     .mock-gallery-frame::after {
       content:''; position:absolute;
       bottom: -28px; left: 8%; right: 8%; height: 24px;
@@ -123,7 +118,7 @@
     .mock-gallery-caption {
       padding-top:10px; text-align:center;
       font-family:'Cormorant Garamond',serif; font-style:italic;
-      font-size:0.72rem; color:#9a9080; letter-spacing:0.5px;
+      font-size:0.68rem; color:#9a9080; letter-spacing:0.5px;
     }
 
     /* ── MOCKUP 2: MURO ── */
@@ -339,14 +334,11 @@
   <div class="mockup-col">
     <!-- Tab -->
     <div class="mockup-tabs">
-      <button class="mockup-tab active" onclick="setTab(0)">Galleria</button>
-      <button class="mockup-tab" onclick="setTab(1)">Ambiente</button>
-      <button class="mockup-tab" onclick="setTab(2)">Superficie</button>
+      <div class="mockup-tab active">Anteprima Stampa</div>
     </div>
 
     <!-- Pannelli -->
     <div class="mockup-panels">
-
       <!-- GALLERIA -->
       <div class="mockup-panel active" id="panel0">
         <div class="mock-gallery">
@@ -357,53 +349,7 @@
         </div>
         <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
       </div>
-
-      <!-- MURO -->
-      <div class="mockup-panel" id="panel1">
-        <div class="mock-wall">
-          <div class="mock-wall-content">
-            <div class="mock-wall-wire"></div>
-            <div class="mock-wall-frame">
-              <img class="mock-wall-img" id="wallImg" src="" alt="Anteprima stampa"/>
-              <div class="mock-wall-label" id="wallLabel">FrameVault · Stampa Fine Art</div>
-            </div>
-          </div>
-        </div>
-        <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
-      </div>
-
-      <!-- SUPERFICIE -->
-      <div class="mockup-panel" id="panel2">
-        <div class="mock-surface">
-          <div class="mock-surface-desk"></div>
-          <div class="mock-surface-content">
-            <div class="mock-surface-print">
-              <img class="mock-surface-img" id="surfaceImg" src="" alt="Anteprima stampa"/>
-            </div>
-            <div class="mock-surface-details">
-              <div class="mock-detail-chip">
-                <div class="mock-detail-label">Carta</div>
-                <div class="mock-detail-value" id="detailPaper">200g Satinata</div>
-              </div>
-              <div class="mock-detail-chip">
-                <div class="mock-detail-label">Formato</div>
-                <div class="mock-detail-value" id="detailFormat">A4</div>
-              </div>
-              <div class="mock-detail-chip">
-                <div class="mock-detail-label">Archivio</div>
-                <div class="mock-detail-value">GRM Foto S.r.l.</div>
-              </div>
-              <div class="mock-detail-chip">
-                <div class="mock-detail-label">Tiratura</div>
-                <div class="mock-detail-value">Esemplare unico</div>
-              </div>
-            </div>
-          </div>
-        </div>
-        <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
-      </div>
-
-    </div><!-- /mockup-panels -->
+    </div>
   </div><!-- /mockup-col -->
 
   <!-- ── COLONNA CONFIGURATORE ── -->
@@ -546,11 +492,7 @@ let paperName = 'inclusa';
 let formatName = 'A4';
 let formatCm = '21×29.7 cm';
 
-// ── TABS ──────────────────────────────────────────────────────────────────
-function setTab(idx) {
-  document.querySelectorAll('.mockup-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
-  document.querySelectorAll('.mockup-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
-}
+// ── TABS ── (rimossa, unico mockup)
 
 // ── FORMATO ───────────────────────────────────────────────────────────────
 function setFormat(btn, size, cm, price) {
