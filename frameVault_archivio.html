@@ -364,6 +364,7 @@ const CARTELLE = [
   { id:'bonaccorti', label:'Personaggio', title:'Tutto Enrica Bonaccorti',   desc:'Conduttrice, attrice e showgirl. Tra i volti più amati della RAI degli anni \'80.',                        keywords:['enrica bonaccorti'], emoji:'📺' },
   { id:'troisi',     label:'Personaggio', title:'Massimo Troisi',            desc:'Il genio napoletano. Dal teatro alla TV, fino ai capolavori cinematografici.',                               keywords:['troisi'], emoji:'🎭' },
   { id:'parisi',     label:'Personaggio', title:'Heather Parisi',            desc:'La showgirl americana che conquistò l\'Italia. Fantastico, Al Paradise e i grandi varietà RAI.',           keywords:['heather parisi'], emoji:'💃' },
+  { id:'celentano',  label:'Personaggio', title:'Adriano Celentano',         desc:'Il Molleggiato. Cantante, attore e showman tra i più iconici della cultura popolare italiana.',            keywords:['celentano'], emoji:'🎸' },
 ];
 const CARTELLA_ALTRO = { id:'altro', label:'Archivio', title:'Stampe Originali Uniche', desc:'Tutto l\'archivio GRM Foto: volti, eventi, backstage e momenti unici della TV e del cinema italiano.', emoji:'📦' };
 
@@ -373,13 +374,16 @@ const gradients = ['linear-gradient(145deg,#ddd3c2,#b8a88a)','linear-gradient(16
 let rawData = [], cartellaAttiva = null, visibleCount = ITEMS_PER_LOAD;
 let activeFilters = {}, searchQuery = '', isLoading = false;
 
-function assegnaCartella(titolo) {
-  if (!titolo) return 'altro';
+function assegnaCartelle(titolo) {
+  if (!titolo) return ['altro'];
   const t = titolo.toLowerCase();
+  const trovate = [];
   for (const c of CARTELLE) {
-    for (const kw of c.keywords) { if (t.includes(kw)) return c.id; }
+    for (const kw of c.keywords) {
+      if (t.includes(kw)) { trovate.push(c.id); break; }
+    }
   }
-  return 'altro';
+  return trovate.length > 0 ? trovate : ['altro'];
 }
 
 function estraiPersonaggio(titolo) {
@@ -406,7 +410,7 @@ async function caricaCatalogo() {
       prezzo: item.prezzo_stampa || 12,
       fmt: ['Stampa Carta','Download HD'],
       img: item.img,
-      cartella: assegnaCartella(item.titolo),
+      cartelle: assegnaCartelle(item.titolo),
     }));
   } catch(e) { rawData = []; }
   renderCartelle();
@@ -444,10 +448,10 @@ function renderCartelle() {
   }
 
   document.getElementById('foldersPersonaggi').innerHTML = CARTELLE.map((c,i) =>
-    buildFolderCard(c, rawData.filter(f => f.cartella === c.id), i*0.08)
+    buildFolderCard(c, rawData.filter(f => f.cartelle.includes(c.id)), i*0.08)
   ).join('');
 
-  const fotoAltro = rawData.filter(f => f.cartella === 'altro');
+  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro'));
   document.getElementById('foldersAltro').innerHTML = buildFolderCard(CARTELLA_ALTRO, fotoAltro, 0);
 }
 
@@ -512,7 +516,7 @@ function clearFilters() {
 function getFiltered() {
   const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
-    if (cartellaAttiva && cartellaAttiva !== '__search__' && item.cartella !== cartellaAttiva) return false;
+    if (cartellaAttiva && cartellaAttiva !== '__search__' && !item.cartelle.includes(cartellaAttiva)) return false;
     if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
