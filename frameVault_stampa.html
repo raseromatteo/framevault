@@ -82,28 +82,48 @@
 
     /* ── MOCKUP 1: GALLERIA ── */
     .mock-gallery {
-      background: #f0ede8;
+      background: #e8e5e0;
       width:100%; height:100%; display:flex; align-items:center; justify-content:center;
       padding:48px;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 4px, rgba(0,0,0,.012) 4px, rgba(0,0,0,.012) 5px),
+        repeating-linear-gradient(90deg, transparent, transparent 10px, rgba(0,0,0,.008) 10px, rgba(0,0,0,.008) 11px);
     }
     .mock-gallery-frame {
-      background:var(--white);
-      padding:24px 24px 44px;
-      box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.08);
-      border: 1px solid #d0c8bc;
-      max-width:320px; width:100%;
-      transition:transform .3s ease, box-shadow .3s ease;
+      /* cornice nera sottile */
+      border: 10px solid #1a1a1a;
+      background: #f8f6f2;
+      /* passepartout bianco generoso */
+      padding: 32px;
+      box-shadow:
+        0 20px 60px rgba(0,0,0,.25),
+        0 6px 20px rgba(0,0,0,.15),
+        inset 0 0 0 1px rgba(0,0,0,.08);
+      max-width: 300px; width: 100%;
+      transition: transform .3s ease, box-shadow .3s ease;
+      position: relative;
     }
-    .mock-gallery-frame:hover { transform:translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.13); }
+    .mock-gallery-frame:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 32px 80px rgba(0,0,0,.3), 0 10px 30px rgba(0,0,0,.18);
+    }
+    /* ombra sotto cornice sul muro */
+    .mock-gallery-frame::after {
+      content:''; position:absolute;
+      bottom: -28px; left: 8%; right: 8%; height: 24px;
+      background: radial-gradient(ellipse, rgba(0,0,0,.22) 0%, transparent 70%);
+      filter: blur(10px);
+      pointer-events: none;
+    }
     .mock-gallery-img {
       width:100%; aspect-ratio:3/4;
-      object-fit:contain; background:#faf8f4;
-      display:block; border:1px solid #e8e0d5;
+      object-fit:contain; background:#f0ede8;
+      display:block;
     }
     .mock-gallery-caption {
-      padding-top:12px; text-align:center;
+      padding-top:10px; text-align:center;
       font-family:'Cormorant Garamond',serif; font-style:italic;
-      font-size:0.78rem; color:#9a9080; letter-spacing:0.5px;
+      font-size:0.72rem; color:#9a9080; letter-spacing:0.5px;
     }
 
     /* ── MOCKUP 2: MURO ── */
