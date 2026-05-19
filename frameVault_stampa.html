@@ -52,24 +52,24 @@
 
     /* ── COLONNA SINISTRA: MOCKUP ── */
     .mockup-col {
-      background:var(--ink); position:relative; overflow:hidden;
+      background:var(--bg2); position:relative; overflow:hidden;
       display:flex; flex-direction:column;
     }
 
     /* Tab switcher */
     .mockup-tabs {
-      display:flex; gap:0; border-bottom:1px solid #2e2416;
-      position:relative; z-index:2;
+      display:flex; gap:0; border-bottom:1px solid var(--border);
+      position:relative; z-index:2; background:var(--white);
     }
     .mockup-tab {
       padding:12px 20px; font-size:0.65rem; letter-spacing:2px;
-      text-transform:uppercase; color:#5a4e42; cursor:pointer;
+      text-transform:uppercase; color:var(--ash); cursor:pointer;
       border-bottom:2px solid transparent; transition:all .2s;
       background:transparent; border-top:none; border-left:none; border-right:none;
       font-family:'DM Sans',sans-serif; font-weight:600;
     }
-    .mockup-tab:hover { color:#a09589; }
-    .mockup-tab.active { color:#f5eed8; border-bottom-color:var(--rust); }
+    .mockup-tab:hover { color:var(--ink); }
+    .mockup-tab.active { color:var(--ink); border-bottom-color:var(--rust); }
 
     /* Pannelli mockup */
     .mockup-panels { flex:1; position:relative; }
@@ -82,126 +82,122 @@
 
     /* ── MOCKUP 1: GALLERIA ── */
     .mock-gallery {
-      background: radial-gradient(ellipse at center, #2a2218 0%, #0e0c09 100%);
+      background: #f0ede8;
       width:100%; height:100%; display:flex; align-items:center; justify-content:center;
       padding:48px;
     }
     .mock-gallery-frame {
       background:var(--white);
-      padding:28px 28px 48px;
-      box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.05);
-      max-width:340px; width:100%;
-      transform:rotate(-0.5deg);
-      transition:transform .3s ease;
+      padding:24px 24px 44px;
+      box-shadow: 0 4px 24px rgba(0,0,0,.10), 0 1px 4px rgba(0,0,0,.08);
+      border: 1px solid #d0c8bc;
+      max-width:320px; width:100%;
+      transition:transform .3s ease, box-shadow .3s ease;
     }
-    .mock-gallery-frame:hover { transform:rotate(0deg) scale(1.01); }
+    .mock-gallery-frame:hover { transform:translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,.13); }
     .mock-gallery-img {
       width:100%; aspect-ratio:3/4;
-      object-fit:contain; background:#f5f0e8;
-      display:block;
+      object-fit:contain; background:#faf8f4;
+      display:block; border:1px solid #e8e0d5;
     }
     .mock-gallery-caption {
-      padding-top:14px; text-align:center;
+      padding-top:12px; text-align:center;
       font-family:'Cormorant Garamond',serif; font-style:italic;
-      font-size:0.82rem; color:#9a9080; letter-spacing:0.5px;
+      font-size:0.78rem; color:#9a9080; letter-spacing:0.5px;
     }
 
     /* ── MOCKUP 2: MURO ── */
     .mock-wall {
       width:100%; height:100%; position:relative; overflow:hidden;
-      background: linear-gradient(180deg, #2c2820 0%, #1e1a14 40%, #16120e 100%);
+      background: #edeae4;
     }
-    /* texture muro */
     .mock-wall::before {
       content:''; position:absolute; inset:0;
       background-image:
-        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.008) 3px, rgba(255,255,255,.008) 4px),
-        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,.005) 8px, rgba(255,255,255,.005) 9px);
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(0,0,0,.012) 3px, rgba(0,0,0,.012) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(0,0,0,.008) 8px, rgba(0,0,0,.008) 9px);
     }
     .mock-wall-content {
       position:absolute; inset:0; display:flex; flex-direction:column;
       align-items:center; justify-content:center; padding:40px;
     }
-    /* filo */
     .mock-wall-wire {
       width:160px; height:2px; position:relative; margin-bottom:0;
     }
     .mock-wall-wire::before {
       content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
-      width:120px; height:1px; background:linear-gradient(90deg, transparent, #8a7a6a, #b8a890, #8a7a6a, transparent);
+      width:120px; height:1px; background:linear-gradient(90deg, transparent, #b0a090, #c8b8a0, #b0a090, transparent);
     }
     .mock-wall-wire::after {
       content:'●'; position:absolute; top:-4px; left:50%; transform:translateX(-50%);
-      font-size:6px; color:#6a5a4a;
+      font-size:6px; color:#9a8878;
     }
     .mock-wall-frame {
       background:var(--white);
-      padding:20px 20px 36px;
-      box-shadow: 0 60px 120px rgba(0,0,0,.9), 0 20px 40px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.1);
-      max-width:280px; width:100%;
+      padding:18px 18px 32px;
+      box-shadow: 0 8px 32px rgba(0,0,0,.15), 0 2px 8px rgba(0,0,0,.08);
+      border: 1px solid #c8c0b4;
+      max-width:260px; width:100%;
       position:relative;
     }
-    /* ombra sul muro */
     .mock-wall-frame::after {
-      content:''; position:absolute; bottom:-20px; left:10%; right:10%; height:20px;
-      background:radial-gradient(ellipse, rgba(0,0,0,.5) 0%, transparent 70%);
-      filter:blur(8px);
+      content:''; position:absolute; bottom:-16px; left:15%; right:15%; height:16px;
+      background:radial-gradient(ellipse, rgba(0,0,0,.18) 0%, transparent 70%);
+      filter:blur(6px);
     }
-    .mock-wall-img { width:100%; aspect-ratio:3/4; object-fit:contain; background:#f5f0e8; display:block; }
+    .mock-wall-img { width:100%; aspect-ratio:3/4; object-fit:contain; background:#faf8f4; display:block; border:1px solid #e8e0d5; }
     .mock-wall-label {
       position:absolute; bottom:10px; left:0; right:0; text-align:center;
-      font-size:0.55rem; letter-spacing:2px; text-transform:uppercase; color:#c8b89a;
+      font-size:0.52rem; letter-spacing:2px; text-transform:uppercase; color:#a09080;
       font-family:'DM Sans',sans-serif;
     }
 
     /* ── MOCKUP 3: SUPERFICIE ── */
     .mock-surface {
       width:100%; height:100%; position:relative;
-      background: linear-gradient(135deg, #1a1510 0%, #241e16 50%, #1a1510 100%);
+      background: #e8e4dc;
       display:flex; align-items:center; justify-content:center; padding:40px;
     }
-    /* superficie legno */
     .mock-surface-desk {
-      position:absolute; bottom:0; left:0; right:0; height:55%;
-      background: linear-gradient(180deg, #2e2418 0%, #1e1810 100%);
-      border-top:1px solid #3e3020;
+      position:absolute; bottom:0; left:0; right:0; height:52%;
+      background: linear-gradient(180deg, #d8d0c4 0%, #c8c0b4 100%);
+      border-top:1px solid #c0b8ac;
     }
     .mock-surface-desk::before {
       content:''; position:absolute; inset:0;
-      background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px);
+      background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,.06) 40px, rgba(255,255,255,.06) 41px);
     }
     .mock-surface-content {
       position:relative; z-index:2; display:flex; align-items:flex-end; gap:20px;
-      transform:perspective(600px) rotateX(8deg);
+      transform:perspective(600px) rotateX(6deg);
     }
     .mock-surface-print {
       background:var(--white);
-      padding:14px 14px 28px;
-      box-shadow: 0 30px 80px rgba(0,0,0,.8), 0 10px 30px rgba(0,0,0,.5);
-      max-width:220px; width:100%;
-      transform:rotate(1.5deg);
+      padding:12px 12px 26px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.18), 0 4px 16px rgba(0,0,0,.10);
+      border: 1px solid #c8c0b4;
+      max-width:200px; width:100%;
+      transform:rotate(1deg);
       transition:transform .3s;
     }
-    .mock-surface-print:hover { transform:rotate(0.5deg) scale(1.02); }
-    .mock-surface-img { width:100%; aspect-ratio:3/4; object-fit:contain; background:#f5f0e8; display:block; }
+    .mock-surface-print:hover { transform:rotate(0deg) scale(1.02); }
+    .mock-surface-img { width:100%; aspect-ratio:3/4; object-fit:contain; background:#faf8f4; display:block; border:1px solid #e8e0d5; }
 
-    /* dettagli accanto */
     .mock-surface-details {
       display:flex; flex-direction:column; gap:10px; padding-bottom:8px;
       max-width:140px;
     }
     .mock-detail-chip {
-      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+      background:rgba(255,255,255,.7); border:1px solid rgba(0,0,0,.08);
       padding:8px 12px; backdrop-filter:blur(4px);
     }
-    .mock-detail-label { font-size:0.52rem; letter-spacing:2px; text-transform:uppercase; color:#5a4e42; margin-bottom:3px; }
-    .mock-detail-value { font-size:0.75rem; color:#c8b89a; font-weight:500; }
+    .mock-detail-label { font-size:0.52rem; letter-spacing:2px; text-transform:uppercase; color:#8a7e72; margin-bottom:3px; }
+    .mock-detail-value { font-size:0.75rem; color:var(--ink); font-weight:500; }
 
-    /* ── WATERMARK ── */
     .mock-watermark {
       position:absolute; bottom:16px; right:20px; z-index:3;
       font-family:'Bebas Neue',sans-serif; font-size:0.7rem; letter-spacing:3px;
-      color:rgba(200,180,150,.15); pointer-events:none; user-select:none;
+      color:rgba(100,80,60,.12); pointer-events:none; user-select:none;
     }
 
     /* ── COLONNA DESTRA: CONFIGURATORE ── */
