@@ -82,25 +82,44 @@
     .mock-gallery {
       background: #ebe8e2;
       width:100%; height:100%;
+      display:grid;
+      grid-template-columns: 72px 1fr;
+      gap:0;
+    }
+
+    /* strip correlati a sinistra */
+    .mock-gallery-strip {
+      border-right:1px solid #d8d4ce;
+      background:#e4e0da;
+      display:flex; flex-direction:column;
+      align-items:center; gap:6px;
+      padding:12px 8px; overflow-y:auto;
+    }
+    .mock-gallery-strip::-webkit-scrollbar { width:2px; }
+    .mock-gallery-strip::-webkit-scrollbar-thumb { background:#c8c0b8; }
+    .mock-gallery-strip-thumb {
+      width:52px; height:52px; object-fit:cover; object-position:center top;
+      cursor:pointer; border:2px solid transparent;
+      transition:border-color .2s; background:#d8d4ce;
+      flex-shrink:0;
+    }
+    .mock-gallery-strip-thumb.active { border-color:#1a1a1a; }
+    .mock-gallery-strip-thumb:hover { border-color:#888; }
+
+    /* area principale */
+    .mock-gallery-main {
       display:flex; align-items:center; justify-content:center;
-      padding:20px;
+      padding:20px; height:100%;
     }
     .mock-gallery-frame {
       border: 8px solid #1a1a1a;
       background: #f8f6f2;
       padding: 24px;
-      box-shadow:
-        0 12px 40px rgba(0,0,0,.2),
-        0 3px 10px rgba(0,0,0,.12);
+      box-shadow: 0 12px 40px rgba(0,0,0,.2), 0 3px 10px rgba(0,0,0,.12);
       width: 100%;
-      max-width: 520px;
-      max-height: calc(100vh - 140px);
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      max-width: 460px;
       position: relative;
-      transition: transform .3s ease, box-shadow .3s ease;
+      transition: box-shadow .3s ease;
     }
     .mock-gallery-frame:hover {
       box-shadow: 0 20px 60px rgba(0,0,0,.25), 0 5px 16px rgba(0,0,0,.14);
@@ -113,7 +132,6 @@
     }
     .mock-gallery-img {
       width:100%;
-      max-height: calc(100vh - 240px);
       object-fit:contain;
       background:#f0ede8;
       display:block;
@@ -122,7 +140,6 @@
       padding-top:10px; text-align:center;
       font-family:'Cormorant Garamond',serif; font-style:italic;
       font-size:0.7rem; color:#9a9080; letter-spacing:0.5px;
-      width:100%;
     }
 
     /* ── MOCKUP 2: MURO ── */
@@ -346,9 +363,14 @@
       <!-- GALLERIA -->
       <div class="mockup-panel active" id="panel0">
         <div class="mock-gallery">
-          <div class="mock-gallery-frame">
-            <img class="mock-gallery-img" id="galleryImg" src="" alt="Anteprima stampa"/>
-            <div class="mock-gallery-caption" id="galleryCaption">Archivio GRM Foto · Stampa Originale</div>
+          <!-- Strip correlati sinistra -->
+          <div class="mock-gallery-strip" id="galleryStrip"></div>
+          <!-- Foto principale -->
+          <div class="mock-gallery-main">
+            <div class="mock-gallery-frame">
+              <img class="mock-gallery-img" id="galleryImg" src="" alt="Anteprima stampa"/>
+              <div class="mock-gallery-caption" id="galleryCaption">Archivio GRM Foto · Stampa Originale</div>
+            </div>
           </div>
         </div>
         <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
@@ -469,25 +491,68 @@ const imgPath  = params.get('img') || '';
 const titolo   = params.get('titolo') || 'Archivio GRM Foto';
 const anno     = params.get('anno') || '';
 const prezzo   = parseInt(params.get('prezzo') || '12');
+const cartella = params.get('cartella') || '';
 
-// Imposta immagini nei mockup
-function setMockupImages(url) {
-  ['galleryImg','wallImg','surfaceImg'].forEach(id => {
-    const el = document.getElementById(id);
-    if (url) {
-      el.src = url;
-      el.onerror = () => { el.style.background='#e8dfd0'; el.style.display='none'; };
-    }
-  });
+// Imposta immagine principale
+if (imgPath) {
+  document.getElementById('galleryImg').src = `/api/immagine?path=${imgPath}`;
+  document.getElementById('galleryImg').onerror = function(){ this.style.background='#e8dfd0'; };
 }
 
-if (imgPath) setMockupImages(`/api/immagine?path=${imgPath}`);
-
-// Imposta testi
+// Testi
 document.getElementById('configTitle').textContent = titolo;
 document.getElementById('configSubtitle').textContent = `Stampa originale timbrata${anno ? ' · ' + anno : ''}`;
 document.getElementById('galleryCaption').textContent = `${titolo}${anno ? ' · ' + anno : ''} · Archivio GRM Foto`;
-document.getElementById('wallLabel').textContent = `FrameVault · ${titolo}`;
+
+// ── CORRELATI ─────────────────────────────────────────────────────────────
+async function caricaCorrelati() {
+  const strip = document.getElementById('galleryStrip');
+  try {
+    const res = await fetch('/api/catalogo');
+    const json = await res.json();
+
+    function matchCartella(item) {
+      if (!item.titolo) return false;
+      const t = item.titolo.toLowerCase();
+      if (cartella === 'baudo')      return t.includes('pippo baudo');
+      if (cartella === 'carra')      return t.includes('raffaella carr');
+      if (cartella === 'bonaccorti') return t.includes('enrica bonaccorti');
+      if (cartella === 'troisi')     return t.includes('troisi');
+      if (cartella === 'parisi')     return t.includes('heather parisi');
+      if (cartella === 'celentano')  return t.includes('celentano');
+      return true;
+    }
+
+    const correlati = json
+      .filter(item => item.img && item.img !== imgPath && matchCartella(item))
+      .slice(0, 14);
+
+    if (correlati.length === 0) { strip.style.display='none'; return; }
+
+    // Thumb principale attiva
+    if (imgPath) {
+      const t = document.createElement('img');
+      t.className = 'mock-gallery-strip-thumb active';
+      t.src = `/api/immagine?path=${imgPath}`;
+      t.onerror = ()=>{ t.style.background='#c8c0b8'; };
+      strip.appendChild(t);
+    }
+
+    correlati.forEach(item => {
+      const t = document.createElement('img');
+      t.className = 'mock-gallery-strip-thumb';
+      t.src = `/api/immagine?path=${item.img}`;
+      t.onerror = ()=>{ t.style.background='#c8c0b8'; };
+      t.onclick = () => {
+        document.getElementById('galleryImg').src = `/api/immagine?path=${item.img}`;
+        document.querySelectorAll('.mock-gallery-strip-thumb').forEach(x=>x.classList.remove('active'));
+        t.classList.add('active');
+      };
+      strip.appendChild(t);
+    });
+  } catch(e) { strip.style.display='none'; }
+}
+caricaCorrelati();
 
 // ── STATO ─────────────────────────────────────────────────────────────────
 let basePrice = prezzo;
