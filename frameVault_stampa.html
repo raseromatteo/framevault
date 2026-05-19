@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>FrameVault — Anteprima Stampa Fine Art</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&family=Cormorant+Garamond:ital,wght@0,300;1,300&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --bg:     #faf8f4;
+      --bg2:    #f2ede4;
+      --white:  #ffffff;
+      --ink:    #1c1712;
+      --rust:   #b8420a;
+      --rust2:  #8f3208;
+      --gold:   #c8922a;
+      --ash:    #7a6e62;
+      --border: #ddd5c5;
+      --brown:  #5c3a1e;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; }
+
+    /* ── FILMSTRIP ── */
+    .filmstrip { width:100%; height:24px; background:var(--ink); overflow:hidden; position:relative; }
+    .filmstrip-inner { position:absolute; top:5px; left:0; width:200%; height:14px; background-image: repeating-linear-gradient(90deg, transparent 0, transparent 18px, rgba(255,255,255,0.15) 18px, rgba(255,255,255,0.15) 20px, transparent 20px, transparent 38px); animation: filmroll 3s linear infinite; }
+    @keyframes filmroll { from{transform:translateX(0)} to{transform:translateX(-38px)} }
+
+    /* ── NAV ── */
+    nav { display:flex; justify-content:space-between; align-items:center; padding:16px 48px; background:var(--white); border-bottom:1px solid var(--border); position:sticky; top:0; z-index:200; }
+    .logo { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:4px; color:var(--ink); text-decoration:none; white-space:nowrap; display:flex; align-items:center; gap:10px; }
+    .logo .logo-text { color:var(--ink); letter-spacing:4px; }
+    .logo .logo-text span { color:var(--rust); }
+    nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
+    nav ul a { color:var(--ash); text-decoration:none; font-size:0.82rem; font-weight:500; transition:color .2s; }
+    nav ul a:hover { color:var(--ink); }
+    .nav-cta { background:var(--rust)!important; color:#fff!important; padding:8px 20px; border-radius:2px; }
+
+    /* ── BREADCRUMB ── */
+    .breadcrumb { background:var(--white); border-bottom:1px solid var(--border); padding:12px 48px; display:flex; align-items:center; gap:8px; font-size:0.78rem; color:var(--ash); }
+    .breadcrumb a { color:var(--rust); text-decoration:none; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb-sep { color:var(--border); }
+    .breadcrumb-current { color:var(--ink); font-weight:500; }
+
+    /* ── LAYOUT PRINCIPALE ── */
+    .print-layout {
+      display:grid; grid-template-columns:1fr 420px;
+      min-height:calc(100vh - 120px);
+    }
+
+    /* ── COLONNA SINISTRA: MOCKUP ── */
+    .mockup-col {
+      background:var(--ink); position:relative; overflow:hidden;
+      display:flex; flex-direction:column;
+    }
+
+    /* Tab switcher */
+    .mockup-tabs {
+      display:flex; gap:0; border-bottom:1px solid #2e2416;
+      position:relative; z-index:2;
+    }
+    .mockup-tab {
+      padding:12px 20px; font-size:0.65rem; letter-spacing:2px;
+      text-transform:uppercase; color:#5a4e42; cursor:pointer;
+      border-bottom:2px solid transparent; transition:all .2s;
+      background:transparent; border-top:none; border-left:none; border-right:none;
+      font-family:'DM Sans',sans-serif; font-weight:600;
+    }
+    .mockup-tab:hover { color:#a09589; }
+    .mockup-tab.active { color:#f5eed8; border-bottom-color:var(--rust); }
+
+    /* Pannelli mockup */
+    .mockup-panels { flex:1; position:relative; }
+    .mockup-panel {
+      position:absolute; inset:0;
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity .4s ease;
+    }
+    .mockup-panel.active { opacity:1; pointer-events:all; }
+
+    /* ── MOCKUP 1: GALLERIA ── */
+    .mock-gallery {
+      background: radial-gradient(ellipse at center, #2a2218 0%, #0e0c09 100%);
+      width:100%; height:100%; display:flex; align-items:center; justify-content:center;
+      padding:48px;
+    }
+    .mock-gallery-frame {
+      background:var(--white);
+      padding:28px 28px 48px;
+      box-shadow: 0 40px 100px rgba(0,0,0,.8), 0 0 0 1px rgba(255,255,255,.05);
+      max-width:340px; width:100%;
+      transform:rotate(-0.5deg);
+      transition:transform .3s ease;
+    }
+    .mock-gallery-frame:hover { transform:rotate(0deg) scale(1.01); }
+    .mock-gallery-img {
+      width:100%; aspect-ratio:3/4;
+      object-fit:contain; background:#f5f0e8;
+      display:block;
+    }
+    .mock-gallery-caption {
+      padding-top:14px; text-align:center;
+      font-family:'Cormorant Garamond',serif; font-style:italic;
+      font-size:0.82rem; color:#9a9080; letter-spacing:0.5px;
+    }
+
+    /* ── MOCKUP 2: MURO ── */
+    .mock-wall {
+      width:100%; height:100%; position:relative; overflow:hidden;
+      background: linear-gradient(180deg, #2c2820 0%, #1e1a14 40%, #16120e 100%);
+    }
+    /* texture muro */
+    .mock-wall::before {
+      content:''; position:absolute; inset:0;
+      background-image:
+        repeating-linear-gradient(0deg, transparent, transparent 3px, rgba(255,255,255,.008) 3px, rgba(255,255,255,.008) 4px),
+        repeating-linear-gradient(90deg, transparent, transparent 8px, rgba(255,255,255,.005) 8px, rgba(255,255,255,.005) 9px);
+    }
+    .mock-wall-content {
+      position:absolute; inset:0; display:flex; flex-direction:column;
+      align-items:center; justify-content:center; padding:40px;
+    }
+    /* filo */
+    .mock-wall-wire {
+      width:160px; height:2px; position:relative; margin-bottom:0;
+    }
+    .mock-wall-wire::before {
+      content:''; position:absolute; top:0; left:50%; transform:translateX(-50%);
+      width:120px; height:1px; background:linear-gradient(90deg, transparent, #8a7a6a, #b8a890, #8a7a6a, transparent);
+    }
+    .mock-wall-wire::after {
+      content:'●'; position:absolute; top:-4px; left:50%; transform:translateX(-50%);
+      font-size:6px; color:#6a5a4a;
+    }
+    .mock-wall-frame {
+      background:var(--white);
+      padding:20px 20px 36px;
+      box-shadow: 0 60px 120px rgba(0,0,0,.9), 0 20px 40px rgba(0,0,0,.6), inset 0 0 0 1px rgba(255,255,255,.1);
+      max-width:280px; width:100%;
+      position:relative;
+    }
+    /* ombra sul muro */
+    .mock-wall-frame::after {
+      content:''; position:absolute; bottom:-20px; left:10%; right:10%; height:20px;
+      background:radial-gradient(ellipse, rgba(0,0,0,.5) 0%, transparent 70%);
+      filter:blur(8px);
+    }
+    .mock-wall-img { width:100%; aspect-ratio:3/4; object-fit:contain; background:#f5f0e8; display:block; }
+    .mock-wall-label {
+      position:absolute; bottom:10px; left:0; right:0; text-align:center;
+      font-size:0.55rem; letter-spacing:2px; text-transform:uppercase; color:#c8b89a;
+      font-family:'DM Sans',sans-serif;
+    }
+
+    /* ── MOCKUP 3: SUPERFICIE ── */
+    .mock-surface {
+      width:100%; height:100%; position:relative;
+      background: linear-gradient(135deg, #1a1510 0%, #241e16 50%, #1a1510 100%);
+      display:flex; align-items:center; justify-content:center; padding:40px;
+    }
+    /* superficie legno */
+    .mock-surface-desk {
+      position:absolute; bottom:0; left:0; right:0; height:55%;
+      background: linear-gradient(180deg, #2e2418 0%, #1e1810 100%);
+      border-top:1px solid #3e3020;
+    }
+    .mock-surface-desk::before {
+      content:''; position:absolute; inset:0;
+      background-image: repeating-linear-gradient(90deg, transparent, transparent 40px, rgba(255,255,255,.015) 40px, rgba(255,255,255,.015) 41px);
+    }
+    .mock-surface-content {
+      position:relative; z-index:2; display:flex; align-items:flex-end; gap:20px;
+      transform:perspective(600px) rotateX(8deg);
+    }
+    .mock-surface-print {
+      background:var(--white);
+      padding:14px 14px 28px;
+      box-shadow: 0 30px 80px rgba(0,0,0,.8), 0 10px 30px rgba(0,0,0,.5);
+      max-width:220px; width:100%;
+      transform:rotate(1.5deg);
+      transition:transform .3s;
+    }
+    .mock-surface-print:hover { transform:rotate(0.5deg) scale(1.02); }
+    .mock-surface-img { width:100%; aspect-ratio:3/4; object-fit:contain; background:#f5f0e8; display:block; }
+
+    /* dettagli accanto */
+    .mock-surface-details {
+      display:flex; flex-direction:column; gap:10px; padding-bottom:8px;
+      max-width:140px;
+    }
+    .mock-detail-chip {
+      background:rgba(255,255,255,.06); border:1px solid rgba(255,255,255,.1);
+      padding:8px 12px; backdrop-filter:blur(4px);
+    }
+    .mock-detail-label { font-size:0.52rem; letter-spacing:2px; text-transform:uppercase; color:#5a4e42; margin-bottom:3px; }
+    .mock-detail-value { font-size:0.75rem; color:#c8b89a; font-weight:500; }
+
+    /* ── WATERMARK ── */
+    .mock-watermark {
+      position:absolute; bottom:16px; right:20px; z-index:3;
+      font-family:'Bebas Neue',sans-serif; font-size:0.7rem; letter-spacing:3px;
+      color:rgba(200,180,150,.15); pointer-events:none; user-select:none;
+    }
+
+    /* ── COLONNA DESTRA: CONFIGURATORE ── */
+    .config-col {
+      background:var(--white); border-left:1px solid var(--border);
+      overflow-y:auto; display:flex; flex-direction:column;
+    }
+    .config-col::-webkit-scrollbar { width:3px; }
+    .config-col::-webkit-scrollbar-thumb { background:var(--border); }
+
+    .config-header { padding:28px 28px 20px; border-bottom:1px solid var(--border); }
+    .config-eyebrow { font-size:0.6rem; letter-spacing:3px; text-transform:uppercase; color:var(--rust); margin-bottom:6px; font-weight:600; }
+    .config-title { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; line-height:1.2; color:var(--ink); margin-bottom:4px; }
+    .config-subtitle { font-family:'Cormorant Garamond',serif; font-style:italic; font-size:0.95rem; color:var(--ash); }
+
+    .config-section { padding:20px 28px; border-bottom:1px solid var(--border); }
+    .config-section-title { font-size:0.62rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--ash); font-weight:600; margin-bottom:14px; }
+
+    /* Formati */
+    .format-grid { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
+    .format-btn {
+      border:1.5px solid var(--border); background:var(--bg);
+      padding:12px 8px; cursor:pointer; transition:all .2s;
+      text-align:center; font-family:'DM Sans',sans-serif;
+    }
+    .format-btn:hover { border-color:var(--rust); }
+    .format-btn.active { border-color:var(--rust); background:#fdf0e8; }
+    .format-size { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--ink); display:block; }
+    .format-cm { font-size:0.62rem; color:var(--ash); letter-spacing:0.5px; display:block; margin-top:2px; }
+    .format-price-tag { font-size:0.7rem; color:var(--rust); font-weight:600; margin-top:6px; display:block; }
+
+    /* Carta */
+    .paper-options { display:flex; flex-direction:column; gap:8px; }
+    .paper-btn {
+      border:1.5px solid var(--border); background:var(--bg);
+      padding:12px 14px; cursor:pointer; transition:all .2s;
+      display:flex; justify-content:space-between; align-items:center;
+      font-family:'DM Sans',sans-serif;
+    }
+    .paper-btn:hover { border-color:var(--rust); }
+    .paper-btn.active { border-color:var(--rust); background:#fdf0e8; }
+    .paper-name { font-size:0.82rem; font-weight:600; color:var(--ink); }
+    .paper-desc { font-size:0.68rem; color:var(--ash); margin-top:2px; }
+    .paper-badge { font-size:0.58rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--rust); border:1px solid rgba(184,66,10,.3); padding:2px 6px; }
+
+    /* Riepilogo prezzo */
+    .price-summary {
+      padding:20px 28px; border-bottom:1px solid var(--border);
+      background:var(--bg);
+    }
+    .price-row { display:flex; justify-content:space-between; align-items:center; margin-bottom:6px; font-size:0.78rem; color:var(--ash); }
+    .price-row.total { margin-top:12px; padding-top:12px; border-top:1px solid var(--border); font-size:0; }
+    .price-total-label { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--ink); }
+    .price-total-value { font-family:'Playfair Display',serif; font-size:1.4rem; font-weight:900; color:var(--ink); }
+    .price-note { font-size:0.65rem; color:var(--ash2); margin-top:6px; }
+
+    /* CTA */
+    .config-cta { padding:20px 28px; display:flex; flex-direction:column; gap:10px; }
+    .btn-primary {
+      background:var(--rust); color:#fff; border:none; padding:16px;
+      font-family:'DM Sans',sans-serif; font-weight:600; font-size:0.82rem;
+      letter-spacing:1.5px; text-transform:uppercase; cursor:pointer;
+      transition:background .2s; text-align:center; text-decoration:none; display:block;
+    }
+    .btn-primary:hover { background:var(--rust2); }
+    .btn-secondary {
+      background:transparent; color:var(--ash); border:1.5px solid var(--border);
+      padding:12px; font-family:'DM Sans',sans-serif; font-size:0.78rem;
+      letter-spacing:1px; text-transform:uppercase; cursor:pointer;
+      transition:all .2s; text-align:center; text-decoration:none; display:block;
+    }
+    .btn-secondary:hover { border-color:var(--ink); color:var(--ink); }
+
+    /* Garanzie */
+    .guarantees { padding:16px 28px 24px; display:flex; flex-direction:column; gap:8px; }
+    .guarantee-row { display:flex; align-items:flex-start; gap:10px; font-size:0.72rem; color:var(--ash); line-height:1.4; }
+    .guarantee-icon { font-size:0.8rem; flex-shrink:0; margin-top:1px; }
+
+    /* ── MOBILE ── */
+    @media(max-width:900px) {
+      .print-layout { grid-template-columns:1fr; }
+      .mockup-col { min-height:60vw; }
+      nav { padding:14px 20px; }
+      .breadcrumb { padding:10px 20px; }
+      .config-section { padding:16px 20px; }
+      .config-header { padding:20px 20px 16px; }
+      .config-cta { padding:16px 20px; }
+    }
+
+    @keyframes fadein { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+  </style>
+</head>
+<body>
+
+<div class="filmstrip"><div class="filmstrip-inner"></div></div>
+
+<!-- NAV -->
+<nav>
+  <a href="/index.html" class="logo"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><rect x="1" y="1" width="26" height="26" rx="2" fill="#1c1712"/><text x="4" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#faf8f4" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span class="logo-text">FRAME<span>VAULT</span></span></a>
+  <ul>
+    <li><a href="/index.html">Home</a></li>
+    <li><a href="/frameVault_archivio.html">Archivio</a></li>
+    <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
+    <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
+  </ul>
+</nav>
+
+<!-- BREADCRUMB -->
+<div class="breadcrumb">
+  <a href="/frameVault_archivio.html">Archivio</a>
+  <span class="breadcrumb-sep">›</span>
+  <span class="breadcrumb-current">Stampa Fine Art</span>
+</div>
+
+<!-- LAYOUT -->
+<div class="print-layout">
+
+  <!-- ── COLONNA MOCKUP ── -->
+  <div class="mockup-col">
+    <!-- Tab -->
+    <div class="mockup-tabs">
+      <button class="mockup-tab active" onclick="setTab(0)">Galleria</button>
+      <button class="mockup-tab" onclick="setTab(1)">Ambiente</button>
+      <button class="mockup-tab" onclick="setTab(2)">Superficie</button>
+    </div>
+
+    <!-- Pannelli -->
+    <div class="mockup-panels">
+
+      <!-- GALLERIA -->
+      <div class="mockup-panel active" id="panel0">
+        <div class="mock-gallery">
+          <div class="mock-gallery-frame">
+            <img class="mock-gallery-img" id="galleryImg" src="" alt="Anteprima stampa"/>
+            <div class="mock-gallery-caption" id="galleryCaption">Archivio GRM Foto · Stampa Originale</div>
+          </div>
+        </div>
+        <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
+      </div>
+
+      <!-- MURO -->
+      <div class="mockup-panel" id="panel1">
+        <div class="mock-wall">
+          <div class="mock-wall-content">
+            <div class="mock-wall-wire"></div>
+            <div class="mock-wall-frame">
+              <img class="mock-wall-img" id="wallImg" src="" alt="Anteprima stampa"/>
+              <div class="mock-wall-label" id="wallLabel">FrameVault · Stampa Fine Art</div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
+      </div>
+
+      <!-- SUPERFICIE -->
+      <div class="mockup-panel" id="panel2">
+        <div class="mock-surface">
+          <div class="mock-surface-desk"></div>
+          <div class="mock-surface-content">
+            <div class="mock-surface-print">
+              <img class="mock-surface-img" id="surfaceImg" src="" alt="Anteprima stampa"/>
+            </div>
+            <div class="mock-surface-details">
+              <div class="mock-detail-chip">
+                <div class="mock-detail-label">Carta</div>
+                <div class="mock-detail-value" id="detailPaper">200g Satinata</div>
+              </div>
+              <div class="mock-detail-chip">
+                <div class="mock-detail-label">Formato</div>
+                <div class="mock-detail-value" id="detailFormat">A4</div>
+              </div>
+              <div class="mock-detail-chip">
+                <div class="mock-detail-label">Archivio</div>
+                <div class="mock-detail-value">GRM Foto S.r.l.</div>
+              </div>
+              <div class="mock-detail-chip">
+                <div class="mock-detail-label">Tiratura</div>
+                <div class="mock-detail-value">Esemplare unico</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="mock-watermark">GRM FOTO S.R.L. © 2025</div>
+      </div>
+
+    </div><!-- /mockup-panels -->
+  </div><!-- /mockup-col -->
+
+  <!-- ── COLONNA CONFIGURATORE ── -->
+  <div class="config-col">
+
+    <div class="config-header">
+      <div class="config-eyebrow">Stampa Fine Art · Spedizione inclusa</div>
+      <div class="config-title" id="configTitle">Archivio GRM Foto</div>
+      <div class="config-subtitle" id="configSubtitle">Stampa originale timbrata · 1982</div>
+    </div>
+
+    <!-- Formato -->
+    <div class="config-section">
+      <div class="config-section-title">Scegli il formato</div>
+      <div class="format-grid">
+        <button class="format-btn active" onclick="setFormat(this,'A4','21×29.7 cm',12)">
+          <span class="format-size">A4</span>
+          <span class="format-cm">21 × 29.7 cm</span>
+          <span class="format-price-tag">da €12</span>
+        </button>
+        <button class="format-btn" onclick="setFormat(this,'A3','29.7×42 cm',22)">
+          <span class="format-size">A3</span>
+          <span class="format-cm">29.7 × 42 cm</span>
+          <span class="format-price-tag">da €22</span>
+        </button>
+        <button class="format-btn" onclick="setFormat(this,'30×40','30×40 cm',28)">
+          <span class="format-size">30×40</span>
+          <span class="format-cm">30 × 40 cm</span>
+          <span class="format-price-tag">da €28</span>
+        </button>
+        <button class="format-btn" onclick="setFormat(this,'50×70','50×70 cm',48)">
+          <span class="format-size">50×70</span>
+          <span class="format-cm">50 × 70 cm</span>
+          <span class="format-price-tag">da €48</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Carta -->
+    <div class="config-section">
+      <div class="config-section-title">Tipo di carta</div>
+      <div class="paper-options">
+        <button class="paper-btn active" onclick="setPaper(this,'Carta Satinata 200g',0,'200g Satinata')">
+          <div>
+            <div class="paper-name">Carta Satinata 200g</div>
+            <div class="paper-desc">Bilanciata, colori vividi, leggera lucentezza</div>
+          </div>
+          <span class="paper-badge">Standard</span>
+        </button>
+        <button class="paper-btn" onclick="setPaper(this,'Carta Opaca Premium 250g',6,'250g Opaca')">
+          <div>
+            <div class="paper-name">Carta Opaca Premium 250g</div>
+            <div class="paper-desc">Nessun riflesso, tocco vellutato, colori profondi</div>
+          </div>
+          <span class="paper-badge">Premium</span>
+        </button>
+        <button class="paper-btn" onclick="setPaper(this,'Carta Fine Art Hahnemühle 310g',14,'Hahnemühle 310g')">
+          <div>
+            <div class="paper-name">Hahnemühle Fine Art 310g</div>
+            <div class="paper-desc">Carta museo, grana naturale, durata 100+ anni</div>
+          </div>
+          <span class="paper-badge">Museum</span>
+        </button>
+      </div>
+    </div>
+
+    <!-- Prezzo -->
+    <div class="price-summary">
+      <div class="price-row">
+        <span>Stampa Fine Art</span>
+        <span id="priceBase">€12</span>
+      </div>
+      <div class="price-row">
+        <span>Tipo carta</span>
+        <span id="pricePaper">inclusa</span>
+      </div>
+      <div class="price-row">
+        <span>Spedizione</span>
+        <span style="color:#5a9a5a;">Inclusa ✓</span>
+      </div>
+      <div class="price-row total">
+        <span class="price-total-label">Totale</span>
+        <span class="price-total-value" id="priceTotal">€12</span>
+      </div>
+      <div class="price-note">Prezzo indicativo · Il preventivo definitivo verrà confermato via email</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="config-cta">
+      <a href="/frameVault_chisiamo.html#contatti" class="btn-primary" id="ctaBtn">
+        Richiedi questo formato →
+      </a>
+      <a href="/frameVault_archivio.html" class="btn-secondary">
+        ← Torna all'archivio
+      </a>
+    </div>
+
+    <!-- Garanzie -->
+    <div class="guarantees">
+      <div class="guarantee-row"><span class="guarantee-icon">🖨</span><span>Stampa professionale su plotter fotografico con inchiostri pigmentati archival</span></div>
+      <div class="guarantee-row"><span class="guarantee-icon">📦</span><span>Spedizione in tubo rigido o cartone rinforzato — nessun danno garantito</span></div>
+      <div class="guarantee-row"><span class="guarantee-icon">🔒</span><span>Immagine originale timbrata GRM Foto S.r.l. con certificato di autenticità</span></div>
+      <div class="guarantee-row"><span class="guarantee-icon">↩️</span><span>Reso gratuito entro 14 giorni se la stampa non ti soddisfa</span></div>
+    </div>
+
+  </div><!-- /config-col -->
+</div><!-- /print-layout -->
+
+<script>
+// ── PARAMETRI DA URL ──────────────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const imgPath  = params.get('img') || '';
+const titolo   = params.get('titolo') || 'Archivio GRM Foto';
+const anno     = params.get('anno') || '';
+const prezzo   = parseInt(params.get('prezzo') || '12');
+
+// Imposta immagini nei mockup
+function setMockupImages(url) {
+  ['galleryImg','wallImg','surfaceImg'].forEach(id => {
+    const el = document.getElementById(id);
+    if (url) {
+      el.src = url;
+      el.onerror = () => { el.style.background='#e8dfd0'; el.style.display='none'; };
+    }
+  });
+}
+
+if (imgPath) setMockupImages(`/api/immagine?path=${imgPath}`);
+
+// Imposta testi
+document.getElementById('configTitle').textContent = titolo;
+document.getElementById('configSubtitle').textContent = `Stampa originale timbrata${anno ? ' · ' + anno : ''}`;
+document.getElementById('galleryCaption').textContent = `${titolo}${anno ? ' · ' + anno : ''} · Archivio GRM Foto`;
+document.getElementById('wallLabel').textContent = `FrameVault · ${titolo}`;
+
+// ── STATO ─────────────────────────────────────────────────────────────────
+let basePrice = prezzo;
+let paperExtra = 0;
+let paperName = 'inclusa';
+let formatName = 'A4';
+let formatCm = '21×29.7 cm';
+
+// ── TABS ──────────────────────────────────────────────────────────────────
+function setTab(idx) {
+  document.querySelectorAll('.mockup-tab').forEach((t,i) => t.classList.toggle('active', i===idx));
+  document.querySelectorAll('.mockup-panel').forEach((p,i) => p.classList.toggle('active', i===idx));
+}
+
+// ── FORMATO ───────────────────────────────────────────────────────────────
+function setFormat(btn, size, cm, price) {
+  document.querySelectorAll('.format-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  basePrice = price;
+  formatName = size;
+  formatCm = cm;
+  updatePrice();
+  updateDetails();
+  // Aggiorna link CTA
+  updateCTA();
+}
+
+// ── CARTA ─────────────────────────────────────────────────────────────────
+function setPaper(btn, name, extra, shortName) {
+  document.querySelectorAll('.paper-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  paperExtra = extra;
+  paperName = extra === 0 ? 'inclusa' : `+€${extra}`;
+  document.getElementById('detailPaper').textContent = shortName;
+  updatePrice();
+  updateCTA();
+}
+
+// ── PREZZO ────────────────────────────────────────────────────────────────
+function updatePrice() {
+  const total = basePrice + paperExtra;
+  document.getElementById('priceBase').textContent = `€${basePrice}`;
+  document.getElementById('pricePaper').textContent = paperName;
+  document.getElementById('priceTotal').textContent = `€${total}`;
+}
+
+function updateDetails() {
+  document.getElementById('detailFormat').textContent = formatName;
+}
+
+function updateCTA() {
+  const total = basePrice + paperExtra;
+  const paperEl = document.querySelector('.paper-btn.active .paper-name');
+  const paperLabel = paperEl ? paperEl.textContent : '';
+  const subject = encodeURIComponent(`Richiesta stampa Fine Art — ${titolo}`);
+  const body = encodeURIComponent(`Salve,\n\nVorrei richiedere un preventivo per la seguente stampa:\n\nImmagine: ${titolo}${anno ? ' ('+anno+')' : ''}\nFormato: ${formatName} (${formatCm})\nCarta: ${paperLabel}\nPrezzo stimato: €${total}\n\nGrazie`);
+  document.getElementById('ctaBtn').href = `/frameVault_chisiamo.html#contatti`;
+  // In futuro: `mailto:framevault@gmail.com?subject=${subject}&body=${body}`
+}
+
+// Init
+updatePrice();
+updateDetails();
+</script>
+</body>
+</html>
