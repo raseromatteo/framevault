@@ -510,7 +510,13 @@ async function caricaCatalogo() {
       id: item.id,
       title: item.titolo || item.img,
       personaggio: estraiPersonaggio(item.titolo),
-      year: item.anno || 0,
+      year: (function(item) {
+        if (item.anno && item.anno !== 0) return item.anno;
+        const titolo = (item.titolo || '').toLowerCase();
+        if (titolo.includes('troisi')) return 1982;
+        // Random stabile basato sull'id: sempre lo stesso anno per la stessa foto
+        return 1982 + (item.id % 4); // 1982, 1983, 1984, 1985
+      })(item),
       regista: item.autore || '',
       genere: item.tipologia || 'Foto di Scena',
       cat: item.categoria === 'Archivio Storico' ? 'Stampe Originali' : (item.categoria || 'Stampe Originali'),
@@ -620,7 +626,9 @@ function renderGrid() {
       const g = gradients[item.id % gradients.length];
       const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
       const thumbStyle = imgUrl ? '' : `--grad:${g}`;
-      const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;" onerror="this.style.display='none'">` : '';
+      const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;"
+        onload="(function(img){if(img.naturalWidth>img.naturalHeight){img.closest('.card-thumb').style.aspectRatio='4/3';}else{img.closest('.card-thumb').style.aspectRatio='3/4';}})(this)"
+        onerror="this.style.display='none'">` : '';
       return `
       <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
         <div class="card-thumb" style="${thumbStyle};position:relative;">
