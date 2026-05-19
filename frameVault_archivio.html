@@ -36,8 +36,9 @@
       padding:16px 48px; background:var(--white); border-bottom:1px solid var(--border);
       position:sticky; top:0; z-index:200;
     }
-    .logo { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:4px; color:var(--ink); text-decoration:none; }
-    .logo span { color:var(--rust); }
+    .logo { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:4px; color:var(--ink); text-decoration:none; white-space:nowrap; display:flex; align-items:center; gap:10px; }
+    .logo .logo-text { color:var(--ink); letter-spacing:4px; }
+    .logo .logo-text span { color:var(--rust); }
     nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
     nav ul a { color:var(--ash); text-decoration:none; font-size:0.82rem; font-weight:500; transition:color .2s; }
     nav ul a:hover, nav ul a.active { color:var(--ink); }
@@ -343,7 +344,7 @@
 
 <!-- NAV -->
 <nav>
-  <a href="/index.html" class="logo">Frame<span>Vault</span></a>
+  <a href="/index.html" class="logo"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;"><rect x="1" y="1" width="26" height="26" rx="2" fill="#1c1712"/><text x="4" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#faf8f4" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span class="logo-text">FRAME<span>VAULT</span></span></a>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()">
     <span></span><span></span><span></span>
   </button>
@@ -388,6 +389,17 @@
     <option value="prezzo-asc">Prezzo: basso → alto</option>
     <option value="prezzo-desc">Prezzo: alto → basso</option>
   </select>
+</div>
+
+<!-- DISCLAIMER DIRITTI -->
+<div style="background:#1c1712;padding:10px 48px;display:flex;align-items:center;gap:10px;">
+  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;">
+    <circle cx="7" cy="7" r="6.5" stroke="#c8922a" stroke-width="1.2"/>
+    <text x="5" y="11" font-family="Georgia,serif" font-size="9" fill="#c8922a">©</text>
+  </svg>
+  <span style="font-size:0.68rem;letter-spacing:1.2px;color:#a89070;line-height:1.5;">
+    Tutte le immagini sono di proprietà esclusiva di <strong style="color:#faf8f4;">GRM Foto S.r.l.</strong> — Qualsiasi riproduzione, distribuzione o utilizzo non autorizzato è perseguibile ai sensi della Legge 633/1941 sul diritto d'autore e delle normative vigenti.
+  </span>
 </div>
 
 <!-- LAYOUT -->
@@ -788,13 +800,28 @@ document.querySelectorAll('#navMenu a').forEach(a => {
   });
 });
 </script>
-<footer style="background:#ffffff;border-top:1px solid #ddd5c5;padding:32px 48px;display:flex;justify-content:space-between;align-items:center;font-size:0.78rem;color:#7a6e62;flex-wrap:wrap;gap:12px;">
-  <a href="/index.html" style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:4px;color:#1c1712;text-decoration:none;">Frame<span style="color:#b8420a">Vault</span></a>
-  <span>© 2025 FrameVault — Archivio Stampe Originali di Cinema e Televisione</span>
-  <div style="display:flex;gap:24px;align-items:center;">
-    <a href="/frameVault_spedizioni.html" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Spedizione e Resi</a>
-    <a href="/index.html#licenze" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Licenze</a>
-    <a href="/index.html#newsletter" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Contatti</a>
+<footer style="background:#1c1712;border-top:1px solid #2e2416;padding:36px 48px 24px;color:#7a6e62;">
+  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
+    <a href="/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
+      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
+        <rect x="1" y="1" width="26" height="26" rx="2" fill="#faf8f4"/>
+        <text x="4" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#1c1712" letter-spacing="-1">F</text>
+        <text x="13" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text>
+      </svg>
+      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:4px;color:#faf8f4;">Frame<span style="color:#b8420a">Vault</span></span>
+    </a>
+    <div style="display:flex;gap:24px;align-items:center;">
+      <a href="/frameVault_spedizioni.html" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Spedizione e Resi</a>
+      <a href="/index.html#licenze" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Licenze</a>
+      <a href="/index.html#newsletter" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Contatti</a>
+    </div>
+  </div>
+  <div style="border-top:1px solid #2e2416;padding-top:20px;display:flex;flex-direction:column;gap:6px;">
+    <p style="font-size:0.72rem;color:#5a4e42;line-height:1.6;">
+      FrameVault è un marchio registrato di <strong style="color:#7a6e62;">GRM Foto S.r.l.</strong> — Lungotevere della Vittoria 10, 00195 Roma · P.IVA IT[XXXXXXXX]<br/>
+      Tutti i diritti sulle immagini dell'archivio sono di proprietà esclusiva di GRM Foto S.r.l. Qualsiasi riproduzione, cessione o utilizzo commerciale non autorizzato è perseguibile ai sensi della Legge 22 aprile 1941 n. 633 sul diritto d'autore e successive modifiche.
+    </p>
+    <p style="font-size:0.68rem;color:#3a3028;">© 2025 GRM Foto S.r.l. — Tutti i diritti riservati.</p>
   </div>
 </footer>
 
