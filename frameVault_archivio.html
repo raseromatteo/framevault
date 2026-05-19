@@ -21,7 +21,6 @@
     html { scroll-behavior: smooth; }
     body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; }
 
-    /* ── FILMSTRIP ── */
     .filmstrip { width:100%; height:24px; background:var(--ink); overflow:hidden; position:relative; }
     .filmstrip-inner {
       position:absolute; top:5px; left:0; width:200%; height:14px;
@@ -30,7 +29,6 @@
     }
     @keyframes filmroll { from{transform:translateX(0)} to{transform:translateX(-38px)} }
 
-    /* ── NAV ── */
     nav {
       display:flex; justify-content:space-between; align-items:center;
       padding:16px 48px; background:var(--white); border-bottom:1px solid var(--border);
@@ -41,11 +39,8 @@
     .logo .logo-text span { color:var(--rust); }
     nav ul { list-style:none; display:flex; gap:28px; align-items:center; }
     nav ul a { color:var(--ash); text-decoration:none; font-size:0.82rem; font-weight:500; transition:color .2s; }
-    nav ul a:hover, nav ul a.active { color:var(--ink); }
-    nav ul a.active { border-bottom:2px solid var(--rust); padding-bottom:2px; }
+    nav ul a:hover { color:var(--ink); }
     .nav-cta { background:var(--rust)!important; color:#fff!important; padding:8px 20px; border-radius:2px; }
-
-    /* DROPDOWN */
     .nav-dropdown{position:relative}
     .nav-dropdown>a{display:flex;align-items:center;gap:5px;cursor:pointer}
     .nav-dropdown>a::after{content:'▾';font-size:.65rem;color:var(--ash);transition:transform .2s}
@@ -57,223 +52,117 @@
     .dropdown-menu a{display:block;padding:12px 20px;font-size:.82rem;color:var(--ash);text-decoration:none;border-bottom:1px solid var(--border);transition:all .2s;white-space:nowrap}
     .dropdown-menu a:last-child{border-bottom:none}
     .dropdown-menu a:hover{color:var(--rust);background:#fdf5f0;padding-left:24px}
-
-    /* HAMBURGER */
     .hamburger{display:none}
 
-    /* ── PAGE HEADER ── */
-    .page-header {
-      background:var(--white); border-bottom:1px solid var(--border);
-      padding:36px 48px 28px;
-    }
+    .page-header { background:var(--white); border-bottom:1px solid var(--border); padding:36px 48px 28px; }
     .page-eyebrow { font-size:0.68rem; letter-spacing:3px; text-transform:uppercase; color:var(--rust); margin-bottom:8px; }
     .page-header h1 { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; }
     .page-header p { font-size:0.88rem; color:var(--ash); margin-top:6px; }
 
-    /* ── SEARCH BAR ── */
-    .search-wrap {
-      background:var(--bg2); border-bottom:1px solid var(--border);
-      padding:18px 48px; display:flex; gap:12px; align-items:center;
-    }
-    .search-box {
-      flex:1; display:flex; align-items:center;
-      background:var(--white); border:1.5px solid var(--border); border-radius:2px;
-      overflow:hidden; transition:border-color .2s;
-    }
+    .search-wrap { background:var(--bg2); border-bottom:1px solid var(--border); padding:18px 48px; display:flex; gap:12px; align-items:center; }
+    .search-box { flex:1; display:flex; align-items:center; background:var(--white); border:1.5px solid var(--border); border-radius:2px; overflow:hidden; transition:border-color .2s; }
     .search-box:focus-within { border-color:var(--rust); }
-    .search-box input {
-      flex:1; border:none; background:transparent; padding:12px 16px;
-      font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none;
-    }
+    .search-box input { flex:1; border:none; background:transparent; padding:12px 16px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; }
     .search-box input::placeholder { color:var(--ash); }
-    .search-btn {
-      background:var(--rust); border:none; padding:12px 20px; cursor:pointer;
-      color:#fff; font-size:1rem; transition:background .2s;
-    }
+    .search-btn { background:var(--rust); border:none; padding:12px 20px; cursor:pointer; color:#fff; font-size:1rem; transition:background .2s; }
     .search-btn:hover { background:var(--brown); }
     .results-count { font-size:0.8rem; color:var(--ash); white-space:nowrap; }
-    .sort-select {
-      border:1.5px solid var(--border); background:var(--white); padding:10px 14px;
-      font-family:'DM Sans',sans-serif; font-size:0.82rem; color:var(--ink);
-      border-radius:2px; cursor:pointer; outline:none;
-    }
+    .sort-select { border:1.5px solid var(--border); background:var(--white); padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.82rem; color:var(--ink); border-radius:2px; cursor:pointer; outline:none; }
 
-    /* ── LAYOUT ── */
+    /* ── VISTE ── */
+    #vistaCartelle { display:block; }
+    #vistaFoto { display:none; }
+
+    .breadcrumb { background:var(--white); border-bottom:1px solid var(--border); padding:12px 48px; display:flex; align-items:center; gap:8px; font-size:0.78rem; color:var(--ash); }
+    .breadcrumb a { color:var(--rust); text-decoration:none; cursor:pointer; }
+    .breadcrumb a:hover { text-decoration:underline; }
+    .breadcrumb-sep { color:var(--border); }
+    .breadcrumb-current { color:var(--ink); font-weight:500; }
+
+    /* ── CARTELLE ── */
+    .folders-section { padding:36px 48px; }
+    .folders-section-title {
+      font-size:0.68rem; letter-spacing:3px; text-transform:uppercase;
+      color:var(--ash); margin-bottom:20px; padding-bottom:12px;
+      border-bottom:1px solid var(--border);
+    }
+    .folders-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(260px,1fr)); gap:24px; }
+
+    .folder-card { background:var(--white); border:1.5px solid var(--border); cursor:pointer; transition:all .25s; border-radius:2px; overflow:hidden; animation:fadein .4s ease both; }
+    .folder-card:hover { border-color:var(--rust); box-shadow:0 8px 32px rgba(0,0,0,.1); transform:translateY(-3px); }
+
+    .folder-cover { width:100%; aspect-ratio:3/2; position:relative; background:var(--bg2); overflow:hidden; }
+    .folder-cover-img { width:100%; height:100%; object-fit:cover; object-position:center top; transition:transform .4s ease; }
+    .folder-card:hover .folder-cover-img { transform:scale(1.04); }
+    .folder-cover-placeholder { width:100%; height:100%; background:linear-gradient(145deg,#e8dfd0,#c9bca5); display:flex; align-items:center; justify-content:center; font-size:3rem; opacity:.3; }
+    .folder-cover-overlay { position:absolute; inset:0; background:linear-gradient(to top, rgba(26,18,9,.65) 0%, transparent 55%); }
+    .folder-cover-count { position:absolute; bottom:12px; left:14px; font-family:'Bebas Neue',sans-serif; font-size:1rem; letter-spacing:2px; color:#fff; }
+    .folder-cover-count span { color:var(--gold); }
+
+    .folder-strip { display:grid; grid-template-columns:repeat(4,1fr); gap:2px; height:52px; overflow:hidden; }
+    .folder-strip-img { width:100%; height:100%; object-fit:cover; object-position:center top; background:var(--bg2); }
+
+    .folder-body { padding:16px 16px 18px; }
+    .folder-label { font-size:0.6rem; letter-spacing:2px; text-transform:uppercase; color:var(--rust); margin-bottom:4px; font-weight:600; }
+    .folder-title { font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:900; color:var(--ink); margin-bottom:4px; line-height:1.2; }
+    .folder-desc { font-size:0.75rem; color:var(--ash); line-height:1.5; }
+    .folder-footer { display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:10px; border-top:1px solid var(--border); }
+    .folder-count-label { font-size:0.7rem; color:var(--ash); }
+    .folder-cta { font-size:0.68rem; letter-spacing:1px; text-transform:uppercase; color:var(--rust); font-weight:600; }
+
+    /* ── LAYOUT FOTO ── */
     .catalog-layout { display:grid; grid-template-columns:260px 1fr; min-height:calc(100vh - 180px); }
-
-    /* ── SIDEBAR ── */
-    .sidebar {
-      background:var(--white); border-right:1px solid var(--border);
-      padding:28px 24px; position:sticky; top:57px; height:calc(100vh - 57px);
-      overflow-y:auto;
-    }
+    .sidebar { background:var(--white); border-right:1px solid var(--border); padding:28px 24px; position:sticky; top:57px; height:calc(100vh - 57px); overflow-y:auto; }
     .sidebar::-webkit-scrollbar { width:4px; }
-    .sidebar::-webkit-scrollbar-track { background:transparent; }
-    .sidebar::-webkit-scrollbar-thumb { background:var(--border); border-radius:2px; }
-
+    .sidebar::-webkit-scrollbar-thumb { background:var(--border); }
     .filter-section { margin-bottom:28px; }
-    .filter-title {
-      font-size:0.68rem; letter-spacing:2.5px; text-transform:uppercase;
-      color:var(--ash); font-weight:600; margin-bottom:12px;
-      padding-bottom:8px; border-bottom:1px solid var(--border);
-    }
+    .filter-title { font-size:0.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--ash); font-weight:600; margin-bottom:12px; padding-bottom:8px; border-bottom:1px solid var(--border); }
     .filter-tags { display:flex; flex-wrap:wrap; gap:6px; }
-    .filter-tag {
-      font-size:0.72rem; color:var(--ash); background:var(--bg);
-      border:1px solid var(--border); padding:5px 10px; border-radius:2px;
-      cursor:pointer; transition:all .2s; user-select:none;
-    }
+    .filter-tag { font-size:0.72rem; color:var(--ash); background:var(--bg); border:1px solid var(--border); padding:5px 10px; border-radius:2px; cursor:pointer; transition:all .2s; user-select:none; }
     .filter-tag:hover { border-color:var(--rust); color:var(--rust); }
     .filter-tag.active { background:var(--rust); color:#fff; border-color:var(--rust); }
-
-    .filter-select {
-      width:100%; border:1.5px solid var(--border); background:var(--bg);
-      padding:9px 12px; font-family:'DM Sans',sans-serif; font-size:0.83rem;
-      color:var(--ink); border-radius:2px; cursor:pointer; outline:none; margin-top:4px;
-      transition:border-color .2s;
-    }
-    .filter-select:focus { border-color:var(--rust); }
-
-    .clear-btn {
-      width:100%; margin-top:8px; background:transparent; border:1.5px solid var(--border);
-      color:var(--ash); padding:9px; font-family:'DM Sans',sans-serif;
-      font-size:0.78rem; cursor:pointer; border-radius:2px; letter-spacing:1px;
-      text-transform:uppercase; transition:all .2s;
-    }
+    .clear-btn { width:100%; margin-top:8px; background:transparent; border:1.5px solid var(--border); color:var(--ash); padding:9px; font-family:'DM Sans',sans-serif; font-size:0.78rem; cursor:pointer; border-radius:2px; letter-spacing:1px; text-transform:uppercase; transition:all .2s; }
     .clear-btn:hover { border-color:var(--rust); color:var(--rust); }
 
-    /* ── MAIN CONTENT ── */
     .main-content { padding:28px 36px; }
-
-    /* ── ACTIVE FILTERS ── */
-    .active-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; min-height:0; }
-    .active-filter-chip {
-      display:flex; align-items:center; gap:6px;
-      background:#fdf0e8; border:1px solid #e8c4a8; color:var(--rust);
-      font-size:0.72rem; padding:5px 10px; border-radius:2px;
-    }
+    .active-filters { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px; }
+    .active-filter-chip { display:flex; align-items:center; gap:6px; background:#fdf0e8; border:1px solid #e8c4a8; color:var(--rust); font-size:0.72rem; padding:5px 10px; border-radius:2px; }
     .chip-remove { cursor:pointer; font-weight:700; font-size:0.9rem; }
 
-    /* ── GRID ── */
-    .cards-grid {
-      display:grid;
-      grid-template-columns:repeat(auto-fill, minmax(200px, 1fr));
-      gap:20px;
-    }
-
-    /* ── CARD ── */
-    .card {
-      background:var(--white); border:1.5px solid var(--border); border-radius:2px;
-      overflow:hidden; cursor:pointer; transition:all .25s;
-      animation:fadein .5s ease both;
-    }
+    /* ── CARDS ── */
+    .cards-grid { display:grid; grid-template-columns:repeat(auto-fill, minmax(200px,1fr)); gap:20px; }
+    .card { background:var(--white); border:1.5px solid var(--border); border-radius:2px; overflow:hidden; cursor:pointer; transition:all .25s; animation:fadein .5s ease both; }
     .card:hover { border-color:var(--rust); box-shadow:0 8px 28px rgba(0,0,0,0.1); transform:translateY(-3px); }
-
-    .card-thumb {
-      width:100%; aspect-ratio:3/4; background:var(--bg2);
-      position:relative; overflow:hidden;
-    }
-    .card-thumb::before {
-      content:''; position:absolute; inset:0;
-      background: var(--grad, linear-gradient(160deg,#e8dfd0,#c9bca5));
-    }
-    .card-thumb::after {
-      content:''; position:absolute; inset:0;
-      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E");
-      opacity:.6;
-    }
-    .card-year-badge {
-      position:absolute; top:10px; left:10px; z-index:2;
-      background:rgba(26,18,9,.75); color:#f5eed8;
-      font-size:0.6rem; letter-spacing:2px; padding:3px 8px;
-      font-family:'Bebas Neue',sans-serif; font-size:0.8rem;
-    }
-    .card-formats {
-      position:absolute; bottom:10px; right:10px; z-index:2;
-      display:flex; gap:4px;
-    }
-    .fmt-badge {
-      background:rgba(255,255,255,.85); color:var(--brown);
-      font-size:0.55rem; letter-spacing:1px; text-transform:uppercase;
-      padding:3px 6px; border-radius:1px;
-    }
-    .card-overlay {
-      position:absolute; inset:0; background:rgba(26,18,9,.6);
-      display:flex; align-items:center; justify-content:center;
-      opacity:0; transition:opacity .25s; z-index:3;
-    }
+    .card-thumb { width:100%; aspect-ratio:3/4; background:var(--bg2); position:relative; overflow:hidden; }
+    .card-thumb::before { content:''; position:absolute; inset:0; background:var(--grad, linear-gradient(160deg,#e8dfd0,#c9bca5)); }
+    .card-year-badge { position:absolute; top:8px; left:8px; z-index:2; background:rgba(26,18,9,.75); color:#f5eed8; font-family:'Bebas Neue',sans-serif; font-size:0.8rem; letter-spacing:2px; padding:3px 8px; }
+    .card-formats { position:absolute; top:8px; right:8px; z-index:2; display:flex; gap:4px; }
+    .fmt-badge { background:rgba(255,255,255,.85); color:var(--brown); font-size:0.55rem; letter-spacing:1px; text-transform:uppercase; padding:3px 6px; border-radius:1px; }
+    .card-overlay { position:absolute; inset:0; background:rgba(26,18,9,.6); display:flex; align-items:center; justify-content:center; opacity:0; transition:opacity .25s; z-index:3; }
     .card:hover .card-overlay { opacity:1; }
-    .overlay-btn {
-      background:var(--rust); color:#fff; border:none; padding:10px 20px;
-      font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500;
-      cursor:pointer; border-radius:2px; letter-spacing:.5px;
-    }
-
+    .overlay-btn { background:var(--rust); color:#fff; border:none; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500; cursor:pointer; border-radius:2px; }
     .card-body { padding:14px 14px 16px; }
-    .card-title {
-      font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:700;
-      color:var(--ink); margin-bottom:4px; line-height:1.3;
-      white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
-    }
+    .card-title { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:700; color:var(--ink); margin-bottom:4px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .card-meta { font-size:0.72rem; color:var(--ash); margin-bottom:10px; }
     .card-footer { display:flex; justify-content:space-between; align-items:center; }
     .card-price { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--ink); }
-    .card-category {
-      font-size:0.6rem; letter-spacing:1.5px; text-transform:uppercase;
-      color:var(--rust); background:#fdf0e8; padding:3px 8px; border-radius:1px;
-    }
+    .card-category { font-size:0.6rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--rust); background:#fdf0e8; padding:3px 8px; border-radius:1px; }
 
-    /* ── PAGINATION ── */
-    .pagination {
-      display:flex; justify-content:center; align-items:center;
-      gap:8px; margin-top:48px; padding-bottom:48px;
-    }
-    .page-btn {
-      width:36px; height:36px; border:1.5px solid var(--border); background:var(--white);
-      color:var(--ash); font-family:'DM Sans',sans-serif; font-size:0.85rem;
-      cursor:pointer; border-radius:2px; transition:all .2s;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .page-btn:hover { border-color:var(--rust); color:var(--rust); }
-    .page-btn.active { background:var(--rust); border-color:var(--rust); color:#fff; }
-    .page-btn.arrow { font-size:1rem; }
+    .timbro-badge { display:inline-flex; align-items:center; gap:5px; border:1.5px solid var(--rust); color:var(--rust); font-size:0.6rem; letter-spacing:2px; text-transform:uppercase; padding:4px 10px; border-radius:1px; font-weight:600; }
 
-    /* ── EMPTY STATE ── */
-    .empty-state {
-      grid-column:1/-1; text-align:center; padding:80px 20px;
-      color:var(--ash);
-    }
-    .empty-state .empty-icon { font-size:3rem; margin-bottom:16px; opacity:.4; }
+    .scroll-sentinel { height:60px; display:flex; align-items:center; justify-content:center; color:var(--ash); font-size:0.8rem; letter-spacing:1px; grid-column:1/-1; }
+    .end-marker { grid-column:1/-1; text-align:center; padding:24px; font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ash); }
+    .empty-state { grid-column:1/-1; text-align:center; padding:80px 20px; color:var(--ash); }
     .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:8px; }
-    .empty-state p { font-size:0.85rem; }
 
     /* ── MODAL ── */
-    .modal-overlay {
-      position:fixed; inset:0; background:rgba(26,18,9,.7);
-      z-index:500; display:flex; align-items:center; justify-content:center;
-      opacity:0; pointer-events:none; transition:opacity .3s;
-    }
+    .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; }
     .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal {
-      background:var(--white); width:90%; max-width:820px; max-height:90vh;
-      overflow-y:auto; border-radius:2px; display:grid;
-      grid-template-columns:1fr 1fr; position:relative;
-      transform:translateY(20px); transition:transform .3s;
-    }
+    .modal { background:var(--white); width:90%; max-width:820px; max-height:90vh; overflow-y:auto; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:relative; transform:translateY(20px); transition:transform .3s; }
     .modal-overlay.open .modal { transform:translateY(0); }
-    .modal-close {
-      position:absolute; top:16px; right:16px; background:var(--bg2);
-      border:none; width:32px; height:32px; border-radius:50%;
-      cursor:pointer; font-size:1.1rem; color:var(--ash); z-index:2;
-      display:flex; align-items:center; justify-content:center;
-    }
-    .modal-image {
-      aspect-ratio:3/4; background:var(--bg2); position:relative; overflow:hidden;
-    }
-    .modal-image::before {
-      content:''; position:absolute; inset:0;
-      background:var(--modal-grad, linear-gradient(160deg,#e8dfd0,#c9bca5));
-    }
+    .modal-close { position:absolute; top:16px; right:16px; background:var(--bg2); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; color:var(--ash); z-index:2; display:flex; align-items:center; justify-content:center; }
+    .modal-image { aspect-ratio:3/4; background:var(--bg2); position:relative; overflow:hidden; }
+    .modal-image::before { content:''; position:absolute; inset:0; background:var(--modal-grad, linear-gradient(160deg,#e8dfd0,#c9bca5)); }
     .modal-body { padding:36px 32px; display:flex; flex-direction:column; gap:16px; }
     .modal-eyebrow { font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--rust); }
     .modal-title { font-family:'Playfair Display',serif; font-size:1.7rem; font-weight:900; line-height:1.15; }
@@ -282,36 +171,33 @@
     .modal-meta strong { color:var(--ink); }
     .modal-divider { border:none; border-top:1px solid var(--border); }
     .modal-services { display:flex; flex-direction:column; gap:10px; }
-    .modal-service {
-      display:flex; justify-content:space-between; align-items:center;
-      padding:12px 14px; border:1.5px solid var(--border); border-radius:2px;
-      cursor:pointer; transition:border-color .2s;
-    }
+    .modal-service { display:flex; justify-content:space-between; align-items:center; padding:12px 14px; border:1.5px solid var(--border); border-radius:2px; cursor:pointer; transition:border-color .2s; }
     .modal-service:hover { border-color:var(--rust); }
     .modal-service-info { font-size:0.82rem; }
     .modal-service-info strong { display:block; color:var(--ink); margin-bottom:2px; }
     .modal-service-info span { color:var(--ash); font-size:0.75rem; }
     .modal-service-price { font-family:'Playfair Display',serif; font-weight:700; font-size:1rem; color:var(--ink); }
-    .modal-cta {
-      background:var(--rust); color:#fff; border:none; padding:14px;
-      font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.88rem;
-      cursor:pointer; border-radius:2px; transition:background .2s; margin-top:4px;
-    }
+    .modal-cta { background:var(--rust); color:#fff; border:none; padding:14px; font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.88rem; cursor:pointer; border-radius:2px; transition:background .2s; margin-top:4px; }
     .modal-cta:hover { background:var(--brown); }
 
-    /* ── TIMBRO BADGE ── */
-    .timbro-badge {
-      display:inline-flex; align-items:center; gap:5px;
-      border:1.5px solid var(--rust); color:var(--rust);
-      font-size:0.6rem; letter-spacing:2px; text-transform:uppercase;
-      padding:4px 10px; border-radius:1px; font-weight:600;
-    }
-    .timbro-badge::before {
-      content:'⬡'; font-size:0.65rem;
-    }
+    /* ── DISCLAIMER / FOOTER ── */
+    .disclaimer-bar { background:var(--ink); padding:10px 48px; display:flex; align-items:center; gap:10px; }
+    .disclaimer-bar span { font-size:0.68rem; letter-spacing:1.2px; color:#5a4e42; line-height:1.5; }
+    .disclaimer-bar strong { color:#7a6e62; }
+    footer { background:var(--ink); border-top:1px solid #2e2416; padding:36px 48px 24px; }
+    .footer-top { display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:16px; margin-bottom:24px; }
+    .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:4px; color:#f5f0e8; text-decoration:none; display:flex; align-items:center; gap:8px; }
+    .footer-logo span { color:var(--rust); }
+    .footer-links { display:flex; gap:24px; }
+    .footer-links a { color:#5a4e42; text-decoration:none; font-size:0.75rem; transition:color .15s; }
+    .footer-links a:hover { color:var(--rust); }
+    .footer-bottom { border-top:1px solid #2e2416; padding-top:18px; }
+    .footer-legal { font-size:0.68rem; color:#3a3028; line-height:1.7; }
+    .footer-legal strong { color:#5a4e42; }
+    .footer-copy { font-size:0.62rem; color:#2e2416; margin-top:6px; }
 
-    /* ── UTILS ── */
-    @keyframes fadein { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+    @keyframes fadein { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
+
     @media(max-width:900px){
       .catalog-layout{grid-template-columns:1fr}
       .sidebar{position:relative;height:auto;top:0;border-right:none;border-bottom:1px solid var(--border)}
@@ -329,12 +215,15 @@
       .dropdown-menu{display:flex!important;position:static;transform:none;box-shadow:none;border:none;background:transparent;flex-direction:column;padding-top:0;min-width:unset;align-items:center}
       .dropdown-inner{background:transparent;border-top:none}
       .dropdown-menu a{font-size:.9rem!important;color:var(--ash)!important;border:none;padding:6px 12px!important}
-      .dropdown-menu a:hover{padding-left:12px!important}
       .search-wrap{padding:14px 20px;flex-wrap:wrap}
       .page-header{padding:24px 20px 18px}
       .main-content{padding:20px}
       .modal{grid-template-columns:1fr}
       .modal-image{display:none}
+      .folders-section{padding:24px 20px}
+      .breadcrumb{padding:12px 20px}
+      .disclaimer-bar{padding:8px 20px}
+      footer{padding:28px 20px 20px}
     }
   </style>
 </head>
@@ -342,140 +231,108 @@
 
 <div class="filmstrip"><div class="filmstrip-inner"></div></div>
 
-<!-- NAV -->
 <nav>
-  <a href="/index.html" class="logo"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;"><rect x="1" y="1" width="26" height="26" rx="2" fill="#1c1712"/><text x="4" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#faf8f4" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span class="logo-text">FRAME<span>VAULT</span></span></a>
-  <button class="hamburger" id="hamburger" onclick="toggleMenu()">
-    <span></span><span></span><span></span>
-  </button>
+  <a href="/index.html" class="logo"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><rect x="1" y="1" width="26" height="26" rx="2" fill="#1c1712"/><text x="4" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#faf8f4" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span class="logo-text">FRAME<span>VAULT</span></span></a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   <ul id="navMenu">
     <li><a href="/index.html">Home</a></li>
     <li class="nav-dropdown">
       <a href="#">Servizi</a>
-      <div class="dropdown-menu">
-        <div class="dropdown-inner">
-          <a href="/index.html#servizi">I nostri servizi</a>
-          <a href="/index.html#come-funziona">Come funziona</a>
-          <a href="/index.html#prezzi">Prezzi</a>
-          <a href="/index.html#licenze">Licenze</a>
-        </div>
-      </div>
+      <div class="dropdown-menu"><div class="dropdown-inner">
+        <a href="/index.html#servizi">I nostri servizi</a>
+        <a href="/index.html#come-funziona">Come funziona</a>
+        <a href="/index.html#prezzi">Prezzi</a>
+        <a href="/index.html#licenze">Licenze</a>
+      </div></div>
     </li>
     <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
     <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
   </ul>
 </nav>
 
-<!-- PAGE HEADER -->
 <div class="page-header">
   <div class="page-eyebrow">Archivio Digitale · 500.000+ Immagini Originali</div>
   <h1>Archivio Fotografico</h1>
-  <p>Cinema italiano, televisione RAI, fotografie di scena, eventi e posati — dal 1970 ad oggi.</p>
+  <p>Cinema italiano, televisione RAI, fotografie di scena — dal 1970 ad oggi.</p>
 </div>
 
-<!-- SEARCH BAR -->
 <div class="search-wrap">
   <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Cerca per titolo, regista, attore, anno..." />
+    <input type="text" id="searchInput" placeholder="Cerca per nome, personaggio, anno..." />
     <button class="search-btn" onclick="doSearch()">🔍</button>
   </div>
-  <span class="results-count" id="resultsCount">500 risultati</span>
-  <select class="sort-select" id="sortSelect" onchange="renderGrid()">
+  <span class="results-count" id="resultsCount"></span>
+  <select class="sort-select" id="sortSelect" onchange="renderGrid()" style="display:none">
     <option value="consigliati">Consigliati</option>
     <option value="az">A → Z</option>
     <option value="za">Z → A</option>
     <option value="recenti">Più recenti</option>
     <option value="vecchi">Più vecchi</option>
-    <option value="prezzo-asc">Prezzo: basso → alto</option>
-    <option value="prezzo-desc">Prezzo: alto → basso</option>
+    <option value="prezzo-asc">Prezzo ↑</option>
+    <option value="prezzo-desc">Prezzo ↓</option>
   </select>
 </div>
 
-<!-- DISCLAIMER DIRITTI -->
-<div style="background:#1c1712;padding:10px 48px;display:flex;align-items:center;gap:10px;">
-  <svg width="14" height="14" viewBox="0 0 14 14" fill="none" style="flex-shrink:0;">
-    <circle cx="7" cy="7" r="6.5" stroke="#c8922a" stroke-width="1.2"/>
-    <text x="5" y="11" font-family="Georgia,serif" font-size="9" fill="#c8922a">©</text>
-  </svg>
-  <span style="font-size:0.68rem;letter-spacing:1.2px;color:#a89070;line-height:1.5;">
-    Tutte le immagini sono di proprietà esclusiva di <strong style="color:#faf8f4;">GRM Foto S.r.l.</strong> — Qualsiasi riproduzione, distribuzione o utilizzo non autorizzato è perseguibile ai sensi della Legge 633/1941 sul diritto d'autore e delle normative vigenti.
-  </span>
+<!-- ══ VISTA CARTELLE ══ -->
+<div id="vistaCartelle">
+  <div class="folders-section">
+    <div class="folders-section-title">Personaggi</div>
+    <div class="folders-grid" id="foldersPersonaggi"></div>
+    <div class="folders-section-title" style="margin-top:48px;">Archivio Generale</div>
+    <div class="folders-grid" id="foldersAltro"></div>
+  </div>
 </div>
 
-<!-- LAYOUT -->
-<div class="catalog-layout">
-
-  <!-- SIDEBAR FILTRI -->
-  <aside class="sidebar">
-
-    <div class="filter-section">
-      <div class="filter-title">Categoria</div>
-      <div class="filter-tags">
-        <span class="filter-tag" onclick="toggleFilter('cat','Stampe Originali')">Stampe Originali</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Televisione RAI')">Televisione RAI</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Cinema Italiano')">Cinema Italiano</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Fotografie di Scena')">Fotografie di Scena</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Attualità & Eventi')">Attualità & Eventi</span>
-        <span class="filter-tag" onclick="toggleFilter('cat','Posati Esclusivi')">Posati Esclusivi</span>
+<!-- ══ VISTA FOTO ══ -->
+<div id="vistaFoto">
+  <div class="breadcrumb">
+    <a onclick="tornaCartelle()">← Archivio</a>
+    <span class="breadcrumb-sep">›</span>
+    <span class="breadcrumb-current" id="breadcrumbCurrent"></span>
+  </div>
+  <div class="catalog-layout">
+    <aside class="sidebar">
+      <div class="filter-section">
+        <div class="filter-title">Anni</div>
+        <div class="filter-tags">
+          <span class="filter-tag" onclick="toggleFilter('anni','Anni \'70')">Anni '70</span>
+          <span class="filter-tag" onclick="toggleFilter('anni','Anni \'80')">Anni '80</span>
+          <span class="filter-tag" onclick="toggleFilter('anni','Anni \'90')">Anni '90</span>
+          <span class="filter-tag" onclick="toggleFilter('anni','Anni 2000')">Anni 2000</span>
+          <span class="filter-tag" onclick="toggleFilter('anni','Anni 2010+')">Anni 2010+</span>
+        </div>
       </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-title">Anni</div>
-      <div class="filter-tags">
-        <span class="filter-tag" onclick="toggleFilter('anni','Anni \'70')">Anni '70</span>
-        <span class="filter-tag" onclick="toggleFilter('anni','Anni \'80')">Anni '80</span>
-        <span class="filter-tag" onclick="toggleFilter('anni','Anni \'90')">Anni '90</span>
-        <span class="filter-tag" onclick="toggleFilter('anni','Anni 2000')">Anni 2000</span>
-        <span class="filter-tag" onclick="toggleFilter('anni','Anni 2010+')">Anni 2010+</span>
+      <div class="filter-section">
+        <div class="filter-title">Tipologia</div>
+        <div class="filter-tags">
+          <span class="filter-tag" onclick="toggleFilter('genere','Trasmissione TV')">Trasmissione TV</span>
+          <span class="filter-tag" onclick="toggleFilter('genere','Fiction RAI')">Fiction RAI</span>
+          <span class="filter-tag" onclick="toggleFilter('genere','Photocall')">Photocall</span>
+          <span class="filter-tag" onclick="toggleFilter('genere','Posati')">Posati</span>
+          <span class="filter-tag" onclick="toggleFilter('genere','Foto di Scena')">Foto di Scena</span>
+        </div>
       </div>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-title">Tipologia</div>
-      <select class="filter-select" id="genreSelect" onchange="renderGrid()">
-        <option value="">Tutte le tipologie</option>
-        <option>Trasmissione TV</option>
-        <option>Fiction RAI</option>
-        <option>Photocall</option>
-        <option>Posati</option>
-        <option>Foto di Scena</option>
-      </select>
-    </div>
-
-    <div class="filter-section">
-      <div class="filter-title">Personaggio</div>
-      <select class="filter-select" id="regSelect" onchange="renderGrid()">
-        <option value="">Tutti i personaggi</option>
-        <option>Pippo Baudo</option>
-        <option>Raffaella Carrà</option>
-        <option>Fabrizio Frizzi</option>
-        <option>Massimo Troisi</option>
-        <option>Roberto Benigni</option>
-        <option>Carlo Verdone</option>
-        <option>Milly Carlucci</option>
-      </select>
-    </div>
-
-    <button class="clear-btn" onclick="clearFilters()">✕ Cancella tutti i filtri</button>
-  </aside>
-
-  <!-- MAIN -->
-  <main class="main-content">
-    <div class="active-filters" id="activeFilters"></div>
-    <div class="cards-grid" id="cardsGrid"><p style="text-align:center;color:var(--ash);padding:60px;grid-column:1/-1;">⏳ Caricamento archivio in corso...</p></div>
-    <div class="pagination" id="pagination"></div>
-  </main>
+      <button class="clear-btn" onclick="clearFilters()">✕ Cancella filtri</button>
+    </aside>
+    <main class="main-content">
+      <div class="active-filters" id="activeFilters"></div>
+      <div class="cards-grid" id="cardsGrid"></div>
+    </main>
+  </div>
 </div>
 
-<!-- MODAL DETTAGLIO -->
+<div class="disclaimer-bar">
+  <span>© <strong>GRM Foto S.r.l.</strong> — Tutte le immagini sono di proprietà esclusiva. Qualsiasi riproduzione non autorizzata è perseguibile ai sensi della Legge 633/1941 sul diritto d'autore.</span>
+</div>
+
+<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
-  <div class="modal" id="modalBox">
+  <div class="modal">
     <button class="modal-close" onclick="closeModalDirect()">✕</button>
     <div class="modal-image" id="modalImage"></div>
     <div class="modal-body">
       <div class="modal-eyebrow" id="modalEyebrow"></div>
-      <div class="modal-title" id="modalTitle"></div>
+      <div class="modal-title">Archivio GRM Foto Guberti Rasero</div>
       <div class="modal-meta" id="modalMeta"></div>
       <hr class="modal-divider"/>
       <div style="font-size:.75rem;letter-spacing:1.5px;text-transform:uppercase;color:var(--ash);font-weight:600;">Scegli il servizio</div>
@@ -485,35 +342,55 @@
   </div>
 </div>
 
+<footer>
+  <div class="footer-top">
+    <a href="/index.html" class="footer-logo"><svg width="22" height="22" viewBox="0 0 28 28" fill="none"><rect x="1" y="1" width="26" height="26" rx="2" fill="#f5f0e8"/><text x="4" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#1c1712" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg>FRAME<span>VAULT</span></a>
+    <div class="footer-links">
+      <a href="/frameVault_spedizioni.html">Spedizione e Resi</a>
+      <a href="/index.html#licenze">Licenze</a>
+      <a href="/frameVault_chisiamo.html#contatti">Contatti</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-legal">FrameVault è un marchio di <strong>GRM Foto S.r.l.</strong> — Lungotevere della Vittoria 10, 00195 Roma. Tutti i diritti sulle immagini sono di proprietà esclusiva di GRM Foto S.r.l. Qualsiasi utilizzo non autorizzato è perseguibile ai sensi della Legge 22 aprile 1941 n. 633.</p>
+    <p class="footer-copy">© 2025 GRM Foto S.r.l. — Tutti i diritti riservati.</p>
+  </div>
+</footer>
+
 <script>
-// ── DATA ──────────────────────────────────────────────────────────────────
-const BASE_URL = 'https://grmfoto.myds.me/framevault-media/anteprime/catalogo/';
-
-const gradients = [
-  'linear-gradient(145deg,#ddd3c2,#b8a88a)',
-  'linear-gradient(160deg,#c9bfad,#a89880)',
-  'linear-gradient(135deg,#e2d8c8,#c0b298)',
-  'linear-gradient(170deg,#d5c9b5,#b09c80)',
-  'linear-gradient(150deg,#cfc4b0,#a89070)',
-  'linear-gradient(140deg,#e8dfd0,#c5b49a)',
-  'linear-gradient(165deg,#d0c5b2,#afa088)',
-  'linear-gradient(155deg,#dbd0be,#b8a48a)',
+const CARTELLE = [
+  { id:'baudo',      label:'Personaggio', title:'Tutto Pippo Baudo',        desc:'Il conduttore più longevo della televisione italiana. Fantastico, Sanremo, Una rotonda sul mare.',            keywords:['pippo baudo'], emoji:'🎬' },
+  { id:'carra',      label:'Personaggio', title:'La Mitica Raffaella',       desc:'Raffaella Carrà, icona assoluta della TV italiana e internazionale. Tuca Tuca, Pronto Raffaella.',          keywords:['raffaella carr'], emoji:'🎤' },
+  { id:'bonaccorti', label:'Personaggio', title:'Tutto Enrica Bonaccorti',   desc:'Conduttrice, attrice e showgirl. Tra i volti più amati della RAI degli anni \'80.',                        keywords:['enrica bonaccorti'], emoji:'📺' },
+  { id:'troisi',     label:'Personaggio', title:'Massimo Troisi',            desc:'Il genio napoletano. Dal teatro alla TV, fino ai capolavori cinematografici.',                               keywords:['troisi'], emoji:'🎭' },
+  { id:'parisi',     label:'Personaggio', title:'Heather Parisi',            desc:'La showgirl americana che conquistò l\'Italia. Fantastico, Al Paradise e i grandi varietà RAI.',           keywords:['heather parisi'], emoji:'💃' },
 ];
+const CARTELLA_ALTRO = { id:'altro', label:'Archivio', title:'Stampe Originali Uniche', desc:'Tutto l\'archivio GRM Foto: volti, eventi, backstage e momenti unici della TV e del cinema italiano.', emoji:'📦' };
 
-const NAS_URL = 'https://grmfoto.myds.me/framevault-media';
-let rawData = [];
+const ITEMS_PER_LOAD = 24;
+const gradients = ['linear-gradient(145deg,#ddd3c2,#b8a88a)','linear-gradient(160deg,#c9bfad,#a89880)','linear-gradient(135deg,#e2d8c8,#c0b298)','linear-gradient(170deg,#d5c9b5,#b09c80)','linear-gradient(150deg,#cfc4b0,#a89070)'];
 
-// Estrae il nome del personaggio dalla descrizione IPTC
+let rawData = [], cartellaAttiva = null, visibleCount = ITEMS_PER_LOAD;
+let activeFilters = {}, searchQuery = '', isLoading = false;
+
+function assegnaCartella(titolo) {
+  if (!titolo) return 'altro';
+  const t = titolo.toLowerCase();
+  for (const c of CARTELLE) {
+    for (const kw of c.keywords) { if (t.includes(kw)) return c.id; }
+  }
+  return 'altro';
+}
+
 function estraiPersonaggio(titolo) {
   if (!titolo) return '';
-  const match = titolo.match(/[Nn]ella foto[:\s]+(.+?)(?:\r|\n|$)/);
-  if (match) return match[1].trim();
-  const match2 = titolo.match(/[Ii]n the picture[:\s]+(.+?)(?:\r|\n|$)/);
-  if (match2) return match2[1].trim();
+  const m1 = titolo.match(/[Nn]ella foto[:\s]+(.+?)(?:\r|\n|$)/);
+  if (m1) return m1[1].trim();
+  const m2 = titolo.match(/[Ii]n the picture[:\s]+(.+?)(?:\r|\n|$)/);
+  if (m2) return m2[1].trim();
   return '';
 }
 
-// Carica il catalogo tramite proxy Vercel
 async function caricaCatalogo() {
   try {
     const res = await fetch('/api/catalogo');
@@ -522,308 +399,230 @@ async function caricaCatalogo() {
       id: item.id,
       title: item.titolo || item.img,
       personaggio: estraiPersonaggio(item.titolo),
-      year: (function(item) {
-        const titolo = (item.titolo || '').toLowerCase();
-        if (titolo.includes('troisi')) return 1982;
-        return 1982 + (item.id % 4); // stabile: 1982, 1983, 1984, 1985
-      })(item),
-      regista: item.autore || '',
+      year: (function(){ const t=(item.titolo||'').toLowerCase(); if(t.includes('troisi'))return 1982; return 1982+(item.id%4); })(),
       genere: item.tipologia || 'Foto di Scena',
       cat: 'Stampe Originali',
       anni: item.anni || '',
       prezzo: item.prezzo_stampa || 12,
-      fmt: ['Stampa Carta', 'Download HD'],
+      fmt: ['Stampa Carta','Download HD'],
       img: item.img,
-      parole_chiave: item.parole_chiave || []
+      cartella: assegnaCartella(item.titolo),
     }));
-  } catch(e) {
-    console.error('Errore caricamento catalogo:', e);
-    rawData = [];
-  }
-  renderGrid();
-  renderActiveFilterChips();
+  } catch(e) { rawData = []; }
+  renderCartelle();
 }
-
 caricaCatalogo();
 
-// ── STATE ────────────────────────────────────────────────────────────────
-const ITEMS_PER_LOAD = 24;
-let visibleCount = 24;
-let activeFilters = {};
-let searchQuery = '';
-let isLoading = false;
+function renderCartelle() {
+  document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
 
-function toggleFilter(key, val) {
-  if (activeFilters[key] === val) {
-    delete activeFilters[key];
-  } else {
-    activeFilters[key] = val;
+  function buildFolderCard(c, foto, delay) {
+    const cover = foto[0];
+    const strip = foto.slice(1,5);
+    const coverUrl = cover?.img ? `/api/immagine?path=${cover.img}` : null;
+    return `
+    <div class="folder-card" onclick="apriCartella('${c.id}')" style="animation-delay:${delay}s">
+      <div class="folder-cover">
+        ${coverUrl ? `<img class="folder-cover-img" src="${coverUrl}" alt="" onerror="this.style.display='none'">` : `<div class="folder-cover-placeholder">${c.emoji}</div>`}
+        <div class="folder-cover-overlay"></div>
+        <div class="folder-cover-count">${foto.length} <span>foto</span></div>
+      </div>
+      <div class="folder-strip">
+        ${strip.map(f => f.img ? `<img class="folder-strip-img" src="/api/immagine?path=${f.img}" alt="" onerror="this.style.background='#e8dfd0'">` : `<div style="background:var(--bg2)"></div>`).join('')}
+        ${strip.length < 4 ? Array(4-strip.length).fill(`<div style="background:var(--bg2)"></div>`).join('') : ''}
+      </div>
+      <div class="folder-body">
+        <div class="folder-label">${c.label}</div>
+        <div class="folder-title">${c.title}</div>
+        <div class="folder-desc">${c.desc}</div>
+        <div class="folder-footer">
+          <span class="folder-count-label">${foto.length} stampe originali</span>
+          <span class="folder-cta">Sfoglia →</span>
+        </div>
+      </div>
+    </div>`;
   }
-  document.querySelectorAll('.filter-tag').forEach(t => {
-    t.classList.toggle('active', t.textContent.trim() === activeFilters[key]);
-  });
-  visibleCount = ITEMS_PER_LOAD;
-  renderGrid();
-  renderActiveFilterChips();
+
+  document.getElementById('foldersPersonaggi').innerHTML = CARTELLE.map((c,i) =>
+    buildFolderCard(c, rawData.filter(f => f.cartella === c.id), i*0.08)
+  ).join('');
+
+  const fotoAltro = rawData.filter(f => f.cartella === 'altro');
+  document.getElementById('foldersAltro').innerHTML = buildFolderCard(CARTELLA_ALTRO, fotoAltro, 0);
 }
 
-function clearFilters() {
+function apriCartella(id) {
+  cartellaAttiva = id;
+  visibleCount = ITEMS_PER_LOAD;
   activeFilters = {};
   searchQuery = '';
   document.getElementById('searchInput').value = '';
-  document.getElementById('genreSelect').value = '';
-  document.getElementById('regSelect').value = '';
   document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-  visibleCount = ITEMS_PER_LOAD;
+  const info = id === 'altro' ? CARTELLA_ALTRO : CARTELLE.find(c => c.id === id);
+  document.getElementById('breadcrumbCurrent').textContent = info.title;
+  document.getElementById('vistaCartelle').style.display = 'none';
+  document.getElementById('vistaFoto').style.display = 'block';
+  document.getElementById('sortSelect').style.display = '';
   renderGrid();
-  renderActiveFilterChips();
+  window.scrollTo({top:0, behavior:'smooth'});
+}
+
+function tornaCartelle() {
+  cartellaAttiva = null;
+  activeFilters = {};
+  searchQuery = '';
+  document.getElementById('searchInput').value = '';
+  document.getElementById('vistaCartelle').style.display = 'block';
+  document.getElementById('vistaFoto').style.display = 'none';
+  document.getElementById('sortSelect').style.display = 'none';
+  document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
+  window.scrollTo({top:0, behavior:'smooth'});
 }
 
 function doSearch() {
   searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
+  if (!searchQuery) return;
+  if (!cartellaAttiva) {
+    cartellaAttiva = '__search__';
+    document.getElementById('breadcrumbCurrent').textContent = `Ricerca: "${searchQuery}"`;
+    document.getElementById('vistaCartelle').style.display = 'none';
+    document.getElementById('vistaFoto').style.display = 'block';
+    document.getElementById('sortSelect').style.display = '';
+  }
   visibleCount = ITEMS_PER_LOAD;
   renderGrid();
 }
+document.getElementById('searchInput').addEventListener('keydown', e => { if(e.key==='Enter') doSearch(); });
 
-document.getElementById('searchInput').addEventListener('keydown', e => {
-  if (e.key === 'Enter') doSearch();
-});
+function toggleFilter(key, val) {
+  if (activeFilters[key]===val) delete activeFilters[key]; else activeFilters[key]=val;
+  document.querySelectorAll('.filter-tag').forEach(t => { t.classList.toggle('active', t.textContent.trim()===activeFilters[key]); });
+  visibleCount = ITEMS_PER_LOAD;
+  renderGrid();
+  renderActiveChips();
+}
+function clearFilters() {
+  activeFilters = {};
+  document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
+  visibleCount = ITEMS_PER_LOAD;
+  renderGrid();
+  renderActiveChips();
+}
 
-// ── FILTERING ────────────────────────────────────────────────────────────
 function getFiltered() {
-  const genre = document.getElementById('genreSelect').value;
-  const reg   = document.getElementById('regSelect').value;
-  const sort  = document.getElementById('sortSelect').value;
-
+  const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
-    if (searchQuery && !`${item.title} ${item.regista} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
-    if (activeFilters.cat   && item.cat   !== activeFilters.cat)   return false;
-    if (activeFilters.anni  && item.anni  !== activeFilters.anni)  return false;
-    if (activeFilters.fmt   && !item.fmt.includes(activeFilters.fmt)) return false;
-    if (genre && item.genere !== genre) return false;
-    if (reg   && item.regista !== reg)  return false;
-    if (activeFilters.price) {
-      if (activeFilters.price === '€0–€10'  && item.prezzo > 10)  return false;
-      if (activeFilters.price === '€10–€30' && (item.prezzo <= 10 || item.prezzo > 30)) return false;
-      if (activeFilters.price === '€30+'    && item.prezzo <= 30)  return false;
-    }
+    if (cartellaAttiva && cartellaAttiva !== '__search__' && item.cartella !== cartellaAttiva) return false;
+    if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
+    if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
+    if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
     return true;
   });
-
-  if (sort === 'az')          data.sort((a,b) => a.title.localeCompare(b.title));
-  else if (sort === 'za')     data.sort((a,b) => b.title.localeCompare(a.title));
-  else if (sort === 'recenti') data.sort((a,b) => b.year - a.year);
-  else if (sort === 'vecchi')  data.sort((a,b) => a.year - b.year);
-  else if (sort === 'prezzo-asc')  data.sort((a,b) => a.prezzo - b.prezzo);
-  else if (sort === 'prezzo-desc') data.sort((a,b) => b.prezzo - a.prezzo);
-
+  if (sort==='az') data.sort((a,b)=>a.title.localeCompare(b.title));
+  else if (sort==='za') data.sort((a,b)=>b.title.localeCompare(a.title));
+  else if (sort==='recenti') data.sort((a,b)=>b.year-a.year);
+  else if (sort==='vecchi') data.sort((a,b)=>a.year-b.year);
+  else if (sort==='prezzo-asc') data.sort((a,b)=>a.prezzo-b.prezzo);
+  else if (sort==='prezzo-desc') data.sort((a,b)=>b.prezzo-a.prezzo);
   return data;
 }
 
-// ── RENDER ───────────────────────────────────────────────────────────────
 function renderGrid() {
   const filtered = getFiltered();
   const total = filtered.length;
   const paged = filtered.slice(0, visibleCount);
-
   document.getElementById('resultsCount').textContent = `${total.toLocaleString('it')} risultati`;
-
   const grid = document.getElementById('cardsGrid');
   if (paged.length === 0) {
-    grid.innerHTML = `<div class="empty-state"><div class="empty-icon">🎞️</div><h3>Nessun risultato trovato</h3><p>Prova a modificare i filtri o la ricerca.</p></div>`;
-  } else {
-    grid.innerHTML = paged.map((item, i) => {
-      const g = gradients[item.id % gradients.length];
-      const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
-      const thumbStyle = imgUrl ? '' : `--grad:${g}`;
-      const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;"
-        onload="(function(img){if(img.naturalWidth>img.naturalHeight){img.closest('.card-thumb').style.aspectRatio='4/3';}else{img.closest('.card-thumb').style.aspectRatio='3/4';}})(this)"
-        onerror="this.style.display='none'">` : '';
-      return `
-      <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
-        <div class="card-thumb" style="${thumbStyle};position:relative;">
-          ${imgTag}
-          <div class="card-year-badge" style="position:absolute;top:8px;left:8px;z-index:2;">${item.year}</div>
-          <div class="card-formats" style="position:absolute;top:8px;right:8px;z-index:2;">${item.fmt.map(f => `<span class="fmt-badge">${f === 'Download HD' ? '⬇' : '🖨'}</span>`).join('')}</div>
-          <div class="card-overlay" style="z-index:3;"><button class="overlay-btn">Vedi dettagli</button></div>
-        </div>
-        <div class="card-body">
-          <div class="card-title">${item.personaggio || 'Archivio GRM Foto'}</div>
-          <div class="card-meta">${item.genere}</div>
-          <div class="card-footer">
-            <div class="card-price">da €${item.prezzo}</div>
-            <span class="card-category">Stampa Orig.</span>
-          </div>
-        </div>
-      </div>`;
-    }).join('');
+    grid.innerHTML = `<div class="empty-state"><div style="font-size:2.5rem;margin-bottom:16px;opacity:.3">🎞️</div><h3>Nessun risultato</h3><p>Prova a modificare i filtri.</p></div>`;
+    return;
   }
-
-  // Sentinel per infinite scroll
-  const pg = document.getElementById('pagination');
-  if (visibleCount < total) {
-    pg.innerHTML = `<div id="scrollSentinel" style="height:60px;display:flex;align-items:center;justify-content:center;color:var(--ash);font-size:0.8rem;letter-spacing:1px;">
-      <span id="loadingIndicator" style="display:none;">⏳ Caricamento...</span>
+  grid.innerHTML = paged.map((item,i) => {
+    const g = gradients[item.id%gradients.length];
+    const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
+    const thumbStyle = imgUrl ? '' : `--grad:${g}`;
+    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;"
+      onload="(function(img){if(img.naturalWidth>img.naturalHeight){img.closest('.card-thumb').style.aspectRatio='4/3';}else{img.closest('.card-thumb').style.aspectRatio='3/4';}})(this)"
+      onerror="this.style.display='none'">` : '';
+    return `
+    <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
+      <div class="card-thumb" style="${thumbStyle};position:relative;">
+        ${imgTag}
+        <div class="card-year-badge">${item.year}</div>
+        <div class="card-formats">${item.fmt.map(f=>`<span class="fmt-badge">${f==='Download HD'?'⬇':'🖨'}</span>`).join('')}</div>
+        <div class="card-overlay"><button class="overlay-btn">Vedi dettagli</button></div>
+      </div>
+      <div class="card-body">
+        <div class="card-title">${item.personaggio||'Archivio GRM Foto'}</div>
+        <div class="card-meta">${item.genere}</div>
+        <div class="card-footer">
+          <div class="card-price">da €${item.prezzo}</div>
+          <span class="card-category">Stampa Orig.</span>
+        </div>
+      </div>
     </div>`;
-    observeSentinel();
+  }).join('');
+
+  if (visibleCount < total) {
+    const s = document.createElement('div');
+    s.className='scroll-sentinel'; s.id='scrollSentinel';
+    s.innerHTML=`<span id="loadingDots" style="display:none">⏳ Caricamento…</span>`;
+    grid.appendChild(s);
+    const obs = new IntersectionObserver(entries => {
+      if (entries[0].isIntersecting && !isLoading) {
+        isLoading=true; document.getElementById('loadingDots').style.display='block';
+        setTimeout(()=>{ visibleCount+=ITEMS_PER_LOAD; isLoading=false; renderGrid(); },300);
+      }
+    },{rootMargin:'200px'});
+    obs.observe(s);
   } else {
-    pg.innerHTML = total > 0 ? `<div style="color:var(--ash);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:20px;">— Fine archivio · ${total.toLocaleString('it')} foto —</div>` : '';
+    const e=document.createElement('div'); e.className='end-marker';
+    e.textContent=`Fine · ${total.toLocaleString('it')} foto`; grid.appendChild(e);
   }
 }
 
-function observeSentinel() {
-  const sentinel = document.getElementById('scrollSentinel');
-  if (!sentinel) return;
-  const observer = new IntersectionObserver(entries => {
-    if (entries[0].isIntersecting && !isLoading) {
-      isLoading = true;
-      document.getElementById('loadingIndicator').style.display = 'flex';
-      setTimeout(() => {
-        visibleCount += ITEMS_PER_LOAD;
-        isLoading = false;
-        renderGrid();
-      }, 300);
-    }
-  }, { rootMargin: '200px' });
-  observer.observe(sentinel);
-}
-
-function renderActiveFilterChips() {
-  const wrap = document.getElementById('activeFilters');
-  const chips = Object.entries(activeFilters).map(([k, v]) =>
+function renderActiveChips() {
+  document.getElementById('activeFilters').innerHTML = Object.entries(activeFilters).map(([k,v])=>
     `<div class="active-filter-chip">${v}<span class="chip-remove" onclick="toggleFilter('${k}','${v}')">✕</span></div>`
-  );
-  if (searchQuery) chips.unshift(`<div class="active-filter-chip">Cerca: "${searchQuery}"<span class="chip-remove" onclick="clearSearch()">✕</span></div>`);
-  wrap.innerHTML = chips.join('');
+  ).join('');
 }
 
-function clearSearch() {
-  searchQuery = '';
-  document.getElementById('searchInput').value = '';
-  renderGrid();
-  renderActiveFilterChips();
-}
-
-// ── MODAL ────────────────────────────────────────────────────────────────
 function openModal(id) {
-  const item = rawData.find(x => x.id === id);
+  const item = rawData.find(x=>x.id===id);
   if (!item) return;
-  const g = gradients[item.id % gradients.length];
   const modalImg = document.getElementById('modalImage');
   if (item.img) {
-    modalImg.style.backgroundImage = `url('/api/immagine?path=${item.img}')`;
-    modalImg.style.backgroundSize = 'contain';
-    modalImg.style.backgroundPosition = 'center center';
-    modalImg.style.backgroundRepeat = 'no-repeat';
-    modalImg.style.setProperty('--modal-grad', 'none');
+    modalImg.style.backgroundImage=`url('/api/immagine?path=${item.img}')`;
+    modalImg.style.backgroundSize='contain'; modalImg.style.backgroundPosition='center';
+    modalImg.style.backgroundRepeat='no-repeat'; modalImg.style.backgroundColor='#ede8df';
+    modalImg.style.setProperty('--modal-grad','none');
   } else {
-    modalImg.style.backgroundImage = '';
-    modalImg.style.backgroundSize = '';
-    modalImg.style.backgroundPosition = '';
-    modalImg.style.setProperty('--modal-grad', g);
+    modalImg.style.backgroundImage='';
+    modalImg.style.setProperty('--modal-grad', gradients[item.id%gradients.length]);
   }
-
-  // ── MODIFICA: eyebrow con "Stampa Originale Timbrata" ──
-  document.getElementById('modalEyebrow').innerHTML = `
-    <span class="timbro-badge">Stampa Originale Timbrata</span>
-    &nbsp;·&nbsp; ${item.year}
-  `;
-
-  document.getElementById('modalTitle').textContent = 'Archivio GRM Foto Guberti Rasero — Stampe d\'epoca originali';
-  document.getElementById('modalMeta').innerHTML = `
-    <span><strong>Personaggio:</strong> <input type="text" value="${item.personaggio || ''}" placeholder="Nome personaggio"
+  document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
+  document.getElementById('modalMeta').innerHTML=`
+    <span><strong>Personaggio:</strong> <input type="text" value="${item.personaggio||''}" placeholder="Nome personaggio"
       style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
-      onchange="aggiornaPersonaggio(${item.id}, this.value)"></span>
+      onchange="aggiornaPersonaggio(${item.id},this.value)"></span>
     <span><strong>Tipologia:</strong> Stampe Originali Uniche</span>
-    <span><strong>Anno:</strong> <input type="number" value="${item.year}" min="1900" max="2030" 
+    <span><strong>Anno:</strong> <input type="number" value="${item.year}" min="1900" max="2030"
       style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
-      onchange="aggiornaAnno(${item.id}, this.value)"></span>
-  `;
-  const services = [];
-  if (item.fmt.includes('Download HD'))  services.push({name:'Download Digitale HD', desc:'File JPEG/TIFF + Licenza personale', price:`€${Math.round(item.prezzo*0.3)}`});
-  if (item.fmt.includes('Stampa Carta')) services.push({name:'Stampa Fine Art su Carta', desc:'Carta 200g satinata · Spedizione inclusa', price:`da €${item.prezzo}`});
-  document.getElementById('modalServices').innerHTML = services.map(s => `
-    <div class="modal-service">
-      <div class="modal-service-info"><strong>${s.name}</strong><span>${s.desc}</span></div>
-      <div class="modal-service-price">${s.price}</div>
-    </div>`).join('');
+      onchange="aggiornaAnno(${item.id},this.value)"></span>`;
+  document.getElementById('modalServices').innerHTML=`
+    <div class="modal-service"><div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa</span></div><div class="modal-service-price">da €${item.prezzo}</div></div>
+    <div class="modal-service"><div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div><div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div></div>`;
   document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow = 'hidden';
+  document.body.style.overflow='hidden';
 }
+function aggiornaAnno(id,anno){const item=rawData.find(x=>x.id===id);if(item){item.year=parseInt(anno);document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;renderGrid();}}
+function aggiornaPersonaggio(id,nome){const item=rawData.find(x=>x.id===id);if(item){item.personaggio=nome;renderGrid();}}
+function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
+function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
 
-function aggiornaAnno(id, anno) {
-  const item = rawData.find(x => x.id === id);
-  if (item) {
-    item.year = parseInt(anno);
-    document.getElementById('modalEyebrow').innerHTML = `
-      <span class="timbro-badge">Stampa Originale Timbrata</span>
-      &nbsp;·&nbsp; ${item.year}
-    `;
-    renderGrid();
-  }
-}
-
-function aggiornaPersonaggio(id, nome) {
-  const item = rawData.find(x => x.id === id);
-  if (item) {
-    item.personaggio = nome;
-    renderGrid();
-  }
-}
-
-function closeModal(e) {
-  if (e.target === document.getElementById('modalOverlay')) closeModalDirect();
-}
-function closeModalDirect() {
-  document.getElementById('modalOverlay').classList.remove('open');
-  document.body.style.overflow = '';
-}
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModalDirect(); });
-
-// ── INIT ─────────────────────────────────────────────────────────────────
-renderGrid();
-renderActiveFilterChips();
-
-// ── HAMBURGER ──────────────────────────────────────────────────────────────
-function toggleMenu() {
-  const menu = document.getElementById('navMenu');
-  const btn = document.getElementById('hamburger');
-  menu.classList.toggle('open');
-  btn.classList.toggle('open');
-  document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
-}
-document.querySelectorAll('#navMenu a').forEach(a => {
-  a.addEventListener('click', () => {
-    document.getElementById('navMenu').classList.remove('open');
-    document.getElementById('hamburger').classList.remove('open');
-    document.body.style.overflow = '';
-  });
-});
+function toggleMenu(){const menu=document.getElementById('navMenu');const btn=document.getElementById('hamburger');menu.classList.toggle('open');btn.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
+document.querySelectorAll('#navMenu a').forEach(a=>{a.addEventListener('click',()=>{document.getElementById('navMenu').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';});});
 </script>
-<footer style="background:#1c1712;border-top:1px solid #2e2416;padding:36px 48px 24px;color:#7a6e62;">
-  <div style="display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;margin-bottom:24px;">
-    <a href="/index.html" style="display:flex;align-items:center;gap:10px;text-decoration:none;">
-      <svg width="26" height="26" viewBox="0 0 28 28" fill="none">
-        <rect x="1" y="1" width="26" height="26" rx="2" fill="#faf8f4"/>
-        <text x="4" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#1c1712" letter-spacing="-1">F</text>
-        <text x="13" y="21" font-family="Georgia,serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text>
-      </svg>
-      <span style="font-family:'Bebas Neue',sans-serif;font-size:1.2rem;letter-spacing:4px;color:#faf8f4;">Frame<span style="color:#b8420a">Vault</span></span>
-    </a>
-    <div style="display:flex;gap:24px;align-items:center;">
-      <a href="/frameVault_spedizioni.html" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Spedizione e Resi</a>
-      <a href="/index.html#licenze" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Licenze</a>
-      <a href="/index.html#newsletter" style="color:#7a6e62;text-decoration:none;font-size:0.78rem;" onmouseover="this.style.color='#b8420a'" onmouseout="this.style.color='#7a6e62'">Contatti</a>
-    </div>
-  </div>
-  <div style="border-top:1px solid #2e2416;padding-top:20px;display:flex;flex-direction:column;gap:6px;">
-    <p style="font-size:0.72rem;color:#5a4e42;line-height:1.6;">
-      FrameVault è un marchio registrato di <strong style="color:#7a6e62;">GRM Foto S.r.l.</strong> — Lungotevere della Vittoria 10, 00195 Roma · P.IVA IT[XXXXXXXX]<br/>
-      Tutti i diritti sulle immagini dell'archivio sono di proprietà esclusiva di GRM Foto S.r.l. Qualsiasi riproduzione, cessione o utilizzo commerciale non autorizzato è perseguibile ai sensi della Legge 22 aprile 1941 n. 633 sul diritto d'autore e successive modifiche.
-    </p>
-    <p style="font-size:0.68rem;color:#3a3028;">© 2025 GRM Foto S.r.l. — Tutti i diritti riservati.</p>
-  </div>
-</footer>
-
 </body>
 </html>
