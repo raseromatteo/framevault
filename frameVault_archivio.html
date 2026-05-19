@@ -632,7 +632,8 @@ function apriStampa(id) {
     img: item.img || '',
     titolo: item.personaggio || 'Archivio GRM Foto',
     anno: item.year,
-    prezzo: item.prezzo
+    prezzo: item.prezzo,
+    cartella: item.cartelle?.[0] || 'altro'
   });
   window.location.href = `/frameVault_stampa.html?${params.toString()}`;
 }
