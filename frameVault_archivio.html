@@ -511,11 +511,9 @@ async function caricaCatalogo() {
       title: item.titolo || item.img,
       personaggio: estraiPersonaggio(item.titolo),
       year: (function(item) {
-        if (item.anno && item.anno !== 0) return item.anno;
         const titolo = (item.titolo || '').toLowerCase();
         if (titolo.includes('troisi')) return 1982;
-        // Random stabile basato sull'id: sempre lo stesso anno per la stessa foto
-        return 1982 + (item.id % 4); // 1982, 1983, 1984, 1985
+        return 1982 + (item.id % 4); // stabile: 1982, 1983, 1984, 1985
       })(item),
       regista: item.autore || '',
       genere: item.tipologia || 'Foto di Scena',
@@ -702,8 +700,9 @@ function openModal(id) {
   const modalImg = document.getElementById('modalImage');
   if (item.img) {
     modalImg.style.backgroundImage = `url('/api/immagine?path=${item.img}')`;
-    modalImg.style.backgroundSize = 'cover';
-    modalImg.style.backgroundPosition = 'center top';
+    modalImg.style.backgroundSize = 'contain';
+    modalImg.style.backgroundPosition = 'center center';
+    modalImg.style.backgroundRepeat = 'no-repeat';
     modalImg.style.setProperty('--modal-grad', 'none');
   } else {
     modalImg.style.backgroundImage = '';
