@@ -614,11 +614,29 @@ function openModal(id) {
       style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
       onchange="aggiornaAnno(${item.id},this.value)"></span>`;
   document.getElementById('modalServices').innerHTML=`
-    <div class="modal-service"><div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa</span></div><div class="modal-service-price">da €${item.prezzo}</div></div>
-    <div class="modal-service"><div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div><div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div></div>`;
+    <div class="modal-service" onclick="apriStampa(${item.id})">
+      <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
+      <div class="modal-service-price">da €${item.prezzo}</div>
+    </div>
+    <div class="modal-service">
+      <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
+      <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
+    </div>`;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
+function apriStampa(id) {
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  const params = new URLSearchParams({
+    img: item.img || '',
+    titolo: item.personaggio || 'Archivio GRM Foto',
+    anno: item.year,
+    prezzo: item.prezzo
+  });
+  window.location.href = `/frameVault_stampa.html?${params.toString()}`;
+}
+
 function aggiornaAnno(id,anno){const item=rawData.find(x=>x.id===id);if(item){item.year=parseInt(anno);document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;renderGrid();}}
 function aggiornaPersonaggio(id,nome){const item=rawData.find(x=>x.id===id);if(item){item.personaggio=nome;renderGrid();}}
 function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
