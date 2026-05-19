@@ -529,7 +529,7 @@ async function caricaCatalogo() {
       })(item),
       regista: item.autore || '',
       genere: item.tipologia || 'Foto di Scena',
-      cat: item.categoria === 'Archivio Storico' ? 'Stampe Originali' : (item.categoria || 'Stampe Originali'),
+      cat: 'Stampe Originali',
       anni: item.anni || '',
       prezzo: item.prezzo_stampa || 12,
       fmt: ['Stampa Carta', 'Download HD'],
