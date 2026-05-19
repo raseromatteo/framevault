@@ -531,10 +531,11 @@ async function caricaCatalogo() {
 caricaCatalogo();
 
 // ── STATE ────────────────────────────────────────────────────────────────
-const ITEMS_PER_PAGE = 12;
-let currentPage = 1;
+const ITEMS_PER_LOAD = 24;
+let visibleCount = 24;
 let activeFilters = {};
 let searchQuery = '';
+let isLoading = false;
 
 function toggleFilter(key, val) {
   if (activeFilters[key] === val) {
@@ -545,7 +546,7 @@ function toggleFilter(key, val) {
   document.querySelectorAll('.filter-tag').forEach(t => {
     t.classList.toggle('active', t.textContent.trim() === activeFilters[key]);
   });
-  currentPage = 1;
+  visibleCount = ITEMS_PER_LOAD;
   renderGrid();
   renderActiveFilterChips();
 }
@@ -557,14 +558,14 @@ function clearFilters() {
   document.getElementById('genreSelect').value = '';
   document.getElementById('regSelect').value = '';
   document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-  currentPage = 1;
+  visibleCount = ITEMS_PER_LOAD;
   renderGrid();
   renderActiveFilterChips();
 }
 
 function doSearch() {
   searchQuery = document.getElementById('searchInput').value.toLowerCase().trim();
-  currentPage = 1;
+  visibleCount = ITEMS_PER_LOAD;
   renderGrid();
 }
 
@@ -607,9 +608,7 @@ function getFiltered() {
 function renderGrid() {
   const filtered = getFiltered();
   const total = filtered.length;
-  const totalPages = Math.ceil(total / ITEMS_PER_PAGE);
-  if (currentPage > totalPages) currentPage = 1;
-  const paged = filtered.slice((currentPage-1)*ITEMS_PER_PAGE, currentPage*ITEMS_PER_PAGE);
+  const paged = filtered.slice(0, visibleCount);
 
   document.getElementById('resultsCount').textContent = `${total.toLocaleString('it')} risultati`;
 
@@ -623,7 +622,7 @@ function renderGrid() {
       const thumbStyle = imgUrl ? '' : `--grad:${g}`;
       const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;" onerror="this.style.display='none'">` : '';
       return `
-      <div class="card" onclick="openModal(${item.id})" style="animation-delay:${i*0.04}s">
+      <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
         <div class="card-thumb" style="${thumbStyle};position:relative;">
           ${imgTag}
           <div class="card-year-badge" style="position:absolute;top:8px;left:8px;z-index:2;">${item.year}</div>
@@ -642,30 +641,33 @@ function renderGrid() {
     }).join('');
   }
 
-  renderPagination(totalPages);
-}
-
-function renderPagination(totalPages) {
+  // Sentinel per infinite scroll
   const pg = document.getElementById('pagination');
-  if (totalPages <= 1) { pg.innerHTML = ''; return; }
-  let html = `<button class="page-btn arrow" onclick="goPage(${currentPage-1})" ${currentPage===1?'disabled':''}>‹</button>`;
-  for (let i = 1; i <= totalPages; i++) {
-    if (i === 1 || i === totalPages || Math.abs(i - currentPage) <= 1) {
-      html += `<button class="page-btn ${i===currentPage?'active':''}" onclick="goPage(${i})">${i}</button>`;
-    } else if (Math.abs(i - currentPage) === 2) {
-      html += `<span style="color:var(--ash);padding:0 4px;align-self:center">…</span>`;
-    }
+  if (visibleCount < total) {
+    pg.innerHTML = `<div id="scrollSentinel" style="height:60px;display:flex;align-items:center;justify-content:center;color:var(--ash);font-size:0.8rem;letter-spacing:1px;">
+      <span id="loadingIndicator" style="display:none;">⏳ Caricamento...</span>
+    </div>`;
+    observeSentinel();
+  } else {
+    pg.innerHTML = total > 0 ? `<div style="color:var(--ash);font-size:0.75rem;letter-spacing:2px;text-transform:uppercase;padding:20px;">— Fine archivio · ${total.toLocaleString('it')} foto —</div>` : '';
   }
-  html += `<button class="page-btn arrow" onclick="goPage(${currentPage+1})" ${currentPage===totalPages?'disabled':''}>›</button>`;
-  pg.innerHTML = html;
 }
 
-function goPage(n) {
-  const total = Math.ceil(getFiltered().length / ITEMS_PER_PAGE);
-  if (n < 1 || n > total) return;
-  currentPage = n;
-  renderGrid();
-  document.querySelector('.main-content').scrollIntoView({behavior:'smooth'});
+function observeSentinel() {
+  const sentinel = document.getElementById('scrollSentinel');
+  if (!sentinel) return;
+  const observer = new IntersectionObserver(entries => {
+    if (entries[0].isIntersecting && !isLoading) {
+      isLoading = true;
+      document.getElementById('loadingIndicator').style.display = 'flex';
+      setTimeout(() => {
+        visibleCount += ITEMS_PER_LOAD;
+        isLoading = false;
+        renderGrid();
+      }, 300);
+    }
+  }, { rootMargin: '200px' });
+  observer.observe(sentinel);
 }
 
 function renderActiveFilterChips() {
