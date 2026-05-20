@@ -318,13 +318,40 @@
 
     /* ── MOBILE ── */
     @media(max-width:900px) {
-      .print-layout { grid-template-columns:1fr; }
-      .mockup-col { min-height:60vw; }
+      /* Layout verticale */
+      .print-layout {
+        grid-template-columns:1fr;
+        height:auto;
+      }
+
+      /* Mockup: altezza fissa ragionevole, non troppo piccola */
+      .mockup-col {
+        height:70vw;
+        min-height:280px;
+        max-height:420px;
+      }
+
+      /* Strip laterale più stretta su mobile */
+      .mock-gallery {
+        grid-template-columns: 64px 1fr;
+      }
+      .mock-gallery-strip-thumb {
+        width:52px; height:52px;
+      }
+
+      /* Colonna config scrollabile */
+      .config-col {
+        height:auto;
+        overflow-y:visible;
+      }
+
       nav { padding:14px 20px; }
       .breadcrumb { padding:10px 20px; }
       .config-section { padding:16px 20px; }
       .config-header { padding:20px 20px 16px; }
       .config-cta { padding:16px 20px; }
+      .guarantees { padding:12px 20px 20px; }
+      .price-summary { padding:16px 20px; }
     }
 
     @keyframes fadein { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
