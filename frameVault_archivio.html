@@ -275,15 +275,51 @@
       .dropdown-menu{display:flex!important;position:static;transform:none;box-shadow:none;border:none;background:transparent;flex-direction:column;padding-top:0;min-width:unset;align-items:center}
       .dropdown-inner{background:transparent;border-top:none}
       .dropdown-menu a{font-size:.9rem!important;color:var(--ash)!important;border:none;padding:6px 12px!important}
-      .search-wrap{padding:14px 20px;flex-wrap:wrap}
-      .page-header{padding:24px 20px 18px}
-      .main-content{padding:20px}
+      .main-content{padding:12px}
       .modal{grid-template-columns:1fr}
       .modal-image{display:none}
-      .folders-section{padding:24px 20px}
-      .breadcrumb{padding:12px 20px}
-      .disclaimer-bar{padding:8px 20px}
+      .folders-section{padding:16px 12px}
+      .breadcrumb{padding:10px 16px}
+      .disclaimer-bar{padding:8px 16px}
       footer{padding:28px 20px 20px}
+
+      /* ── HERO MOBILE ── */
+      .archive-hero { padding:32px 20px 28px; }
+      .archive-hero-title { font-size:1.5rem; margin-bottom:20px; }
+      .hero-search-box { padding:10px 12px; }
+      .hero-search-box input { font-size:0.88rem; }
+      .hero-search-btn { padding:8px 16px; font-size:0.72rem; }
+      .hero-search-hint { display:none; }
+      .archive-hero-stats { gap:0; }
+      .hero-stat { padding:0 14px; }
+      .hero-stat strong { font-size:1.2rem; }
+
+      /* ── FILTER BAR MOBILE ── */
+      .filter-bar { padding:0 12px; overflow-x:auto; top:57px; }
+      .filter-bar-inner { gap:0; }
+      .fbar-btn { padding:12px 12px; font-size:0.72rem; }
+      .fbar-sep { display:none; }
+      .fbar-soon { display:none; }
+
+      /* ── GRIGLIA 2 COLONNE STILE MARKETPLACE ── */
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr) !important;
+        gap: 8px !important;
+      }
+      .card-thumb { aspect-ratio:1/1 !important; }
+      .card-body { padding:8px 8px 10px; }
+      .card-title { font-size:0.78rem; margin-bottom:2px; }
+      .card-meta { font-size:0.62rem; margin-bottom:6px; }
+      .card-price { font-size:0.82rem; }
+      .card-category { font-size:0.52rem; padding:2px 5px; }
+      .card-year-badge { font-size:0.65rem; padding:2px 5px; }
+
+      /* ── CARTELLE MOBILE ── */
+      .folders-grid { grid-template-columns:repeat(2,1fr); gap:10px; }
+      .folder-title { font-size:0.95rem; }
+      .folder-desc { display:none; }
+      .folder-body { padding:10px 10px 12px; }
+      .folder-cover-count { font-size:0.82rem; bottom:8px; left:10px; }
     }
   </style>
 </head>
