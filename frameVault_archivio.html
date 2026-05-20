@@ -608,7 +608,6 @@ function apriCartella(id) {
   document.getElementById('vistaCartelle').style.display = 'none';
   document.getElementById('vistaFoto').style.display = 'block';
   document.getElementById('archiveHero').style.display = 'none';
-  document.getElementById('disclaimerTop').style.display = 'none';
   document.getElementById('filterBar').style.display = 'none';
   document.getElementById('sortSelect').style.display = '';
   renderGrid();
@@ -623,7 +622,6 @@ function tornaCartelle() {
   document.getElementById('vistaCartelle').style.display = 'block';
   document.getElementById('vistaFoto').style.display = 'none';
   document.getElementById('archiveHero').style.display = 'block';
-  document.getElementById('disclaimerTop').style.display = 'flex';
   document.getElementById('filterBar').style.display = 'flex';
   document.getElementById('sortSelect').style.display = 'none';
   document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
