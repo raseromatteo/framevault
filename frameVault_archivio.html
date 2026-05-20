@@ -54,20 +54,80 @@
     .dropdown-menu a:hover{color:var(--rust);background:#fdf5f0;padding-left:24px}
     .hamburger{display:none}
 
-    .page-header { background:var(--white); border-bottom:1px solid var(--border); padding:36px 48px 28px; }
-    .page-eyebrow { font-size:0.68rem; letter-spacing:3px; text-transform:uppercase; color:var(--rust); margin-bottom:8px; }
-    .page-header h1 { font-family:'Playfair Display',serif; font-size:2.2rem; font-weight:900; }
-    .page-header p { font-size:0.88rem; color:var(--ash); margin-top:6px; }
+    /* ── HERO GETTY-STYLE ── */
+    .archive-hero {
+      background: linear-gradient(135deg, #1c1712 0%, #2e2010 50%, #1c1712 100%);
+      padding: 56px 48px 48px; position: relative; overflow: hidden;
+    }
+    .archive-hero::before {
+      content:''; position:absolute; inset:0;
+      background-image: radial-gradient(circle at 20% 50%, rgba(184,66,10,.15) 0%, transparent 60%),
+                        radial-gradient(circle at 80% 20%, rgba(200,146,42,.08) 0%, transparent 50%);
+    }
+    .archive-hero-inner { position:relative; z-index:1; max-width:760px; margin:0 auto; text-align:center; }
+    .archive-hero-eyebrow { font-size:0.62rem; letter-spacing:3px; text-transform:uppercase; color:var(--rust); margin-bottom:14px; font-weight:600; }
+    .archive-hero-title { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:#f5f0e8; line-height:1.15; margin-bottom:32px; }
+    .archive-hero-search { margin-bottom:24px; }
+    .hero-search-box {
+      display:flex; align-items:center; gap:12px;
+      background:var(--white); border:2px solid var(--white);
+      padding:14px 16px; max-width:620px; margin:0 auto;
+      box-shadow:0 8px 32px rgba(0,0,0,.3);
+      transition: border-color .2s;
+    }
+    .hero-search-box:focus-within { border-color:var(--rust); }
+    .hero-search-box input {
+      flex:1; border:none; background:transparent; outline:none;
+      font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--ink);
+    }
+    .hero-search-box input::placeholder { color:var(--ash2, #a09589); }
+    .hero-search-btn {
+      background:var(--rust); color:#fff; border:none;
+      padding:10px 24px; font-family:'DM Sans',sans-serif;
+      font-size:0.82rem; font-weight:600; letter-spacing:1px;
+      text-transform:uppercase; cursor:pointer; transition:background .2s; white-space:nowrap;
+    }
+    .hero-search-btn:hover { background:var(--brown); }
+    .hero-search-hint { font-size:0.72rem; color:#5a4e42; margin-top:10px; }
+    .hero-search-hint span { color:#a09080; cursor:pointer; transition:color .15s; margin:0 2px; }
+    .hero-search-hint span:hover { color:var(--gold); }
+    .archive-hero-stats { display:flex; align-items:center; justify-content:center; gap:0; }
+    .hero-stat { text-align:center; padding:0 24px; }
+    .hero-stat strong { display:block; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:2px; color:#f5f0e8; line-height:1; }
+    .hero-stat span { font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:#5a4e42; margin-top:3px; display:block; }
+    .hero-stat-sep { width:1px; height:32px; background:#2e2820; }
 
-    .search-wrap { background:var(--bg2); border-bottom:1px solid var(--border); padding:18px 48px; display:flex; gap:12px; align-items:center; }
-    .search-box { flex:1; display:flex; align-items:center; background:var(--white); border:1.5px solid var(--border); border-radius:2px; overflow:hidden; transition:border-color .2s; }
-    .search-box:focus-within { border-color:var(--rust); }
-    .search-box input { flex:1; border:none; background:transparent; padding:12px 16px; font-family:'DM Sans',sans-serif; font-size:0.9rem; color:var(--ink); outline:none; }
-    .search-box input::placeholder { color:var(--ash); }
-    .search-btn { background:var(--rust); border:none; padding:12px 20px; cursor:pointer; color:#fff; font-size:1rem; transition:background .2s; }
-    .search-btn:hover { background:var(--brown); }
-    .results-count { font-size:0.8rem; color:var(--ash); white-space:nowrap; }
-    .sort-select { border:1.5px solid var(--border); background:var(--white); padding:10px 14px; font-family:'DM Sans',sans-serif; font-size:0.82rem; color:var(--ink); border-radius:2px; cursor:pointer; outline:none; }
+    /* ── DISCLAIMER ── */
+    .disclaimer-bar { background:var(--ink); padding:10px 48px; display:flex; align-items:center; gap:10px; }
+    .disclaimer-bar span { font-size:0.68rem; letter-spacing:1.2px; color:#5a4e42; line-height:1.5; }
+    .disclaimer-bar strong { color:#7a6e62; }
+
+    /* ── FILTER BAR ── */
+    .filter-bar {
+      background:var(--white); border-bottom:1px solid var(--border);
+      padding:0 48px; display:flex; align-items:center; gap:16px;
+      position:sticky; top:57px; z-index:190;
+    }
+    .filter-bar-inner { display:flex; align-items:center; gap:2px; flex:1; overflow-x:auto; }
+    .filter-bar-inner::-webkit-scrollbar { display:none; }
+    .fbar-btn {
+      padding:14px 18px; border:none; background:transparent;
+      font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500;
+      color:var(--ash); cursor:pointer; white-space:nowrap;
+      border-bottom:2px solid transparent; transition:all .15s;
+      display:flex; align-items:center; gap:6px;
+    }
+    .fbar-btn:hover { color:var(--ink); }
+    .fbar-btn.active { color:var(--ink); border-bottom-color:var(--rust); font-weight:600; }
+    .fbar-btn.fbar-soon { opacity:.45; cursor:not-allowed; }
+    .fbar-sep { width:1px; height:20px; background:var(--border); margin:0 8px; flex-shrink:0; }
+    .fbar-badge {
+      font-size:0.52rem; letter-spacing:1.5px; text-transform:uppercase;
+      background:var(--bg2); color:var(--ash); border:1px solid var(--border);
+      padding:2px 5px; border-radius:1px;
+    }
+
+    /* ── PAGE HEADER (dentro cartella) ── */
 
     /* ── VISTE ── */
     #vistaCartelle { display:block; }
@@ -250,16 +310,43 @@
   </ul>
 </nav>
 
-<div class="page-header">
-  <div class="page-eyebrow">Archivio Digitale · 500.000+ Immagini Originali</div>
-  <h1>Archivio Fotografico</h1>
-  <p>Cinema italiano, televisione RAI, fotografie di scena — dal 1970 ad oggi.</p>
+<div class="archive-hero" id="archiveHero">
+  <div class="archive-hero-inner">
+    <div class="archive-hero-eyebrow">GRM Foto S.r.l. — Archivio Storico</div>
+    <h1 class="archive-hero-title">500.000+ immagini originali<br>di cinema e televisione italiana</h1>
+    <div class="archive-hero-search">
+      <div class="hero-search-box">
+        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" style="flex-shrink:0;color:#7a6e62"><circle cx="7.5" cy="7.5" r="5.5" stroke="currentColor" stroke-width="1.6"/><line x1="11.5" y1="11.5" x2="16" y2="16" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        <input type="text" id="searchInput" placeholder="Cerca per personaggio, anno, evento..."/>
+        <button class="hero-search-btn" onclick="doSearch()">Cerca</button>
+      </div>
+      <div class="hero-search-hint">Prova: <span onclick="cercaQuick('Pippo Baudo')">Pippo Baudo</span> · <span onclick="cercaQuick('Troisi')">Massimo Troisi</span> · <span onclick="cercaQuick('Raffaella')">Raffaella Carrà</span></div>
+    </div>
+    <div class="archive-hero-stats">
+      <div class="hero-stat"><strong>1.190</strong><span>Stampe online ora</span></div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat"><strong>6</strong><span>Personaggi</span></div>
+      <div class="hero-stat-sep"></div>
+      <div class="hero-stat"><strong>30+</strong><span>Anni di storia</span></div>
+    </div>
+  </div>
 </div>
 
-<div class="search-wrap">
-  <div class="search-box">
-    <input type="text" id="searchInput" placeholder="Cerca per nome, personaggio, anno..." />
-    <button class="search-btn" onclick="doSearch()">🔍</button>
+<!-- DISCLAIMER -->
+<div class="disclaimer-bar" id="disclaimerTop">
+  <span>© <strong>GRM Foto S.r.l.</strong> — Tutte le immagini sono di proprietà esclusiva. Qualsiasi riproduzione non autorizzata è perseguibile ai sensi della Legge 633/1941 sul diritto d'autore.</span>
+</div>
+
+<!-- FILTRI ORIZZONTALI -->
+<div class="filter-bar" id="filterBar">
+  <div class="filter-bar-inner">
+    <button class="fbar-btn active" onclick="setFiltroBar(this,'tutti')">Tutti</button>
+    <button class="fbar-btn" onclick="setFiltroBar(this,'personaggi')">Personaggi</button>
+    <button class="fbar-btn" onclick="setFiltroBar(this,'stampe')">Stampe Originali Uniche</button>
+    <div class="fbar-sep"></div>
+    <button class="fbar-btn fbar-soon" disabled>Collezioni <span class="fbar-badge">Presto</span></button>
+    <button class="fbar-btn fbar-soon" disabled>Diapositive <span class="fbar-badge">Presto</span></button>
+    <button class="fbar-btn fbar-soon" disabled>Archivio Digitale <span class="fbar-badge">Presto</span></button>
   </div>
   <span class="results-count" id="resultsCount"></span>
   <select class="sort-select" id="sortSelect" onchange="renderGrid()" style="display:none">
@@ -321,11 +408,6 @@
   </div>
 </div>
 
-<div class="disclaimer-bar">
-  <span>© <strong>GRM Foto S.r.l.</strong> — Tutte le immagini sono di proprietà esclusiva. Qualsiasi riproduzione non autorizzata è perseguibile ai sensi della Legge 633/1941 sul diritto d'autore.</span>
-</div>
-
-<!-- MODAL -->
 <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
   <div class="modal">
     <button class="modal-close" onclick="closeModalDirect()">✕</button>
@@ -420,6 +502,19 @@ caricaCatalogo();
 function renderCartelle() {
   document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
 
+  const mostraPersonaggi = filtroBar === 'tutti' || filtroBar === 'personaggi';
+  const mostraStampe     = filtroBar === 'tutti' || filtroBar === 'stampe';
+
+  const gridP = document.getElementById('foldersPersonaggi');
+  const gridA = document.getElementById('foldersAltro');
+  const titleP = gridP.previousElementSibling;
+  const titleA = gridA.previousElementSibling;
+
+  titleP.style.display = mostraPersonaggi ? '' : 'none';
+  gridP.style.display  = mostraPersonaggi ? '' : 'none';
+  titleA.style.display = mostraStampe ? '' : 'none';
+  gridA.style.display  = mostraStampe ? '' : 'none';
+
   function buildFolderCard(c, foto, delay) {
     const cover = foto[0];
     const strip = foto.slice(1,5);
@@ -455,6 +550,21 @@ function renderCartelle() {
   document.getElementById('foldersAltro').innerHTML = buildFolderCard(CARTELLA_ALTRO, fotoAltro, 0);
 }
 
+// ── FILTRO BARRA ──────────────────────────────────────────────────────────
+let filtroBar = 'tutti';
+
+function setFiltroBar(btn, tipo) {
+  document.querySelectorAll('.fbar-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  filtroBar = tipo;
+  renderCartelle();
+}
+
+function cercaQuick(q) {
+  document.getElementById('searchInput').value = q;
+  doSearch();
+}
+
 function apriCartella(id) {
   cartellaAttiva = id;
   visibleCount = ITEMS_PER_LOAD;
@@ -466,6 +576,9 @@ function apriCartella(id) {
   document.getElementById('breadcrumbCurrent').textContent = info.title;
   document.getElementById('vistaCartelle').style.display = 'none';
   document.getElementById('vistaFoto').style.display = 'block';
+  document.getElementById('archiveHero').style.display = 'none';
+  document.getElementById('disclaimerTop').style.display = 'none';
+  document.getElementById('filterBar').style.display = 'none';
   document.getElementById('sortSelect').style.display = '';
   renderGrid();
   window.scrollTo({top:0, behavior:'smooth'});
@@ -478,6 +591,9 @@ function tornaCartelle() {
   document.getElementById('searchInput').value = '';
   document.getElementById('vistaCartelle').style.display = 'block';
   document.getElementById('vistaFoto').style.display = 'none';
+  document.getElementById('archiveHero').style.display = 'block';
+  document.getElementById('disclaimerTop').style.display = 'flex';
+  document.getElementById('filterBar').style.display = 'flex';
   document.getElementById('sortSelect').style.display = 'none';
   document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
   window.scrollTo({top:0, behavior:'smooth'});
