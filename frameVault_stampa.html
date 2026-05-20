@@ -318,33 +318,33 @@
 
     /* ── MOBILE ── */
     @media(max-width:900px) {
-      /* Layout verticale */
-      .print-layout {
-        grid-template-columns:1fr;
-        height:auto;
-      }
+      .print-layout { grid-template-columns:1fr; height:auto; }
 
-      /* Mockup: altezza fissa ragionevole, non troppo piccola */
-      .mockup-col {
-        height:70vw;
-        min-height:280px;
-        max-height:420px;
-      }
+      .mockup-col { height:72vw; min-height:240px; max-height:360px; }
 
-      /* Strip laterale più stretta su mobile */
-      .mock-gallery {
-        grid-template-columns: 64px 1fr;
-      }
-      .mock-gallery-strip-thumb {
-        width:52px; height:52px;
-      }
+      .mock-gallery { grid-template-columns: 48px 1fr; }
+      .mock-gallery-strip { padding:4px 3px; gap:3px; }
+      .mock-gallery-strip-thumb { width:40px; height:40px; }
 
-      /* Colonna config scrollabile */
-      .config-col {
-        height:auto;
-        overflow-y:visible;
+      /* Chiave: il frame non supera l'altezza disponibile */
+      .mock-gallery-main { padding:10px; }
+      .mock-gallery-frame {
+        padding:8px;
+        border-width:5px;
+        max-width:none;
+        width:auto;
+        max-height:100%;
       }
+      .mock-gallery-img {
+        max-height: calc(72vw - 46px);
+        width:auto;
+        max-width:100%;
+        margin:0 auto;
+        display:block;
+      }
+      .mock-gallery-caption { display:none; }
 
+      .config-col { height:auto; overflow-y:visible; }
       nav { padding:14px 20px; }
       .breadcrumb { padding:10px 20px; }
       .config-section { padding:16px 20px; }
