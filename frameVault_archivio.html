@@ -738,6 +738,76 @@ function renderActiveChips() {
   ).join('');
 }
 
+// ── SUPABASE ──────────────────────────────────────────────────────────────
+const SUPA_URL = 'https://qqlrjlyfvzqpqnwgrcwt.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxbHJqbHlmdnpxcHFud2dyY3d0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNjQ3OTQsImV4cCI6MjA5NDk0MDc5NH0.OtwLtyfx6FG0MLTHKUn3YrhUCVJ9RlXmNTccMYTL8tw';
+
+// Cache locale dei dati Supabase
+const supaCache = {};
+
+async function supaLoad(fotoId) {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/foto?foto_id=eq.${fotoId}&select=*`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+    });
+    const data = await res.json();
+    if (data && data.length > 0) {
+      supaCache[fotoId] = data[0];
+      return data[0];
+    }
+  } catch(e) { console.error('Supabase load error:', e); }
+  return null;
+}
+
+async function supaSave(fotoId, fields) {
+  try {
+    const existing = supaCache[fotoId];
+    if (existing) {
+      // Aggiorna record esistente
+      await fetch(`${SUPA_URL}/rest/v1/foto?foto_id=eq.${fotoId}`, {
+        method: 'PATCH',
+        headers: {
+          'apikey': SUPA_KEY,
+          'Authorization': `Bearer ${SUPA_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(fields)
+      });
+    } else {
+      // Crea nuovo record
+      const res = await fetch(`${SUPA_URL}/rest/v1/foto`, {
+        method: 'POST',
+        headers: {
+          'apikey': SUPA_KEY,
+          'Authorization': `Bearer ${SUPA_KEY}`,
+          'Content-Type': 'application/json',
+          'Prefer': 'return=representation'
+        },
+        body: JSON.stringify({ foto_id: fotoId, ...fields })
+      });
+      const data = await res.json();
+      if (data && data[0]) supaCache[fotoId] = data[0];
+    }
+    // Aggiorna cache
+    supaCache[fotoId] = { ...supaCache[fotoId], ...fields };
+    mostraNotifica('✓ Salvato');
+  } catch(e) { console.error('Supabase save error:', e); mostraNotifica('⚠ Errore salvataggio'); }
+}
+
+function mostraNotifica(testo) {
+  let n = document.getElementById('saveNotifica');
+  if (!n) {
+    n = document.createElement('div');
+    n.id = 'saveNotifica';
+    n.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1c1712;color:#fff;padding:10px 18px;font-size:0.78rem;letter-spacing:1px;z-index:9999;opacity:0;transition:opacity .3s;';
+    document.body.appendChild(n);
+  }
+  n.textContent = testo;
+  n.style.opacity = '1';
+  setTimeout(() => { n.style.opacity = '0'; }, 2000);
+}
+
 function openModal(id) {
   const item = rawData.find(x=>x.id===id);
   if (!item) return;
@@ -751,15 +821,52 @@ function openModal(id) {
     modalImg.style.backgroundImage='';
     modalImg.style.setProperty('--modal-grad', gradients[item.id%gradients.length]);
   }
+
+  // Carica dati da Supabase e popola modale
+  renderModalBase(item);
+  supaLoad(item.id).then(supaData => {
+    if (supaData) {
+      if (supaData.personaggio) { item.personaggio = supaData.personaggio; }
+      if (supaData.anno) { item.year = supaData.anno; }
+      if (supaData.tags) { item.tags = supaData.tags; }
+    }
+    renderModalBase(item);
+  });
+
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function renderModalBase(item) {
+  const tagsAttuali = item.tags || '';
+  const tagsArray = tagsAttuali ? tagsAttuali.split(',').map(t=>t.trim()).filter(Boolean) : [];
+
   document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
   document.getElementById('modalMeta').innerHTML=`
-    <span><strong>Personaggio:</strong> <input type="text" value="${item.personaggio||''}" placeholder="Nome personaggio"
-      style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
-      onchange="aggiornaPersonaggio(${item.id},this.value)"></span>
+    <span><strong>Personaggio:</strong>
+      <input type="text" id="inputPersonaggio_${item.id}" value="${item.personaggio||''}" placeholder="Nome personaggio"
+        style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
+        onchange="aggiornaPersonaggio(${item.id},this.value)">
+    </span>
     <span><strong>Tipologia:</strong> Stampe Originali Uniche</span>
-    <span><strong>Anno:</strong> <input type="number" value="${item.year}" min="1900" max="2030"
-      style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
-      onchange="aggiornaAnno(${item.id},this.value)"></span>`;
+    <span><strong>Anno:</strong>
+      <input type="number" id="inputAnno_${item.id}" value="${item.year}" min="1900" max="2030"
+        style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
+        onchange="aggiornaAnno(${item.id},this.value)">
+    </span>
+    <span style="margin-top:6px;">
+      <strong>Tag:</strong>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;" id="tagsWrap_${item.id}">
+        ${tagsArray.map(t=>`
+          <span style="background:#fdf0e8;border:1px solid #e8c4a8;color:var(--rust);font-size:0.68rem;padding:3px 8px;border-radius:2px;display:flex;align-items:center;gap:4px;">
+            ${t}<span style="cursor:pointer;font-weight:700;" onclick="rimuoviTag(${item.id},'${t}')">×</span>
+          </span>`).join('')}
+        <input type="text" placeholder="+ aggiungi tag" id="tagInput_${item.id}"
+          style="border:1px solid var(--border);border-radius:2px;padding:3px 8px;font-family:'DM Sans',sans-serif;font-size:0.68rem;color:var(--ink);width:120px;outline:none;"
+          onkeydown="if(event.key==='Enter'||event.key===','){event.preventDefault();aggiungiTag(${item.id},this.value);this.value='';}">
+      </div>
+    </span>`;
+
   document.getElementById('modalServices').innerHTML=`
     <div class="modal-service" onclick="apriStampa(${item.id})">
       <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
@@ -769,24 +876,48 @@ function openModal(id) {
       <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
       <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
     </div>`;
-  document.getElementById('modalOverlay').classList.add('open');
-  document.body.style.overflow='hidden';
-}
-function apriStampa(id) {
-  const item = rawData.find(x=>x.id===id);
-  if (!item) return;
-  const params = new URLSearchParams({
-    img: item.img || '',
-    titolo: item.personaggio || 'Archivio GRM Foto',
-    anno: item.year,
-    prezzo: item.prezzo,
-    cartella: item.cartelle?.[0] || 'altro'
-  });
-  window.location.href = `/frameVault_stampa.html?${params.toString()}`;
 }
 
-function aggiornaAnno(id,anno){const item=rawData.find(x=>x.id===id);if(item){item.year=parseInt(anno);document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;renderGrid();}}
-function aggiornaPersonaggio(id,nome){const item=rawData.find(x=>x.id===id);if(item){item.personaggio=nome;renderGrid();}}
+function aggiornaAnno(id, anno) {
+  const item = rawData.find(x=>x.id===id);
+  if (item) {
+    item.year = parseInt(anno);
+    document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
+    supaSave(id, { anno: item.year });
+    renderGrid();
+  }
+}
+
+function aggiornaPersonaggio(id, nome) {
+  const item = rawData.find(x=>x.id===id);
+  if (item) {
+    item.personaggio = nome;
+    supaSave(id, { personaggio: nome });
+    renderGrid();
+  }
+}
+
+function aggiungiTag(id, valore) {
+  const tag = valore.trim().toLowerCase().replace(/[^a-z0-9àèéìòùa-z\s\-]/gi,'');
+  if (!tag) return;
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  const tagsAttuali = item.tags ? item.tags.split(',').map(t=>t.trim()).filter(Boolean) : [];
+  if (tagsAttuali.includes(tag)) return;
+  tagsAttuali.push(tag);
+  item.tags = tagsAttuali.join(',');
+  supaSave(id, { tags: item.tags });
+  renderModalBase(item);
+}
+
+function rimuoviTag(id, tag) {
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  const tagsAttuali = item.tags ? item.tags.split(',').map(t=>t.trim()).filter(Boolean) : [];
+  item.tags = tagsAttuali.filter(t=>t!==tag).join(',');
+  supaSave(id, { tags: item.tags });
+  renderModalBase(item);
+}
 function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
 function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
