@@ -277,7 +277,10 @@
       .dropdown-menu a{font-size:.9rem!important;color:var(--ash)!important;border:none;padding:6px 12px!important}
       .main-content{padding:12px}
       .modal{grid-template-columns:1fr}
-      .modal-image{display:none}
+      .modal-image{display:block;aspect-ratio:4/3;max-height:240px;}
+      .modal-image::before{content:'';position:absolute;inset:0;background:var(--modal-grad,linear-gradient(160deg,#e8dfd0,#c9bca5));}
+      .modal-service{cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.1);}
+      .modal-service *{pointer-events:none;}
       .folders-section{padding:16px 12px}
       .breadcrumb{padding:10px 16px}
       .disclaimer-bar{padding:8px 16px}
@@ -868,10 +871,10 @@ function renderModalBase(item) {
     </span>`;
 
   document.getElementById('modalServices').innerHTML=`
-    <div class="modal-service" onclick="apriStampa(${item.id})">
+    <button class="modal-service" onclick="apriStampa(${item.id})" style="width:100%;text-align:left;background:none;cursor:pointer;">
       <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
       <div class="modal-service-price">da €${item.prezzo}</div>
-    </div>
+    </button>
     <div class="modal-service">
       <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
       <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
