@@ -136,6 +136,8 @@
     }
     .mock-gallery-img {
       width:100%;
+      height:auto;
+      max-height: calc(100vh - 200px);
       object-fit:contain;
       background:#f0ede8;
       display:block;
@@ -575,7 +577,13 @@ async function caricaCorrelati() {
       t.src = `/api/immagine?path=${item.img}`;
       t.onerror = ()=>{ t.style.background='#c8c0b8'; };
       t.onclick = () => {
-        document.getElementById('galleryImg').src = `/api/immagine?path=${item.img}`;
+        const mainImg = document.getElementById('galleryImg');
+        mainImg.style.opacity = '0.3';
+        mainImg.src = '';
+        setTimeout(() => {
+          mainImg.src = `/api/immagine?path=${item.img}`;
+          mainImg.style.opacity = '1';
+        }, 50);
         document.querySelectorAll('.mock-gallery-strip-thumb').forEach(x=>x.classList.remove('active'));
         t.classList.add('active');
       };
