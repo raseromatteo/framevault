@@ -870,11 +870,18 @@ function renderModalBase(item) {
       </div>
     </span>`;
 
+  const stampaParams = new URLSearchParams({
+    img: item.img || '',
+    titolo: item.personaggio || 'Archivio GRM Foto',
+    anno: item.year,
+    prezzo: item.prezzo,
+    cartella: item.cartelle?.[0] || 'altro'
+  });
   document.getElementById('modalServices').innerHTML=`
-    <button class="modal-service" onclick="apriStampa(${item.id})" style="width:100%;text-align:left;background:none;cursor:pointer;">
+    <a href="/frameVault_stampa.html?${stampaParams.toString()}" class="modal-service" style="text-decoration:none;display:flex;justify-content:space-between;align-items:center;">
       <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
       <div class="modal-service-price">da €${item.prezzo}</div>
-    </button>
+    </a>
     <div class="modal-service">
       <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
       <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
