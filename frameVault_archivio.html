@@ -526,6 +526,7 @@ async function caricaCatalogo() {
       prezzo: item.prezzo_stampa || 12,
       fmt: ['Stampa Carta','Download HD'],
       img: item.img,
+      rawTitolo: (item.titolo || '').toLowerCase(),
       cartelle: assegnaCartelle(item.titolo),
     }));
   } catch(e) { rawData = []; }
@@ -667,7 +668,7 @@ function getFiltered() {
   const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
     if (cartellaAttiva && cartellaAttiva !== '__search__' && !item.cartelle.includes(cartellaAttiva)) return false;
-    if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
+    if (searchQuery && !`${item.title} ${item.personaggio} ${item.year} ${item.rawTitolo}`.toLowerCase().includes(searchQuery)) return false;
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
     return true;
