@@ -668,7 +668,11 @@ function getFiltered() {
   const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
     if (cartellaAttiva && cartellaAttiva !== '__search__' && !item.cartelle.includes(cartellaAttiva)) return false;
-    if (searchQuery && !`${item.title} ${item.personaggio} ${item.year} ${item.rawTitolo}`.toLowerCase().includes(searchQuery)) return false;
+    if (searchQuery) {
+      const parole = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
+      const testo = `${item.title} ${item.personaggio} ${item.year} ${item.rawTitolo}`.toLowerCase();
+      if (!parole.every(p => testo.includes(p))) return false;
+    }
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
     return true;
