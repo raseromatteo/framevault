@@ -335,21 +335,25 @@
       .mock-gallery-strip { padding:4px 3px; gap:3px; }
       .mock-gallery-strip-thumb { width:40px; height:40px; }
 
-      /* Chiave: il frame non supera l'altezza disponibile */
-      .mock-gallery-main { padding:10px; }
+      .mock-gallery-main { padding:10px; overflow:hidden; }
       .mock-gallery-frame {
         padding:8px;
         border-width:5px;
-        max-width:none;
+        max-width:100%;
         width:auto;
         max-height:100%;
+        overflow:hidden;
+        display:flex;
+        align-items:center;
+        justify-content:center;
       }
       .mock-gallery-img {
-        max-height: calc(72vw - 46px);
+        max-height: calc(72vw - 56px);
+        max-width: 100%;
         width:auto;
-        max-width:100%;
-        margin:0 auto;
+        height:auto;
         display:block;
+        object-fit:contain;
       }
       .mock-gallery-caption { display:none; }
 
