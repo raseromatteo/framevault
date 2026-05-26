@@ -377,9 +377,9 @@
     <button class="fbar-btn active" onclick="setFiltroBar(this,'tutti')">Tutti</button>
     <button class="fbar-btn" onclick="setFiltroBar(this,'personaggi')">Personaggi</button>
     <button class="fbar-btn" onclick="setFiltroBar(this,'stampe')">Stampe Originali Uniche</button>
+    <button class="fbar-btn" onclick="setFiltroBar(this,'diapositive')">🎞 Diapositive</button>
     <div class="fbar-sep"></div>
     <button class="fbar-btn fbar-soon" disabled>Collezioni <span class="fbar-badge">Presto</span></button>
-    <button class="fbar-btn fbar-soon" disabled>Diapositive <span class="fbar-badge">Presto</span></button>
     <button class="fbar-btn fbar-soon" disabled>Archivio Digitale <span class="fbar-badge">Presto</span></button>
   </div>
   <span class="results-count" id="resultsCount"></span>
@@ -401,6 +401,9 @@
     <div class="folders-grid" id="foldersPersonaggi"></div>
     <div class="folders-section-title" style="margin-top:48px;">Archivio Generale</div>
     <div class="folders-grid" id="foldersAltro"></div>
+
+    <div class="folders-section-title" style="margin-top:48px;">🎞 Diapositive</div>
+    <div class="folders-grid" id="foldersDiapositive"></div>
   </div>
 </div>
 
@@ -515,20 +518,34 @@ async function caricaCatalogo() {
   try {
     const res = await fetch('/api/catalogo');
     const json = await res.json();
-    rawData = json.map(item => ({
-      id: item.id,
-      title: item.titolo || item.img,
-      personaggio: estraiPersonaggio(item.titolo),
-      year: (function(){ const t=(item.titolo||'').toLowerCase(); if(t.includes('troisi'))return 1982; return 1982+(item.id%4); })(),
-      genere: item.tipologia || 'Foto di Scena',
-      cat: 'Stampe Originali',
-      anni: item.anni || '',
-      prezzo: item.prezzo_stampa || 12,
-      fmt: ['Stampa Carta','Download HD'],
-      img: item.img,
-      rawTitolo: (item.titolo || '').toLowerCase(),
-      cartelle: assegnaCartelle(item.titolo),
-    }));
+    rawData = json.map(item => {
+      const isDiapo = item.archivio === 'diapositive';
+      // Per diapositive usa personaggio_cartella, per stampe estrai dal titolo IPTC
+      const personaggio = isDiapo
+        ? (item.personaggio_cartella || estraiPersonaggio(item.titolo) || '')
+        : estraiPersonaggio(item.titolo);
+
+      return {
+        id: item.id,
+        title: item.titolo || item.img,
+        personaggio: personaggio,
+        year: (function(){
+          if (item.anno && item.anno > 1960) return item.anno;
+          const t = (item.titolo||'').toLowerCase();
+          if (t.includes('troisi')) return 1982;
+          return 1982 + (item.id % 4);
+        })(),
+        genere: item.tipologia || 'Foto di Scena',
+        cat: isDiapo ? 'Diapositive' : 'Stampe Originali',
+        anni: item.anni || '',
+        prezzo: item.prezzo_stampa || 12,
+        fmt: ['Stampa Carta', 'Download HD'],
+        img: item.img,
+        archivio: item.archivio || 'stampe',
+        rawTitolo: (item.titolo || '').toLowerCase(),
+        cartelle: assegnaCartelle(isDiapo ? `Nella foto: ${personaggio}` : item.titolo),
+      };
+    });
   } catch(e) { rawData = []; }
   renderCartelle();
 }
@@ -539,27 +556,34 @@ function renderCartelle() {
 
   const mostraPersonaggi = filtroBar === 'tutti' || filtroBar === 'personaggi';
   const mostraStampe     = filtroBar === 'tutti' || filtroBar === 'stampe';
+  const mostraDiapo      = filtroBar === 'tutti' || filtroBar === 'diapositive';
 
   const gridP = document.getElementById('foldersPersonaggi');
   const gridA = document.getElementById('foldersAltro');
+  const gridD = document.getElementById('foldersDiapositive');
   const titleP = gridP.previousElementSibling;
   const titleA = gridA.previousElementSibling;
+  const titleD = gridD.previousElementSibling;
 
   titleP.style.display = mostraPersonaggi ? '' : 'none';
   gridP.style.display  = mostraPersonaggi ? '' : 'none';
   titleA.style.display = mostraStampe ? '' : 'none';
   gridA.style.display  = mostraStampe ? '' : 'none';
+  titleD.style.display = mostraDiapo ? '' : 'none';
+  gridD.style.display  = mostraDiapo ? '' : 'none';
 
   function buildFolderCard(c, foto, delay) {
     const cover = foto[0];
     const strip = foto.slice(1,5);
     const coverUrl = cover?.img ? `/api/immagine?path=${cover.img}` : null;
+    const nFoto = foto.length;
+    const labelFoto = c.archivio === 'diapositive' ? `${nFoto} diapositive` : `${nFoto} stampe originali`;
     return `
     <div class="folder-card" onclick="apriCartella('${c.id}')" style="animation-delay:${delay}s">
       <div class="folder-cover">
         ${coverUrl ? `<img class="folder-cover-img" src="${coverUrl}" alt="" onerror="this.style.display='none'">` : `<div class="folder-cover-placeholder">${c.emoji}</div>`}
         <div class="folder-cover-overlay"></div>
-        <div class="folder-cover-count">${foto.length} <span>foto</span></div>
+        <div class="folder-cover-count">${nFoto} <span>foto</span></div>
       </div>
       <div class="folder-strip">
         ${strip.map(f => f.img ? `<img class="folder-strip-img" src="/api/immagine?path=${f.img}" alt="" onerror="this.style.background='#e8dfd0'">` : `<div style="background:var(--bg2)"></div>`).join('')}
@@ -570,19 +594,43 @@ function renderCartelle() {
         <div class="folder-title">${c.title}</div>
         <div class="folder-desc">${c.desc}</div>
         <div class="folder-footer">
-          <span class="folder-count-label">${foto.length} stampe originali</span>
+          <span class="folder-count-label">${labelFoto}</span>
           <span class="folder-cta">Sfoglia →</span>
         </div>
       </div>
     </div>`;
   }
 
+  // Cartelle personaggio — mix stampe + diapositive
   document.getElementById('foldersPersonaggi').innerHTML = CARTELLE.map((c,i) =>
     buildFolderCard(c, rawData.filter(f => f.cartelle.includes(c.id)), i*0.08)
   ).join('');
 
-  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro'));
+  // Stampe originali varie
+  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro') && f.archivio === 'stampe');
   document.getElementById('foldersAltro').innerHTML = buildFolderCard(CARTELLA_ALTRO, fotoAltro, 0);
+
+  // Diapositive — una cartella per ogni personaggio unico
+  const personaggiDiapo = {};
+  rawData.filter(f => f.archivio === 'diapositive').forEach(f => {
+    const p = f.personaggio || 'Archivio';
+    if (!personaggiDiapo[p]) personaggiDiapo[p] = [];
+    personaggiDiapo[p].push(f);
+  });
+
+  document.getElementById('foldersDiapositive').innerHTML = Object.entries(personaggiDiapo)
+    .sort((a,b) => b[1].length - a[1].length)
+    .map(([nome, foto], i) => {
+      const fakeCartella = {
+        id: `diapo_${nome.replace(/\s+/g,'_').toLowerCase()}`,
+        label: '🎞 Diapositiva',
+        title: nome,
+        desc: `${foto.length} diapositive originali`,
+        emoji: '🎞',
+        archivio: 'diapositive'
+      };
+      return buildFolderCard(fakeCartella, foto, i*0.03);
+    }).join('');
 }
 
 // ── FILTRO BARRA ──────────────────────────────────────────────────────────
@@ -607,12 +655,20 @@ function apriCartella(id) {
   searchQuery = '';
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-  const info = id === 'altro' ? CARTELLA_ALTRO : CARTELLE.find(c => c.id === id);
-  document.getElementById('breadcrumbCurrent').textContent = info.title;
+
+  let titolo = '';
+  if (id === 'altro') {
+    titolo = CARTELLA_ALTRO.title;
+  } else if (id.startsWith('diapo_')) {
+    titolo = id.replace('diapo_','').replace(/_/g,' ');
+  } else {
+    titolo = CARTELLE.find(c => c.id === id)?.title || id;
+  }
+
+  document.getElementById('breadcrumbCurrent').textContent = titolo;
   document.getElementById('vistaCartelle').style.display = 'none';
   document.getElementById('vistaFoto').style.display = 'block';
   document.getElementById('archiveHero').style.display = 'none';
-  
   document.getElementById('filterBar').style.display = 'none';
   document.getElementById('sortSelect').style.display = '';
   renderGrid();
@@ -667,7 +723,16 @@ function clearFilters() {
 function getFiltered() {
   const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
-    if (cartellaAttiva && cartellaAttiva !== '__search__' && !item.cartelle.includes(cartellaAttiva)) return false;
+    if (cartellaAttiva && cartellaAttiva !== '__search__') {
+      if (cartellaAttiva.startsWith('diapo_')) {
+        // Cartella diapositiva — filtra per personaggio
+        const nomePersonaggio = cartellaAttiva.replace('diapo_','').replace(/_/g,' ');
+        if (item.archivio !== 'diapositive') return false;
+        if (item.personaggio !== nomePersonaggio) return false;
+      } else {
+        if (!item.cartelle.includes(cartellaAttiva)) return false;
+      }
+    }
     if (searchQuery) {
       const parole = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
       const testo = `${item.title} ${item.personaggio} ${item.year} ${item.rawTitolo}`.toLowerCase();
@@ -716,7 +781,7 @@ function renderGrid() {
         <div class="card-meta">${item.genere}</div>
         <div class="card-footer">
           <div class="card-price">da €${item.prezzo}</div>
-          <span class="card-category">Stampa Orig.</span>
+          <span class="card-category">${item.archivio === 'diapositive' ? '🎞 Diapositiva' : 'Stampa Orig.'}</span>
         </div>
       </div>
     </div>`;
