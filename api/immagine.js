@@ -3,11 +3,18 @@ export default async function handler(req, res) {
     const { path } = req.query;
     if (!path) return res.status(400).json({ error: 'Path mancante' });
 
-    // Prova prima con il nome as-is, poi con .JPG maiuscolo
+    const BASE = 'https://grmfoto.myds.me/framevault-media/anteprime';
+
+    // Prova tutti i percorsi possibili: stampe e diapositive, maiuscolo e minuscolo
     const urls = [
-      `https://grmfoto.myds.me/framevault-media/anteprime/catalogo/${path}`,
-      `https://grmfoto.myds.me/framevault-media/anteprime/catalogo/${path.replace('.jpg', '.JPG')}`,
-      `https://grmfoto.myds.me/framevault-media/anteprime/catalogo/${path.toUpperCase()}`,
+      // Stampe originali
+      `${BASE}/catalogo/${path}`,
+      `${BASE}/catalogo/${path.replace('.jpg', '.JPG')}`,
+      `${BASE}/catalogo/${path.toUpperCase()}`,
+      // Diapositive
+      `${BASE}/diapositive/${path}`,
+      `${BASE}/diapositive/${path.replace('.jpg', '.JPG')}`,
+      `${BASE}/diapositive/${path.toUpperCase()}`,
     ];
 
     let response;
