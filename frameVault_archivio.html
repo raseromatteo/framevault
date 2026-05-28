@@ -57,20 +57,7 @@
     /* ── HERO GETTY-STYLE ── */
     .archive-hero {
       background: linear-gradient(135deg, #1c1712 0%, #2e2010 50%, #1c1712 100%);
-      padding: 56px 48px 48px; position: sticky; top: 57px; z-index: 190; overflow: hidden;
-      transition: padding .3s ease;
-    }
-    .archive-hero.compact {
-      padding: 12px 48px;
-    }
-    .archive-hero.compact .archive-hero-eyebrow,
-    .archive-hero.compact .archive-hero-title,
-    .archive-hero.compact .archive-hero-suggestions,
-    .archive-hero.compact .archive-hero-stats {
-      display: none;
-    }
-    .archive-hero.compact .archive-hero-search {
-      margin-bottom: 0;
+      padding: 56px 48px 48px; position: relative; overflow: hidden;
     }
     .archive-hero::before {
       content:''; position:absolute; inset:0;
@@ -121,6 +108,24 @@
       padding:0 48px; display:flex; align-items:center; gap:16px;
       position:sticky; top:57px; z-index:180;
     }
+    .filter-bar-search {
+      display:none; align-items:center; gap:8px;
+      border-left:1px solid var(--border); padding-left:16px; margin-left:4px;
+    }
+    .filter-bar-search.visible { display:flex; }
+    .filter-bar-search input {
+      border:1px solid var(--border); background:var(--bg);
+      padding:5px 10px; font-family:'DM Sans',sans-serif;
+      font-size:0.78rem; color:var(--ink); outline:none; width:180px;
+      transition:border-color .2s;
+    }
+    .filter-bar-search input:focus { border-color:var(--rust); }
+    .filter-bar-search button {
+      background:var(--rust); border:none; color:#fff;
+      padding:5px 12px; cursor:pointer; font-size:0.75rem;
+      font-family:'DM Sans',sans-serif; transition:background .2s;
+    }
+    .filter-bar-search button:hover { background:var(--brown); }
     .filter-bar-inner { display:flex; align-items:center; gap:2px; flex:1; overflow-x:auto; }
     .filter-bar-inner::-webkit-scrollbar { display:none; }
     .fbar-btn {
@@ -231,7 +236,7 @@
     /* ── MODAL ── */
     .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; }
     .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal { background:var(--white); width:95%; max-width:960px; max-height:90vh; overflow-y:auto; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:relative; transform:translateY(20px); transition:transform .3s; }
+    .modal { background:var(--white); width:90%; max-width:860px; max-height:90vh; overflow-y:auto; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:relative; transform:translateY(20px); transition:transform .3s; }
     .modal-overlay.open .modal { transform:translateY(0); }
     .modal-close { position:absolute; top:16px; right:16px; background:var(--bg2); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; color:var(--ash); z-index:2; display:flex; align-items:center; justify-content:center; }
     .modal-image { aspect-ratio:3/4; background:var(--bg2); position:relative; overflow:hidden; }
@@ -394,6 +399,11 @@
     <div class="fbar-sep"></div>
     <button class="fbar-btn fbar-soon" disabled>Collezioni <span class="fbar-badge">Presto</span></button>
     <button class="fbar-btn fbar-soon" disabled>Archivio Digitale <span class="fbar-badge">Presto</span></button>
+  </div>
+  <div class="filter-bar-search" id="filterBarSearch">
+    <input type="text" id="searchInputSticky" placeholder="🔍 Cerca..." 
+      onkeydown="if(event.key==='Enter'){doSearchSticky();}">
+    <button onclick="doSearchSticky()">Cerca</button>
   </div>
   <span class="results-count" id="resultsCount"></span>
   <select class="sort-select" id="sortSelect" onchange="renderGrid()" style="display:none">
@@ -913,7 +923,6 @@ function openModal(id) {
   supaLoad(item.id).then(supaData => {
     if (supaData) {
       if (supaData.personaggio) { item.personaggio = supaData.personaggio; }
-      if (supaData.anno) { item.year = supaData.anno; }
       if (supaData.tags) { item.tags = supaData.tags; }
       if (supaData.rotazione) { item.rotazione = supaData.rotazione; }
     }
@@ -1059,18 +1068,33 @@ function closeModal(e){if(e.target===document.getElementById('modalOverlay'))clo
 function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
 
-// ── HERO COMPATTO ALLO SCROLL ─────────────────────────────────────────────
+// ── MINI SEARCH STICKY ───────────────────────────────────────────────────
+const heroEl = document.getElementById('archiveHero');
+const miniSearch = document.getElementById('filterBarSearch');
+
 window.addEventListener('scroll', () => {
-  const hero = document.getElementById('archiveHero');
-  const filterBar = document.getElementById('filterBar');
-  if (!hero || hero.style.display === 'none') return;
-  const isCompact = window.scrollY > 120;
-  hero.classList.toggle('compact', isCompact);
-  // Filter bar scende sotto l'hero
-  if (filterBar) {
-    filterBar.style.top = isCompact ? (57 + hero.offsetHeight) + 'px' : '57px';
-  }
+  if (!heroEl || heroEl.style.display === 'none') return;
+  const heroBottom = heroEl.getBoundingClientRect().bottom;
+  if (miniSearch) miniSearch.classList.toggle('visible', heroBottom < 57);
 }, { passive: true });
+
+function doSearchSticky() {
+  const q = document.getElementById('searchInputSticky').value.trim();
+  if (!q) return;
+  document.getElementById('searchInput').value = q;
+  searchQuery = q.toLowerCase();
+  if (!cartellaAttiva) {
+    cartellaAttiva = '__search__';
+    document.getElementById('breadcrumbCurrent').textContent = `Ricerca: "${q}"`;
+    document.getElementById('vistaCartelle').style.display = 'none';
+    document.getElementById('vistaFoto').style.display = 'block';
+    document.getElementById('sortSelect').style.display = '';
+  }
+  visibleCount = ITEMS_PER_LOAD;
+  renderGrid();
+  // Sincronizza con la search principale
+  document.getElementById('searchInput').value = q;
+}
 
 function toggleMenu(){const menu=document.getElementById('navMenu');const btn=document.getElementById('hamburger');menu.classList.toggle('open');btn.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
 document.querySelectorAll('#navMenu a').forEach(a=>{a.addEventListener('click',()=>{document.getElementById('navMenu').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';});});
