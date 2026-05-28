@@ -57,7 +57,20 @@
     /* ── HERO GETTY-STYLE ── */
     .archive-hero {
       background: linear-gradient(135deg, #1c1712 0%, #2e2010 50%, #1c1712 100%);
-      padding: 56px 48px 48px; position: relative; overflow: hidden;
+      padding: 56px 48px 48px; position: sticky; top: 57px; z-index: 190; overflow: hidden;
+      transition: padding .3s ease;
+    }
+    .archive-hero.compact {
+      padding: 12px 48px;
+    }
+    .archive-hero.compact .archive-hero-eyebrow,
+    .archive-hero.compact .archive-hero-title,
+    .archive-hero.compact .archive-hero-suggestions,
+    .archive-hero.compact .archive-hero-stats {
+      display: none;
+    }
+    .archive-hero.compact .archive-hero-search {
+      margin-bottom: 0;
     }
     .archive-hero::before {
       content:''; position:absolute; inset:0;
@@ -1001,6 +1014,13 @@ function rimuoviTag(id, tag) {
 function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
 function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
+
+// ── HERO COMPATTO ALLO SCROLL ─────────────────────────────────────────────
+window.addEventListener('scroll', () => {
+  const hero = document.getElementById('archiveHero');
+  if (!hero || hero.style.display === 'none') return;
+  hero.classList.toggle('compact', window.scrollY > 120);
+}, { passive: true });
 
 function toggleMenu(){const menu=document.getElementById('navMenu');const btn=document.getElementById('hamburger');menu.classList.toggle('open');btn.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
 document.querySelectorAll('#navMenu a').forEach(a=>{a.addEventListener('click',()=>{document.getElementById('navMenu').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';});});
