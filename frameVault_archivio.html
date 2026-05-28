@@ -106,7 +106,22 @@
     .filter-bar {
       background:var(--white); border-bottom:1px solid var(--border);
       padding:0 48px; display:flex; align-items:center; gap:16px;
-      position:sticky; top:57px; z-index:190;
+      position:sticky; top:57px; z-index:180;
+    }
+    .filter-bar-search {
+      display:none; align-items:center; gap:8px;
+      border-left:1px solid var(--border); padding-left:16px; margin-left:4px;
+    }
+    .filter-bar-search.visible { display:flex; }
+    .filter-bar-search input {
+      border:1px solid var(--border); background:var(--bg);
+      padding:5px 10px; font-family:'DM Sans',sans-serif;
+      font-size:0.78rem; color:var(--ink); outline:none; width:180px;
+    }
+    .filter-bar-search button {
+      background:var(--rust); border:none; color:#fff;
+      padding:5px 12px; cursor:pointer; font-size:0.75rem;
+      font-family:'DM Sans',sans-serif;
     }
     .filter-bar-inner { display:flex; align-items:center; gap:2px; flex:1; overflow-x:auto; }
     .filter-bar-inner::-webkit-scrollbar { display:none; }
@@ -359,9 +374,9 @@
       <div class="hero-search-hint">Prova: <span onclick="cercaQuick('Pippo Baudo')">Pippo Baudo</span> · <span onclick="cercaQuick('Troisi')">Massimo Troisi</span> · <span onclick="cercaQuick('Raffaella')">Raffaella Carrà</span></div>
     </div>
     <div class="archive-hero-stats">
-      <div class="hero-stat"><strong>1.190</strong><span>Stampe online ora</span></div>
+      <div class="hero-stat"><strong>4.304</strong><span>Immagini in archivio</span></div>
       <div class="hero-stat-sep"></div>
-      <div class="hero-stat"><strong>6</strong><span>Personaggi</span></div>
+      <div class="hero-stat"><strong>498</strong><span>Personaggi</span></div>
       <div class="hero-stat-sep"></div>
       <div class="hero-stat"><strong>30+</strong><span>Anni di storia</span></div>
     </div>
@@ -379,10 +394,14 @@
     <button class="fbar-btn active" onclick="setFiltroBar(this,'tutti')">Tutti</button>
     <button class="fbar-btn" onclick="setFiltroBar(this,'personaggi')">Personaggi</button>
     <button class="fbar-btn" onclick="setFiltroBar(this,'stampe')">Stampe Originali Uniche</button>
+    <button class="fbar-btn" onclick="setFiltroBar(this,'diapositive')">🎞 Diapositive</button>
     <div class="fbar-sep"></div>
     <button class="fbar-btn fbar-soon" disabled>Collezioni <span class="fbar-badge">Presto</span></button>
-    <button class="fbar-btn fbar-soon" disabled>Diapositive <span class="fbar-badge">Presto</span></button>
     <button class="fbar-btn fbar-soon" disabled>Archivio Digitale <span class="fbar-badge">Presto</span></button>
+  </div>
+  <div class="filter-bar-search" id="filterBarSearch">
+    <input type="text" id="searchInputSticky" placeholder="🔍 Cerca..." onkeydown="if(event.key==='Enter'){doSearchSticky();}">
+    <button onclick="doSearchSticky()">Cerca</button>
   </div>
   <span class="results-count" id="resultsCount"></span>
   <select class="sort-select" id="sortSelect" onchange="renderGrid()" style="display:none">
@@ -403,6 +422,9 @@
     <div class="folders-grid" id="foldersPersonaggi"></div>
     <div class="folders-section-title" style="margin-top:48px;">Archivio Generale</div>
     <div class="folders-grid" id="foldersAltro"></div>
+
+    <div class="folders-section-title" style="margin-top:48px;">🎞 Diapositive</div>
+    <div class="folders-grid" id="foldersDiapositive"></div>
   </div>
 </div>
 
@@ -513,24 +535,55 @@ function estraiPersonaggio(titolo) {
   return '';
 }
 
+const SUPA_URL = 'https://qqlrjlyfvzqpqnwgrcwt.supabase.co';
+const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxbHJqbHlmdnpxcHFud2dyY3d0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNjQ3OTQsImV4cCI6MjA5NDk0MDc5NH0.OtwLtyfx6FG0MLTHKUn3YrhUCVJ9RlXmNTccMYTL8tw';
+const supaCache = {};
+
 async function caricaCatalogo() {
   try {
     const res = await fetch('/api/catalogo');
     const json = await res.json();
-    rawData = json.map(item => ({
-      id: item.id,
-      title: item.titolo || item.img,
-      personaggio: estraiPersonaggio(item.titolo),
-      year: (function(){ const t=(item.titolo||'').toLowerCase(); if(t.includes('troisi'))return 1982; return 1982+(item.id%4); })(),
-      genere: item.tipologia || 'Foto di Scena',
-      cat: 'Stampe Originali',
-      anni: item.anni || '',
-      prezzo: item.prezzo_stampa || 12,
-      fmt: ['Stampa Carta','Download HD'],
-      img: item.img,
-      cartelle: assegnaCartelle(item.titolo),
-    }));
+    rawData = json.map(item => {
+      const isDiapo = item.archivio === 'diapositive';
+      const personaggio = isDiapo
+        ? (item.personaggio || item.personaggio_cartella || estraiPersonaggio(item.titolo) || '')
+        : estraiPersonaggio(item.titolo);
+      return {
+        id: item.id,
+        title: item.titolo || item.img,
+        personaggio: personaggio,
+        year: (function(){ if(item.anno && item.anno > 1960) return item.anno; const t=(item.titolo||'').toLowerCase(); if(t.includes('troisi'))return 1982; return 1982+(item.id%4); })(),
+        genere: item.tipologia || 'Foto di Scena',
+        cat: isDiapo ? 'Diapositive' : 'Stampe Originali',
+        anni: item.anni || '',
+        prezzo: item.prezzo_stampa || 12,
+        fmt: ['Stampa Carta','Download HD'],
+        img: item.img,
+        archivio: item.archivio || 'stampe',
+        rawTitolo: (item.titolo || '').toLowerCase(),
+        rotazione: 0,
+        cartelle: assegnaCartelle(isDiapo ? `Nella foto: ${personaggio}` : item.titolo),
+      };
+    });
   } catch(e) { rawData = []; }
+
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/foto?select=foto_id,rotazione,personaggio,tags`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+    });
+    const supaRows = await res.json();
+    if (Array.isArray(supaRows)) {
+      supaRows.forEach(row => {
+        const item = rawData.find(x => x.id === row.foto_id);
+        if (item) {
+          if (row.rotazione) item.rotazione = row.rotazione;
+          if (row.personaggio) item.personaggio = row.personaggio;
+          if (row.tags) item.tags = row.tags;
+        }
+      });
+    }
+  } catch(e) {}
+
   renderCartelle();
 }
 caricaCatalogo();
@@ -540,27 +593,34 @@ function renderCartelle() {
 
   const mostraPersonaggi = filtroBar === 'tutti' || filtroBar === 'personaggi';
   const mostraStampe     = filtroBar === 'tutti' || filtroBar === 'stampe';
+  const mostraDiapo      = filtroBar === 'tutti' || filtroBar === 'diapositive';
 
   const gridP = document.getElementById('foldersPersonaggi');
   const gridA = document.getElementById('foldersAltro');
+  const gridD = document.getElementById('foldersDiapositive');
   const titleP = gridP.previousElementSibling;
   const titleA = gridA.previousElementSibling;
+  const titleD = gridD.previousElementSibling;
 
   titleP.style.display = mostraPersonaggi ? '' : 'none';
   gridP.style.display  = mostraPersonaggi ? '' : 'none';
   titleA.style.display = mostraStampe ? '' : 'none';
   gridA.style.display  = mostraStampe ? '' : 'none';
+  titleD.style.display = mostraDiapo ? '' : 'none';
+  gridD.style.display  = mostraDiapo ? '' : 'none';
 
   function buildFolderCard(c, foto, delay) {
     const cover = foto[0];
     const strip = foto.slice(1,5);
     const coverUrl = cover?.img ? `/api/immagine?path=${cover.img}` : null;
+    const nFoto = foto.length;
+    const labelFoto = c.archivio === 'diapositive' ? `${nFoto} diapositive` : `${nFoto} stampe originali`;
     return `
     <div class="folder-card" onclick="apriCartella('${c.id}')" style="animation-delay:${delay}s">
       <div class="folder-cover">
-        ${coverUrl ? `<img class="folder-cover-img" src="${coverUrl}" alt="" onerror="this.style.display='none'">` : `<div class="folder-cover-placeholder">${c.emoji}</div>`}
+        ${coverUrl ? `<img class="folder-cover-img" src="${coverUrl}" alt="" onerror="this.style.display='none'" style="transform:rotate(${cover.rotazione||0}deg)">` : `<div class="folder-cover-placeholder">${c.emoji}</div>`}
         <div class="folder-cover-overlay"></div>
-        <div class="folder-cover-count">${foto.length} <span>foto</span></div>
+        <div class="folder-cover-count">${nFoto} <span>foto</span></div>
       </div>
       <div class="folder-strip">
         ${strip.map(f => f.img ? `<img class="folder-strip-img" src="/api/immagine?path=${f.img}" alt="" onerror="this.style.background='#e8dfd0'">` : `<div style="background:var(--bg2)"></div>`).join('')}
@@ -571,7 +631,7 @@ function renderCartelle() {
         <div class="folder-title">${c.title}</div>
         <div class="folder-desc">${c.desc}</div>
         <div class="folder-footer">
-          <span class="folder-count-label">${foto.length} stampe originali</span>
+          <span class="folder-count-label">${labelFoto}</span>
           <span class="folder-cta">Sfoglia →</span>
         </div>
       </div>
@@ -582,8 +642,22 @@ function renderCartelle() {
     buildFolderCard(c, rawData.filter(f => f.cartelle.includes(c.id)), i*0.08)
   ).join('');
 
-  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro'));
+  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro') && f.archivio === 'stampe');
   document.getElementById('foldersAltro').innerHTML = buildFolderCard(CARTELLA_ALTRO, fotoAltro, 0);
+
+  const personaggiDiapo = {};
+  rawData.filter(f => f.archivio === 'diapositive').forEach(f => {
+    const p = f.personaggio || 'Archivio';
+    if (!personaggiDiapo[p]) personaggiDiapo[p] = [];
+    personaggiDiapo[p].push(f);
+  });
+
+  document.getElementById('foldersDiapositive').innerHTML = Object.entries(personaggiDiapo)
+    .sort((a,b) => b[1].length - a[1].length)
+    .map(([nome, foto], i) => {
+      const fakeCartella = { id: `diapo_${nome.replace(/\s+/g,'_').toLowerCase()}`, label: '🎞 Diapositiva', title: nome, desc: `${foto.length} diapositive originali`, emoji: '🎞', archivio: 'diapositive' };
+      return buildFolderCard(fakeCartella, foto, i*0.03);
+    }).join('');
 }
 
 // ── FILTRO BARRA ──────────────────────────────────────────────────────────
@@ -608,12 +682,14 @@ function apriCartella(id) {
   searchQuery = '';
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-  const info = id === 'altro' ? CARTELLA_ALTRO : CARTELLE.find(c => c.id === id);
-  document.getElementById('breadcrumbCurrent').textContent = info.title;
+  let titolo = '';
+  if (id === 'altro') titolo = CARTELLA_ALTRO.title;
+  else if (id.startsWith('diapo_')) titolo = id.replace('diapo_','').replace(/_/g,' ');
+  else titolo = CARTELLE.find(c => c.id === id)?.title || id;
+  document.getElementById('breadcrumbCurrent').textContent = titolo;
   document.getElementById('vistaCartelle').style.display = 'none';
   document.getElementById('vistaFoto').style.display = 'block';
   document.getElementById('archiveHero').style.display = 'none';
-  document.getElementById('disclaimerTop').style.display = 'none';
   document.getElementById('filterBar').style.display = 'none';
   document.getElementById('sortSelect').style.display = '';
   renderGrid();
@@ -668,7 +744,15 @@ function clearFilters() {
 function getFiltered() {
   const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
-    if (cartellaAttiva && cartellaAttiva !== '__search__' && !item.cartelle.includes(cartellaAttiva)) return false;
+    if (cartellaAttiva && cartellaAttiva !== '__search__') {
+      if (cartellaAttiva.startsWith('diapo_')) {
+        const nomePersonaggio = cartellaAttiva.replace('diapo_','').replace(/_/g,' ').toLowerCase();
+        if (item.archivio !== 'diapositive') return false;
+        if ((item.personaggio || '').toLowerCase() !== nomePersonaggio) return false;
+      } else {
+        if (!item.cartelle.includes(cartellaAttiva)) return false;
+      }
+    }
     if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
@@ -697,11 +781,11 @@ function renderGrid() {
     const g = gradients[item.id%gradients.length];
     const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
     const thumbStyle = imgUrl ? '' : `--grad:${g}`;
-    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;"
+    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;transform:rotate(${item.rotazione||0}deg);"
       onload="(function(img){if(img.naturalWidth>img.naturalHeight){img.closest('.card-thumb').style.aspectRatio='4/3';}else{img.closest('.card-thumb').style.aspectRatio='3/4';}})(this)"
       onerror="this.style.display='none'">` : '';
     return `
-    <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
+    <div class="card" data-id="${item.id}" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
       <div class="card-thumb" style="${thumbStyle};position:relative;">
         ${imgTag}
         <div class="card-year-badge">${item.year}</div>
@@ -713,7 +797,7 @@ function renderGrid() {
         <div class="card-meta">${item.genere}</div>
         <div class="card-footer">
           <div class="card-price">da €${item.prezzo}</div>
-          <span class="card-category">Stampa Orig.</span>
+          <span class="card-category">${item.archivio === 'diapositive' ? '🎞 Diapositiva' : 'Stampa Orig.'}</span>
         </div>
       </div>
     </div>`;
@@ -792,6 +876,170 @@ function apriStampa(id) {
 
 function aggiornaAnno(id,anno){const item=rawData.find(x=>x.id===id);if(item){item.year=parseInt(anno);document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;renderGrid();}}
 function aggiornaPersonaggio(id,nome){const item=rawData.find(x=>x.id===id);if(item){item.personaggio=nome;renderGrid();}}
+// ── SUPABASE ──────────────────────────────────────────────────────────────
+async function supaLoad(fotoId) {
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/foto?foto_id=eq.${fotoId}&select=*`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+    });
+    const data = await res.json();
+    if (data && data.length > 0) { supaCache[fotoId] = data[0]; return data[0]; }
+  } catch(e) {}
+  return null;
+}
+
+async function supaSave(fotoId, fields) {
+  try {
+    const existing = supaCache[fotoId];
+    if (existing) {
+      await fetch(`${SUPA_URL}/rest/v1/foto?foto_id=eq.${fotoId}`, {
+        method: 'PATCH',
+        headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=minimal' },
+        body: JSON.stringify(fields)
+      });
+    } else {
+      const res = await fetch(`${SUPA_URL}/rest/v1/foto`, {
+        method: 'POST',
+        headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}`, 'Content-Type': 'application/json', 'Prefer': 'return=representation' },
+        body: JSON.stringify({ foto_id: fotoId, ...fields })
+      });
+      const data = await res.json();
+      if (data && data[0]) supaCache[fotoId] = data[0];
+    }
+    supaCache[fotoId] = { ...supaCache[fotoId], ...fields };
+    mostraNotifica('✓ Salvato');
+  } catch(e) { mostraNotifica('⚠ Errore salvataggio'); }
+}
+
+function mostraNotifica(testo) {
+  let n = document.getElementById('saveNotifica');
+  if (!n) {
+    n = document.createElement('div');
+    n.id = 'saveNotifica';
+    n.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1c1712;color:#fff;padding:10px 18px;font-size:0.78rem;letter-spacing:1px;z-index:9999;opacity:0;transition:opacity .3s;';
+    document.body.appendChild(n);
+  }
+  n.textContent = testo; n.style.opacity = '1';
+  setTimeout(() => { n.style.opacity = '0'; }, 2000);
+}
+
+function openModal(id) {
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  const modalImg = document.getElementById('modalImage');
+  if (item.img) {
+    modalImg.style.backgroundImage=`url('/api/immagine?path=${item.img}')`;
+    modalImg.style.backgroundSize='contain'; modalImg.style.backgroundPosition='center';
+    modalImg.style.backgroundRepeat='no-repeat'; modalImg.style.backgroundColor='#ede8df';
+    modalImg.style.setProperty('--modal-grad','none');
+  } else {
+    modalImg.style.backgroundImage='';
+    modalImg.style.setProperty('--modal-grad', gradients[item.id%gradients.length]);
+  }
+  renderModalBase(item);
+  supaLoad(item.id).then(supaData => {
+    if (supaData) {
+      if (supaData.personaggio) item.personaggio = supaData.personaggio;
+      if (supaData.tags) item.tags = supaData.tags;
+      if (supaData.rotazione) item.rotazione = supaData.rotazione;
+    }
+    renderModalBase(item);
+  });
+  document.getElementById('modalOverlay').classList.add('open');
+  document.body.style.overflow='hidden';
+}
+
+function renderModalBase(item) {
+  const tagsAttuali = item.tags || '';
+  const tagsArray = tagsAttuali ? tagsAttuali.split(',').map(t=>t.trim()).filter(Boolean) : [];
+  const rotazione = item.rotazione || 0;
+  document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
+  const modalImg = document.getElementById('modalImage');
+  if (item.img) {
+    modalImg.style.backgroundImage=`url('/api/immagine?path=${item.img}')`;
+    modalImg.style.backgroundSize='contain'; modalImg.style.backgroundPosition='center';
+    modalImg.style.backgroundRepeat='no-repeat'; modalImg.style.backgroundColor='#ede8df';
+    modalImg.style.transform=`rotate(${rotazione}deg)`; modalImg.style.transition='transform .3s ease';
+    modalImg.style.setProperty('--modal-grad','none');
+  }
+  document.getElementById('modalMeta').innerHTML=`
+    <span><strong>Personaggio:</strong>
+      <input type="text" value="${item.personaggio||''}" placeholder="Nome personaggio"
+        style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
+        onchange="aggiornaPersonaggio(${item.id},this.value)">
+    </span>
+    <span><strong>Tipologia:</strong> ${item.archivio === 'diapositive' ? 'Diapositiva' : 'Stampa Originale'}</span>
+    <span><strong>Anno:</strong>
+      <input type="number" value="${item.year}" min="1900" max="2030"
+        style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
+        onchange="aggiornaAnno(${item.id},this.value)">
+    </span>
+    <span>
+      <button onclick="ruotaFoto(${item.id})"
+        style="border:1px solid var(--border);background:var(--bg);padding:5px 12px;cursor:pointer;border-radius:2px;font-size:0.75rem;color:var(--ash);font-family:'DM Sans',sans-serif;">
+        ↻ Ruota immagine
+      </button>
+    </span>
+    <span style="margin-top:6px;">
+      <strong>Tag:</strong>
+      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;">
+        ${tagsArray.map(t=>`<span style="background:#fdf0e8;border:1px solid #e8c4a8;color:var(--rust);font-size:0.68rem;padding:3px 8px;border-radius:2px;display:flex;align-items:center;gap:4px;">${t}<span style="cursor:pointer;font-weight:700;" onclick="rimuoviTag(${item.id},'${t}')">×</span></span>`).join('')}
+        <input type="text" placeholder="+ aggiungi tag"
+          style="border:1px solid var(--border);border-radius:2px;padding:3px 8px;font-family:'DM Sans',sans-serif;font-size:0.68rem;color:var(--ink);width:120px;outline:none;"
+          onkeydown="if(event.key==='Enter'||event.key===','){event.preventDefault();aggiungiTag(${item.id},this.value);this.value='';}">
+      </div>
+    </span>`;
+  const stampaParams = new URLSearchParams({ img: item.img||'', titolo: item.personaggio||'Archivio GRM Foto', anno: item.year, prezzo: item.prezzo, cartella: item.cartelle?.[0]||'altro' });
+  document.getElementById('modalServices').innerHTML=`
+    <a href="/frameVault_stampa.html?${stampaParams.toString()}" class="modal-service" style="text-decoration:none;display:flex;justify-content:space-between;align-items:center;">
+      <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
+      <div class="modal-service-price">da €${item.prezzo}</div>
+    </a>
+    <div class="modal-service">
+      <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
+      <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
+    </div>`;
+}
+
+function ruotaFoto(id) {
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  item.rotazione = ((item.rotazione||0)+90)%360;
+  document.getElementById('modalImage').style.transform=`rotate(${item.rotazione}deg)`;
+  const cardImg = document.querySelector(`[data-id="${id}"] img`);
+  if (cardImg) cardImg.style.transform=`rotate(${item.rotazione}deg)`;
+  supaSave(id, { rotazione: item.rotazione });
+}
+
+function aggiornaAnno(id,anno){const item=rawData.find(x=>x.id===id);if(item){item.year=parseInt(anno);document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;supaSave(id,{anno:item.year});renderGrid();}}
+function aggiornaPersonaggio(id,nome){const item=rawData.find(x=>x.id===id);if(item){item.personaggio=nome;supaSave(id,{personaggio:nome});renderGrid();}}
+function aggiungiTag(id,valore){const tag=valore.trim().toLowerCase();if(!tag)return;const item=rawData.find(x=>x.id===id);if(!item)return;const arr=item.tags?item.tags.split(',').map(t=>t.trim()).filter(Boolean):[];if(arr.includes(tag))return;arr.push(tag);item.tags=arr.join(',');supaSave(id,{tags:item.tags});renderModalBase(item);}
+function rimuoviTag(id,tag){const item=rawData.find(x=>x.id===id);if(!item)return;const arr=item.tags?item.tags.split(',').map(t=>t.trim()).filter(Boolean):[];item.tags=arr.filter(t=>t!==tag).join(',');supaSave(id,{tags:item.tags});renderModalBase(item);}
+
+// ── MINI SEARCH STICKY ──────────────────────────────────────────────────
+const heroEl = document.getElementById('archiveHero');
+const miniSearch = document.getElementById('filterBarSearch');
+window.addEventListener('scroll', () => {
+  if (!heroEl || heroEl.style.display==='none') return;
+  const heroBottom = heroEl.getBoundingClientRect().bottom;
+  if (miniSearch) miniSearch.classList.toggle('visible', heroBottom < 57);
+}, { passive:true });
+
+function doSearchSticky() {
+  const q = document.getElementById('searchInputSticky').value.trim();
+  if (!q) return;
+  searchQuery = q.toLowerCase();
+  if (!cartellaAttiva) {
+    cartellaAttiva = '__search__';
+    document.getElementById('breadcrumbCurrent').textContent = `Ricerca: "${q}"`;
+    document.getElementById('vistaCartelle').style.display = 'none';
+    document.getElementById('vistaFoto').style.display = 'block';
+    document.getElementById('sortSelect').style.display = '';
+  }
+  visibleCount = ITEMS_PER_LOAD;
+  renderGrid();
+}
+
 function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
 function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
