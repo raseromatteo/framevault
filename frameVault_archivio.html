@@ -94,8 +94,8 @@
     .archive-hero-stats { display:flex; align-items:center; justify-content:center; gap:0; }
     .hero-stat { text-align:center; padding:0 24px; }
     .hero-stat strong { display:block; font-family:'Bebas Neue',sans-serif; font-size:1.6rem; letter-spacing:2px; color:#f5f0e8; line-height:1; }
-    .hero-stat span { font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:#9a8e82; margin-top:3px; display:block; }
-    .hero-stat-sep { width:1px; height:32px; background:#3e3428; }
+    .hero-stat span { font-size:0.62rem; letter-spacing:2px; text-transform:uppercase; color:#5a4e42; margin-top:3px; display:block; }
+    .hero-stat-sep { width:1px; height:32px; background:#2e2820; }
 
     /* ── DISCLAIMER ── */
     .disclaimer-bar { background:var(--ink); padding:10px 48px; display:flex; align-items:center; gap:10px; }
@@ -106,26 +106,8 @@
     .filter-bar {
       background:var(--white); border-bottom:1px solid var(--border);
       padding:0 48px; display:flex; align-items:center; gap:16px;
-      position:sticky; top:57px; z-index:180;
+      position:sticky; top:57px; z-index:190;
     }
-    .filter-bar-search {
-      display:none; align-items:center; gap:8px;
-      border-left:1px solid var(--border); padding-left:16px; margin-left:4px;
-    }
-    .filter-bar-search.visible { display:flex; }
-    .filter-bar-search input {
-      border:1px solid var(--border); background:var(--bg);
-      padding:5px 10px; font-family:'DM Sans',sans-serif;
-      font-size:0.78rem; color:var(--ink); outline:none; width:180px;
-      transition:border-color .2s;
-    }
-    .filter-bar-search input:focus { border-color:var(--rust); }
-    .filter-bar-search button {
-      background:var(--rust); border:none; color:#fff;
-      padding:5px 12px; cursor:pointer; font-size:0.75rem;
-      font-family:'DM Sans',sans-serif; transition:background .2s;
-    }
-    .filter-bar-search button:hover { background:var(--brown); }
     .filter-bar-inner { display:flex; align-items:center; gap:2px; flex:1; overflow-x:auto; }
     .filter-bar-inner::-webkit-scrollbar { display:none; }
     .fbar-btn {
@@ -234,14 +216,14 @@
     .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:8px; }
 
     /* ── MODAL ── */
-    .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity .3s; }
     .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal { background:var(--white); width:calc(100vw - 40px); max-width:860px; max-height:90vh; overflow:hidden; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:fixed; top:50%; left:50%; transform:translate(-50%, -60%); transition:transform .3s, opacity .3s; z-index:501; }
-    .modal-overlay.open .modal { transform:translate(-50%, -50%); }
+    .modal { background:var(--white); width:100%; max-width:840px; max-height:88vh; overflow:hidden; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:relative; transform:translateY(20px); transition:transform .3s; }
+    .modal-overlay.open .modal { transform:translateY(0); }
     .modal-close { position:absolute; top:16px; right:16px; background:var(--bg2); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; color:var(--ash); z-index:2; display:flex; align-items:center; justify-content:center; }
     .modal-image { aspect-ratio:3/4; background:var(--bg2); position:relative; overflow:hidden; }
     .modal-image::before { content:''; position:absolute; inset:0; background:var(--modal-grad, linear-gradient(160deg,#e8dfd0,#c9bca5)); }
-    .modal-body { padding:24px; display:flex; flex-direction:column; gap:12px; overflow-y:auto; max-height:90vh; }
+    .modal-body { padding:20px 24px; display:flex; flex-direction:column; gap:12px; overflow-y:auto; max-height:88vh; }
     .modal-eyebrow { font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--rust); }
     .modal-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:900; line-height:1.2; }
     .modal-meta { font-size:0.82rem; color:var(--ash); line-height:1.7; }
@@ -254,7 +236,7 @@
     .modal-service-info { font-size:0.82rem; }
     .modal-service-info strong { display:block; color:var(--ink); margin-bottom:2px; }
     .modal-service-info span { color:var(--ash); font-size:0.75rem; }
-    .modal-service-price { font-family:'Playfair Display',serif; font-weight:700; font-size:1rem; color:var(--ink); white-space:nowrap; flex-shrink:0; margin-left:8px; }
+    .modal-service-price { font-family:'Playfair Display',serif; font-weight:700; font-size:1rem; color:var(--ink); }
     .modal-cta { background:var(--rust); color:#fff; border:none; padding:14px; font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.88rem; cursor:pointer; border-radius:2px; transition:background .2s; margin-top:4px; }
     .modal-cta:hover { background:var(--brown); }
 
@@ -267,12 +249,12 @@
     .footer-logo { font-family:'Bebas Neue',sans-serif; font-size:1.2rem; letter-spacing:4px; color:#f5f0e8; text-decoration:none; display:flex; align-items:center; gap:8px; }
     .footer-logo span { color:var(--rust); }
     .footer-links { display:flex; gap:24px; }
-    .footer-links a { color:#a09488; text-decoration:none; font-size:0.75rem; transition:color .15s; }
+    .footer-links a { color:#5a4e42; text-decoration:none; font-size:0.75rem; transition:color .15s; }
     .footer-links a:hover { color:var(--rust); }
     .footer-bottom { border-top:1px solid #2e2416; padding-top:18px; }
-    .footer-legal { font-size:0.68rem; color:#b0a494; line-height:1.7; }
-    .footer-legal strong { color:#c8b8a8; }
-    .footer-copy { font-size:0.62rem; color:#8a7e72; margin-top:6px; }
+    .footer-legal { font-size:0.68rem; color:#3a3028; line-height:1.7; }
+    .footer-legal strong { color:#5a4e42; }
+    .footer-copy { font-size:0.62rem; color:#2e2416; margin-top:6px; }
 
     @keyframes fadein { from{opacity:0;transform:translateY(12px)} to{opacity:1;transform:translateY(0)} }
 
@@ -295,10 +277,7 @@
       .dropdown-menu a{font-size:.9rem!important;color:var(--ash)!important;border:none;padding:6px 12px!important}
       .main-content{padding:12px}
       .modal{grid-template-columns:1fr}
-      .modal-image{display:block;aspect-ratio:4/3;max-height:240px;}
-      .modal-image::before{content:'';position:absolute;inset:0;background:var(--modal-grad,linear-gradient(160deg,#e8dfd0,#c9bca5));}
-      .modal-service{cursor:pointer;-webkit-tap-highlight-color:rgba(0,0,0,0.1);}
-      .modal-service *{pointer-events:none;}
+      .modal-image{display:none}
       .folders-section{padding:16px 12px}
       .breadcrumb{padding:10px 16px}
       .disclaimer-bar{padding:8px 16px}
@@ -380,13 +359,18 @@
       <div class="hero-search-hint">Prova: <span onclick="cercaQuick('Pippo Baudo')">Pippo Baudo</span> · <span onclick="cercaQuick('Troisi')">Massimo Troisi</span> · <span onclick="cercaQuick('Raffaella')">Raffaella Carrà</span></div>
     </div>
     <div class="archive-hero-stats">
-      <div class="hero-stat"><strong>4.304</strong><span>Immagini in archivio</span></div>
+      <div class="hero-stat"><strong>1.190</strong><span>Stampe online ora</span></div>
       <div class="hero-stat-sep"></div>
-      <div class="hero-stat"><strong>498</strong><span>Personaggi</span></div>
+      <div class="hero-stat"><strong>6</strong><span>Personaggi</span></div>
       <div class="hero-stat-sep"></div>
       <div class="hero-stat"><strong>30+</strong><span>Anni di storia</span></div>
     </div>
   </div>
+</div>
+
+<!-- DISCLAIMER -->
+<div class="disclaimer-bar" id="disclaimerTop">
+  <span>© <strong>GRM Foto S.r.l.</strong> — Tutte le immagini sono di proprietà esclusiva. Qualsiasi riproduzione non autorizzata è perseguibile ai sensi della Legge 633/1941 sul diritto d'autore.</span>
 </div>
 
 <!-- FILTRI ORIZZONTALI -->
@@ -395,15 +379,10 @@
     <button class="fbar-btn active" onclick="setFiltroBar(this,'tutti')">Tutti</button>
     <button class="fbar-btn" onclick="setFiltroBar(this,'personaggi')">Personaggi</button>
     <button class="fbar-btn" onclick="setFiltroBar(this,'stampe')">Stampe Originali Uniche</button>
-    <button class="fbar-btn" onclick="setFiltroBar(this,'diapositive')">🎞 Diapositive</button>
     <div class="fbar-sep"></div>
     <button class="fbar-btn fbar-soon" disabled>Collezioni <span class="fbar-badge">Presto</span></button>
+    <button class="fbar-btn fbar-soon" disabled>Diapositive <span class="fbar-badge">Presto</span></button>
     <button class="fbar-btn fbar-soon" disabled>Archivio Digitale <span class="fbar-badge">Presto</span></button>
-  </div>
-  <div class="filter-bar-search" id="filterBarSearch">
-    <input type="text" id="searchInputSticky" placeholder="🔍 Cerca..." 
-      onkeydown="if(event.key==='Enter'){doSearchSticky();}">
-    <button onclick="doSearchSticky()">Cerca</button>
   </div>
   <span class="results-count" id="resultsCount"></span>
   <select class="sort-select" id="sortSelect" onchange="renderGrid()" style="display:none">
@@ -424,9 +403,6 @@
     <div class="folders-grid" id="foldersPersonaggi"></div>
     <div class="folders-section-title" style="margin-top:48px;">Archivio Generale</div>
     <div class="folders-grid" id="foldersAltro"></div>
-
-    <div class="folders-section-title" style="margin-top:48px;">🎞 Diapositive</div>
-    <div class="folders-grid" id="foldersDiapositive"></div>
   </div>
 </div>
 
@@ -494,7 +470,7 @@
     </div>
   </div>
   <div class="footer-bottom">
-    <p class="footer-legal">FrameVault è un marchio di <strong>©GRM Foto S.r.l.</strong> Tutti i diritti sulle immagini dell'archivio sono di proprietà esclusiva di GRM Foto S.r.l. Qualsiasi riproduzione, cessione o utilizzo commerciale non autorizzato è perseguibile ai sensi della Legge 22 aprile 1941 n. 633 sui diritti d'autore.</p>
+    <p class="footer-legal">FrameVault è un marchio di <strong>GRM Foto S.r.l.</strong> — Lungotevere della Vittoria 10, 00195 Roma. Tutti i diritti sulle immagini sono di proprietà esclusiva di GRM Foto S.r.l. Qualsiasi utilizzo non autorizzato è perseguibile ai sensi della Legge 22 aprile 1941 n. 633.</p>
     <p class="footer-copy">© 2025 GRM Foto S.r.l. — Tutti i diritti riservati.</p>
   </div>
 </footer>
@@ -541,54 +517,20 @@ async function caricaCatalogo() {
   try {
     const res = await fetch('/api/catalogo');
     const json = await res.json();
-    rawData = json.map(item => {
-      const isDiapo = item.archivio === 'diapositive';
-      // Per diapositive usa personaggio_cartella, per stampe estrai dal titolo IPTC
-      const personaggio = isDiapo
-        ? (item.personaggio_cartella || estraiPersonaggio(item.titolo) || '')
-        : estraiPersonaggio(item.titolo);
-
-      return {
-        id: item.id,
-        title: item.titolo || item.img,
-        personaggio: personaggio,
-        year: (function(){
-          if (item.anno && item.anno > 1960) return item.anno;
-          const t = (item.titolo||'').toLowerCase();
-          if (t.includes('troisi')) return 1982;
-          return 1982 + (item.id % 4);
-        })(),
-        genere: item.tipologia || 'Foto di Scena',
-        cat: isDiapo ? 'Diapositive' : 'Stampe Originali',
-        anni: item.anni || '',
-        prezzo: item.prezzo_stampa || 12,
-        fmt: ['Stampa Carta', 'Download HD'],
-        img: item.img,
-        archivio: item.archivio || 'stampe',
-        rawTitolo: (item.titolo || '').toLowerCase(),
-        cartelle: assegnaCartelle(isDiapo ? `Nella foto: ${personaggio}` : item.titolo),
-      };
-    });
+    rawData = json.map(item => ({
+      id: item.id,
+      title: item.titolo || item.img,
+      personaggio: estraiPersonaggio(item.titolo),
+      year: (function(){ const t=(item.titolo||'').toLowerCase(); if(t.includes('troisi'))return 1982; return 1982+(item.id%4); })(),
+      genere: item.tipologia || 'Foto di Scena',
+      cat: 'Stampe Originali',
+      anni: item.anni || '',
+      prezzo: item.prezzo_stampa || 12,
+      fmt: ['Stampa Carta','Download HD'],
+      img: item.img,
+      cartelle: assegnaCartelle(item.titolo),
+    }));
   } catch(e) { rawData = []; }
-
-  // Carica rotazioni da Supabase in batch
-  try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/foto?select=foto_id,rotazione,personaggio,tags&rotazione=gt.0`, {
-      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-    });
-    const supaRows = await res.json();
-    if (Array.isArray(supaRows)) {
-      supaRows.forEach(row => {
-        const item = rawData.find(x => x.id === row.foto_id);
-        if (item) {
-          if (row.rotazione) item.rotazione = row.rotazione;
-          if (row.personaggio) item.personaggio = row.personaggio;
-          if (row.tags) item.tags = row.tags;
-        }
-      });
-    }
-  } catch(e) { console.error('Supabase batch load error:', e); }
-
   renderCartelle();
 }
 caricaCatalogo();
@@ -598,34 +540,27 @@ function renderCartelle() {
 
   const mostraPersonaggi = filtroBar === 'tutti' || filtroBar === 'personaggi';
   const mostraStampe     = filtroBar === 'tutti' || filtroBar === 'stampe';
-  const mostraDiapo      = filtroBar === 'tutti' || filtroBar === 'diapositive';
 
   const gridP = document.getElementById('foldersPersonaggi');
   const gridA = document.getElementById('foldersAltro');
-  const gridD = document.getElementById('foldersDiapositive');
   const titleP = gridP.previousElementSibling;
   const titleA = gridA.previousElementSibling;
-  const titleD = gridD.previousElementSibling;
 
   titleP.style.display = mostraPersonaggi ? '' : 'none';
   gridP.style.display  = mostraPersonaggi ? '' : 'none';
   titleA.style.display = mostraStampe ? '' : 'none';
   gridA.style.display  = mostraStampe ? '' : 'none';
-  titleD.style.display = mostraDiapo ? '' : 'none';
-  gridD.style.display  = mostraDiapo ? '' : 'none';
 
   function buildFolderCard(c, foto, delay) {
     const cover = foto[0];
     const strip = foto.slice(1,5);
     const coverUrl = cover?.img ? `/api/immagine?path=${cover.img}` : null;
-    const nFoto = foto.length;
-    const labelFoto = c.archivio === 'diapositive' ? `${nFoto} diapositive` : `${nFoto} stampe originali`;
     return `
     <div class="folder-card" onclick="apriCartella('${c.id}')" style="animation-delay:${delay}s">
       <div class="folder-cover">
-        ${coverUrl ? `<img class="folder-cover-img" src="${coverUrl}" alt="" onerror="this.style.display='none'" style="transform:rotate(${cover.rotazione||0}deg)">` : `<div class="folder-cover-placeholder">${c.emoji}</div>`}
+        ${coverUrl ? `<img class="folder-cover-img" src="${coverUrl}" alt="" onerror="this.style.display='none'">` : `<div class="folder-cover-placeholder">${c.emoji}</div>`}
         <div class="folder-cover-overlay"></div>
-        <div class="folder-cover-count">${nFoto} <span>foto</span></div>
+        <div class="folder-cover-count">${foto.length} <span>foto</span></div>
       </div>
       <div class="folder-strip">
         ${strip.map(f => f.img ? `<img class="folder-strip-img" src="/api/immagine?path=${f.img}" alt="" onerror="this.style.background='#e8dfd0'">` : `<div style="background:var(--bg2)"></div>`).join('')}
@@ -636,43 +571,19 @@ function renderCartelle() {
         <div class="folder-title">${c.title}</div>
         <div class="folder-desc">${c.desc}</div>
         <div class="folder-footer">
-          <span class="folder-count-label">${labelFoto}</span>
+          <span class="folder-count-label">${foto.length} stampe originali</span>
           <span class="folder-cta">Sfoglia →</span>
         </div>
       </div>
     </div>`;
   }
 
-  // Cartelle personaggio — mix stampe + diapositive
   document.getElementById('foldersPersonaggi').innerHTML = CARTELLE.map((c,i) =>
     buildFolderCard(c, rawData.filter(f => f.cartelle.includes(c.id)), i*0.08)
   ).join('');
 
-  // Stampe originali varie
-  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro') && f.archivio === 'stampe');
+  const fotoAltro = rawData.filter(f => f.cartelle.includes('altro'));
   document.getElementById('foldersAltro').innerHTML = buildFolderCard(CARTELLA_ALTRO, fotoAltro, 0);
-
-  // Diapositive — una cartella per ogni personaggio unico
-  const personaggiDiapo = {};
-  rawData.filter(f => f.archivio === 'diapositive').forEach(f => {
-    const p = f.personaggio || 'Archivio';
-    if (!personaggiDiapo[p]) personaggiDiapo[p] = [];
-    personaggiDiapo[p].push(f);
-  });
-
-  document.getElementById('foldersDiapositive').innerHTML = Object.entries(personaggiDiapo)
-    .sort((a,b) => b[1].length - a[1].length)
-    .map(([nome, foto], i) => {
-      const fakeCartella = {
-        id: `diapo_${nome.replace(/\s+/g,'_').toLowerCase()}`,
-        label: '🎞 Diapositiva',
-        title: nome,
-        desc: `${foto.length} diapositive originali`,
-        emoji: '🎞',
-        archivio: 'diapositive'
-      };
-      return buildFolderCard(fakeCartella, foto, i*0.03);
-    }).join('');
 }
 
 // ── FILTRO BARRA ──────────────────────────────────────────────────────────
@@ -697,20 +608,12 @@ function apriCartella(id) {
   searchQuery = '';
   document.getElementById('searchInput').value = '';
   document.querySelectorAll('.filter-tag').forEach(t => t.classList.remove('active'));
-
-  let titolo = '';
-  if (id === 'altro') {
-    titolo = CARTELLA_ALTRO.title;
-  } else if (id.startsWith('diapo_')) {
-    titolo = id.replace('diapo_','').replace(/_/g,' ');
-  } else {
-    titolo = CARTELLE.find(c => c.id === id)?.title || id;
-  }
-
-  document.getElementById('breadcrumbCurrent').textContent = titolo;
+  const info = id === 'altro' ? CARTELLA_ALTRO : CARTELLE.find(c => c.id === id);
+  document.getElementById('breadcrumbCurrent').textContent = info.title;
   document.getElementById('vistaCartelle').style.display = 'none';
   document.getElementById('vistaFoto').style.display = 'block';
   document.getElementById('archiveHero').style.display = 'none';
+  document.getElementById('disclaimerTop').style.display = 'none';
   document.getElementById('filterBar').style.display = 'none';
   document.getElementById('sortSelect').style.display = '';
   renderGrid();
@@ -725,7 +628,7 @@ function tornaCartelle() {
   document.getElementById('vistaCartelle').style.display = 'block';
   document.getElementById('vistaFoto').style.display = 'none';
   document.getElementById('archiveHero').style.display = 'block';
-  
+  document.getElementById('disclaimerTop').style.display = 'flex';
   document.getElementById('filterBar').style.display = 'flex';
   document.getElementById('sortSelect').style.display = 'none';
   document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
@@ -765,21 +668,8 @@ function clearFilters() {
 function getFiltered() {
   const sort = document.getElementById('sortSelect').value;
   let data = rawData.filter(item => {
-    if (cartellaAttiva && cartellaAttiva !== '__search__') {
-      if (cartellaAttiva.startsWith('diapo_')) {
-        // Cartella diapositiva — filtra per personaggio case-insensitive
-        const nomePersonaggio = cartellaAttiva.replace('diapo_','').replace(/_/g,' ').toLowerCase();
-        if (item.archivio !== 'diapositive') return false;
-        if ((item.personaggio || '').toLowerCase() !== nomePersonaggio) return false;
-      } else {
-        if (!item.cartelle.includes(cartellaAttiva)) return false;
-      }
-    }
-    if (searchQuery) {
-      const parole = searchQuery.toLowerCase().split(/\s+/).filter(Boolean);
-      const testo = `${item.title} ${item.personaggio} ${item.year} ${item.rawTitolo}`.toLowerCase();
-      if (!parole.every(p => testo.includes(p))) return false;
-    }
+    if (cartellaAttiva && cartellaAttiva !== '__search__' && !item.cartelle.includes(cartellaAttiva)) return false;
+    if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
     return true;
@@ -807,11 +697,11 @@ function renderGrid() {
     const g = gradients[item.id%gradients.length];
     const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
     const thumbStyle = imgUrl ? '' : `--grad:${g}`;
-    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;transform:rotate(${item.rotazione||0}deg);"
+    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;"
       onload="(function(img){if(img.naturalWidth>img.naturalHeight){img.closest('.card-thumb').style.aspectRatio='4/3';}else{img.closest('.card-thumb').style.aspectRatio='3/4';}})(this)"
       onerror="this.style.display='none'">` : '';
     return `
-    <div class="card" data-id="${item.id}" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
+    <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
       <div class="card-thumb" style="${thumbStyle};position:relative;">
         ${imgTag}
         <div class="card-year-badge">${item.year}</div>
@@ -823,7 +713,7 @@ function renderGrid() {
         <div class="card-meta">${item.genere}</div>
         <div class="card-footer">
           <div class="card-price">da €${item.prezzo}</div>
-          <span class="card-category">${item.archivio === 'diapositive' ? '🎞 Diapositiva' : 'Stampa Orig.'}</span>
+          <span class="card-category">Stampa Orig.</span>
         </div>
       </div>
     </div>`;
@@ -853,76 +743,6 @@ function renderActiveChips() {
   ).join('');
 }
 
-// ── SUPABASE ──────────────────────────────────────────────────────────────
-const SUPA_URL = 'https://qqlrjlyfvzqpqnwgrcwt.supabase.co';
-const SUPA_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InFxbHJqbHlmdnpxcHFud2dyY3d0Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzkzNjQ3OTQsImV4cCI6MjA5NDk0MDc5NH0.OtwLtyfx6FG0MLTHKUn3YrhUCVJ9RlXmNTccMYTL8tw';
-
-// Cache locale dei dati Supabase
-const supaCache = {};
-
-async function supaLoad(fotoId) {
-  try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/foto?foto_id=eq.${fotoId}&select=*`, {
-      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
-    });
-    const data = await res.json();
-    if (data && data.length > 0) {
-      supaCache[fotoId] = data[0];
-      return data[0];
-    }
-  } catch(e) { console.error('Supabase load error:', e); }
-  return null;
-}
-
-async function supaSave(fotoId, fields) {
-  try {
-    const existing = supaCache[fotoId];
-    if (existing) {
-      // Aggiorna record esistente
-      await fetch(`${SUPA_URL}/rest/v1/foto?foto_id=eq.${fotoId}`, {
-        method: 'PATCH',
-        headers: {
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${SUPA_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=minimal'
-        },
-        body: JSON.stringify(fields)
-      });
-    } else {
-      // Crea nuovo record
-      const res = await fetch(`${SUPA_URL}/rest/v1/foto`, {
-        method: 'POST',
-        headers: {
-          'apikey': SUPA_KEY,
-          'Authorization': `Bearer ${SUPA_KEY}`,
-          'Content-Type': 'application/json',
-          'Prefer': 'return=representation'
-        },
-        body: JSON.stringify({ foto_id: fotoId, ...fields })
-      });
-      const data = await res.json();
-      if (data && data[0]) supaCache[fotoId] = data[0];
-    }
-    // Aggiorna cache
-    supaCache[fotoId] = { ...supaCache[fotoId], ...fields };
-    mostraNotifica('✓ Salvato');
-  } catch(e) { console.error('Supabase save error:', e); mostraNotifica('⚠ Errore salvataggio'); }
-}
-
-function mostraNotifica(testo) {
-  let n = document.getElementById('saveNotifica');
-  if (!n) {
-    n = document.createElement('div');
-    n.id = 'saveNotifica';
-    n.style.cssText = 'position:fixed;bottom:24px;right:24px;background:#1c1712;color:#fff;padding:10px 18px;font-size:0.78rem;letter-spacing:1px;z-index:9999;opacity:0;transition:opacity .3s;';
-    document.body.appendChild(n);
-  }
-  n.textContent = testo;
-  n.style.opacity = '1';
-  setTimeout(() => { n.style.opacity = '0'; }, 2000);
-}
-
 function openModal(id) {
   const item = rawData.find(x=>x.id===id);
   if (!item) return;
@@ -936,184 +756,45 @@ function openModal(id) {
     modalImg.style.backgroundImage='';
     modalImg.style.setProperty('--modal-grad', gradients[item.id%gradients.length]);
   }
-
-  // Carica dati da Supabase e popola modale
-  renderModalBase(item);
-  supaLoad(item.id).then(supaData => {
-    if (supaData) {
-      if (supaData.personaggio) { item.personaggio = supaData.personaggio; }
-      if (supaData.tags) { item.tags = supaData.tags; }
-      if (supaData.rotazione) { item.rotazione = supaData.rotazione; }
-    }
-    renderModalBase(item);
-  });
-
+  document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
+  document.getElementById('modalMeta').innerHTML=`
+    <span><strong>Personaggio:</strong> <input type="text" value="${item.personaggio||''}" placeholder="Nome personaggio"
+      style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
+      onchange="aggiornaPersonaggio(${item.id},this.value)"></span>
+    <span><strong>Tipologia:</strong> Stampe Originali Uniche</span>
+    <span><strong>Anno:</strong> <input type="number" value="${item.year}" min="1900" max="2030"
+      style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
+      onchange="aggiornaAnno(${item.id},this.value)"></span>`;
+  document.getElementById('modalServices').innerHTML=`
+    <div class="modal-service" onclick="apriStampa(${item.id})">
+      <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
+      <div class="modal-service-price">da €${item.prezzo}</div>
+    </div>
+    <div class="modal-service">
+      <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
+      <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
+    </div>`;
   document.getElementById('modalOverlay').classList.add('open');
   document.body.style.overflow='hidden';
 }
-
-function renderModalBase(item) {
-  const tagsAttuali = item.tags || '';
-  const tagsArray = tagsAttuali ? tagsAttuali.split(',').map(t=>t.trim()).filter(Boolean) : [];
-  const rotazione = item.rotazione || 0;
-
-  document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
-
-  // Aggiorna rotazione immagine modale
-  const modalImg = document.getElementById('modalImage');
-  modalImg.style.overflow = 'hidden';
-  // Usa transform sul background invece che sul contenitore
-  if (item.img) {
-    modalImg.style.backgroundImage = `url('/api/immagine?path=${item.img}')`;
-    modalImg.style.backgroundSize = 'contain';
-    modalImg.style.backgroundPosition = 'center';
-    modalImg.style.backgroundRepeat = 'no-repeat';
-    modalImg.style.backgroundColor = '#ede8df';
-    modalImg.style.transform = `rotate(${rotazione}deg)`;
-    modalImg.style.transition = 'transform .3s ease';
-    modalImg.style.setProperty('--modal-grad','none');
-  }
-
-  document.getElementById('modalMeta').innerHTML=`
-    <span><strong>Personaggio:</strong>
-      <input type="text" id="inputPersonaggio_${item.id}" value="${item.personaggio||''}" placeholder="Nome personaggio"
-        style="border:1px solid var(--border);border-radius:2px;padding:2px 8px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);width:180px;"
-        onchange="aggiornaPersonaggio(${item.id},this.value)">
-    </span>
-    <span><strong>Tipologia:</strong> Stampe Originali Uniche</span>
-    <span><strong>Anno:</strong>
-      <input type="number" id="inputAnno_${item.id}" value="${item.year}" min="1900" max="2030"
-        style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
-        onchange="aggiornaAnno(${item.id},this.value)">
-    </span>
-    <span>
-      <button onclick="ruotaFoto(${item.id})" title="Ruota foto 90°"
-        style="border:1px solid var(--border);background:var(--bg);padding:5px 12px;cursor:pointer;border-radius:2px;font-size:0.75rem;color:var(--ash);transition:all .2s;font-family:'DM Sans',sans-serif;"
-        onmouseover="this.style.borderColor='var(--rust)';this.style.color='var(--rust)'"
-        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ash)'">
-        ↻ Ruota immagine
-      </button>
-    </span>
-    <span style="margin-top:6px;">
-      <strong>Tag:</strong>
-      <div style="display:flex;flex-wrap:wrap;gap:5px;margin-top:6px;" id="tagsWrap_${item.id}">
-        ${tagsArray.map(t=>`
-          <span style="background:#fdf0e8;border:1px solid #e8c4a8;color:var(--rust);font-size:0.68rem;padding:3px 8px;border-radius:2px;display:flex;align-items:center;gap:4px;">
-            ${t}<span style="cursor:pointer;font-weight:700;" onclick="rimuoviTag(${item.id},'${t}')">×</span>
-          </span>`).join('')}
-        <input type="text" placeholder="+ aggiungi tag" id="tagInput_${item.id}"
-          style="border:1px solid var(--border);border-radius:2px;padding:3px 8px;font-family:'DM Sans',sans-serif;font-size:0.68rem;color:var(--ink);width:120px;outline:none;"
-          onkeydown="if(event.key==='Enter'||event.key===','){event.preventDefault();aggiungiTag(${item.id},this.value);this.value='';}">
-      </div>
-    </span>`;
-
-  const stampaParams = new URLSearchParams({
+function apriStampa(id) {
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  const params = new URLSearchParams({
     img: item.img || '',
     titolo: item.personaggio || 'Archivio GRM Foto',
     anno: item.year,
     prezzo: item.prezzo,
     cartella: item.cartelle?.[0] || 'altro'
   });
-  document.getElementById('modalServices').innerHTML=`
-    <a href="/frameVault_stampa.html?${stampaParams.toString()}" class="modal-service" style="text-decoration:none;display:flex;justify-content:space-between;align-items:center;">
-      <div class="modal-service-info"><strong>Stampa Fine Art su Carta</strong><span>Carta 200g satinata · Spedizione inclusa · Vedi anteprima →</span></div>
-      <div class="modal-service-price">da €${item.prezzo}</div>
-    </a>
-    <div class="modal-service">
-      <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
-      <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
-    </div>`;
+  window.location.href = `/frameVault_stampa.html?${params.toString()}`;
 }
 
-function ruotaFoto(id) {
-  const item = rawData.find(x=>x.id===id);
-  if (!item) return;
-  item.rotazione = ((item.rotazione || 0) + 90) % 360;
-  // Aggiorna immagine modale
-  const modalImg = document.getElementById('modalImage');
-  modalImg.style.transform = `rotate(${item.rotazione}deg)`;
-  modalImg.style.transition = 'transform .3s ease';
-  // Aggiorna card nella griglia
-  const cardImg = document.querySelector(`[data-id="${id}"] img`);
-  if (cardImg) {
-    cardImg.style.transform = `rotate(${item.rotazione}deg)`;
-    cardImg.style.transition = 'transform .3s ease';
-  }
-  // Salva su Supabase
-  supaSave(id, { rotazione: item.rotazione });
-}
-
-function aggiornaAnno(id, anno) {
-  const item = rawData.find(x=>x.id===id);
-  if (item) {
-    item.year = parseInt(anno);
-    document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
-    supaSave(id, { anno: item.year });
-    renderGrid();
-  }
-}
-
-function aggiornaPersonaggio(id, nome) {
-  const item = rawData.find(x=>x.id===id);
-  if (item) {
-    item.personaggio = nome;
-    supaSave(id, { personaggio: nome });
-    renderGrid();
-  }
-}
-
-function aggiungiTag(id, valore) {
-  const tag = valore.trim().toLowerCase().replace(/[^a-z0-9àèéìòùa-z\s\-]/gi,'');
-  if (!tag) return;
-  const item = rawData.find(x=>x.id===id);
-  if (!item) return;
-  const tagsAttuali = item.tags ? item.tags.split(',').map(t=>t.trim()).filter(Boolean) : [];
-  if (tagsAttuali.includes(tag)) return;
-  tagsAttuali.push(tag);
-  item.tags = tagsAttuali.join(',');
-  supaSave(id, { tags: item.tags });
-  renderModalBase(item);
-}
-
-function rimuoviTag(id, tag) {
-  const item = rawData.find(x=>x.id===id);
-  if (!item) return;
-  const tagsAttuali = item.tags ? item.tags.split(',').map(t=>t.trim()).filter(Boolean) : [];
-  item.tags = tagsAttuali.filter(t=>t!==tag).join(',');
-  supaSave(id, { tags: item.tags });
-  renderModalBase(item);
-}
+function aggiornaAnno(id,anno){const item=rawData.find(x=>x.id===id);if(item){item.year=parseInt(anno);document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;renderGrid();}}
+function aggiornaPersonaggio(id,nome){const item=rawData.find(x=>x.id===id);if(item){item.personaggio=nome;renderGrid();}}
 function closeModal(e){if(e.target===document.getElementById('modalOverlay'))closeModalDirect();}
 function closeModalDirect(){document.getElementById('modalOverlay').classList.remove('open');document.body.style.overflow='';}
 document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();});
-
-// ── MINI SEARCH STICKY ───────────────────────────────────────────────────
-const heroEl = document.getElementById('archiveHero');
-const miniSearch = document.getElementById('filterBarSearch');
-
-window.addEventListener('scroll', () => {
-  if (!heroEl || heroEl.style.display === 'none') return;
-  const heroBottom = heroEl.getBoundingClientRect().bottom;
-  if (miniSearch) miniSearch.classList.toggle('visible', heroBottom < 57);
-}, { passive: true });
-
-function doSearchSticky() {
-  const q = document.getElementById('searchInputSticky').value.trim();
-  if (!q) return;
-  document.getElementById('searchInput').value = q;
-  searchQuery = q.toLowerCase();
-  if (!cartellaAttiva) {
-    cartellaAttiva = '__search__';
-    document.getElementById('breadcrumbCurrent').textContent = `Ricerca: "${q}"`;
-    document.getElementById('vistaCartelle').style.display = 'none';
-    document.getElementById('vistaFoto').style.display = 'block';
-    document.getElementById('sortSelect').style.display = '';
-  }
-  visibleCount = ITEMS_PER_LOAD;
-  renderGrid();
-  // Sincronizza con la search principale
-  document.getElementById('searchInput').value = q;
-}
 
 function toggleMenu(){const menu=document.getElementById('navMenu');const btn=document.getElementById('hamburger');menu.classList.toggle('open');btn.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
 document.querySelectorAll('#navMenu a').forEach(a=>{a.addEventListener('click',()=>{document.getElementById('navMenu').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';});});
