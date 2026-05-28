@@ -234,9 +234,10 @@
     .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:8px; }
 
     /* ── MODAL ── */
-    .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; padding:16px; box-sizing:border-box; }
+    .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; opacity:0; pointer-events:none; transition:opacity .3s; }
     .modal-overlay.open { opacity:1; pointer-events:all; }
-    .modal { background:var(--white); width:100%; max-width:860px; max-height:90vh; overflow-y:auto; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:relative; transform:translateY(20px); transition:transform .3s; }
+    .modal { background:var(--white); width:calc(100vw - 40px); max-width:860px; max-height:90vh; overflow-y:auto; border-radius:2px; display:grid; grid-template-columns:1fr 1fr; position:fixed; top:50%; left:50%; transform:translate(-50%, -50%) translateY(20px); transition:transform .3s; z-index:501; }
+    .modal-overlay.open .modal { transform:translate(-50%, -50%) translateY(0); }
     .modal-overlay.open .modal { transform:translateY(0); }
     .modal-close { position:absolute; top:16px; right:16px; background:var(--bg2); border:none; width:32px; height:32px; border-radius:50%; cursor:pointer; font-size:1.1rem; color:var(--ash); z-index:2; display:flex; align-items:center; justify-content:center; }
     .modal-image { aspect-ratio:3/4; background:var(--bg2); position:relative; overflow:hidden; }
@@ -570,6 +571,25 @@ async function caricaCatalogo() {
       };
     });
   } catch(e) { rawData = []; }
+
+  // Carica rotazioni da Supabase in batch
+  try {
+    const res = await fetch(`${SUPA_URL}/rest/v1/foto?select=foto_id,rotazione,personaggio,tags&rotazione=gt.0`, {
+      headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
+    });
+    const supaRows = await res.json();
+    if (Array.isArray(supaRows)) {
+      supaRows.forEach(row => {
+        const item = rawData.find(x => x.id === row.foto_id);
+        if (item) {
+          if (row.rotazione) item.rotazione = row.rotazione;
+          if (row.personaggio) item.personaggio = row.personaggio;
+          if (row.tags) item.tags = row.tags;
+        }
+      });
+    }
+  } catch(e) { console.error('Supabase batch load error:', e); }
+
   renderCartelle();
 }
 caricaCatalogo();
