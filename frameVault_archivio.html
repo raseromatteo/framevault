@@ -778,11 +778,11 @@ function renderGrid() {
     const g = gradients[item.id%gradients.length];
     const imgUrl = item.img ? `/api/immagine?path=${item.img}` : null;
     const thumbStyle = imgUrl ? '' : `--grad:${g}`;
-    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;"
+    const imgTag = imgUrl ? `<img src="${imgUrl}" alt="" style="position:absolute;inset:0;width:100%;height:100%;object-fit:contain;object-position:center;background:#ede8df;transform:rotate(${item.rotazione||0}deg);"
       onload="(function(img){if(img.naturalWidth>img.naturalHeight){img.closest('.card-thumb').style.aspectRatio='4/3';}else{img.closest('.card-thumb').style.aspectRatio='3/4';}})(this)"
       onerror="this.style.display='none'">` : '';
     return `
-    <div class="card" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
+    <div class="card" data-id="${item.id}" onclick="openModal(${item.id})" style="animation-delay:${Math.min(i,23)*0.04}s">
       <div class="card-thumb" style="${thumbStyle};position:relative;">
         ${imgTag}
         <div class="card-year-badge">${item.year}</div>
@@ -933,8 +933,18 @@ function renderModalBase(item) {
 
   // Aggiorna rotazione immagine modale
   const modalImg = document.getElementById('modalImage');
-  modalImg.style.transform = `rotate(${rotazione}deg)`;
-  modalImg.style.transition = 'transform .3s ease';
+  modalImg.style.overflow = 'hidden';
+  // Usa transform sul background invece che sul contenitore
+  if (item.img) {
+    modalImg.style.backgroundImage = `url('/api/immagine?path=${item.img}')`;
+    modalImg.style.backgroundSize = 'contain';
+    modalImg.style.backgroundPosition = 'center';
+    modalImg.style.backgroundRepeat = 'no-repeat';
+    modalImg.style.backgroundColor = '#ede8df';
+    modalImg.style.transform = `rotate(${rotazione}deg)`;
+    modalImg.style.transition = 'transform .3s ease';
+    modalImg.style.setProperty('--modal-grad','none');
+  }
 
   document.getElementById('modalMeta').innerHTML=`
     <span><strong>Personaggio:</strong>
@@ -991,10 +1001,16 @@ function ruotaFoto(id) {
   const item = rawData.find(x=>x.id===id);
   if (!item) return;
   item.rotazione = ((item.rotazione || 0) + 90) % 360;
-  // Aggiorna visivamente l'immagine nella modale
+  // Aggiorna immagine modale
   const modalImg = document.getElementById('modalImage');
   modalImg.style.transform = `rotate(${item.rotazione}deg)`;
   modalImg.style.transition = 'transform .3s ease';
+  // Aggiorna card nella griglia
+  const cardImg = document.querySelector(`[data-id="${id}"] img`);
+  if (cardImg) {
+    cardImg.style.transform = `rotate(${item.rotazione}deg)`;
+    cardImg.style.transition = 'transform .3s ease';
+  }
   // Salva su Supabase
   supaSave(id, { rotazione: item.rotazione });
 }
