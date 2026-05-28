@@ -725,10 +725,10 @@ function getFiltered() {
   let data = rawData.filter(item => {
     if (cartellaAttiva && cartellaAttiva !== '__search__') {
       if (cartellaAttiva.startsWith('diapo_')) {
-        // Cartella diapositiva — filtra per personaggio
-        const nomePersonaggio = cartellaAttiva.replace('diapo_','').replace(/_/g,' ');
+        // Cartella diapositiva — filtra per personaggio case-insensitive
+        const nomePersonaggio = cartellaAttiva.replace('diapo_','').replace(/_/g,' ').toLowerCase();
         if (item.archivio !== 'diapositive') return false;
-        if (item.personaggio !== nomePersonaggio) return false;
+        if ((item.personaggio || '').toLowerCase() !== nomePersonaggio) return false;
       } else {
         if (!item.cartelle.includes(cartellaAttiva)) return false;
       }
