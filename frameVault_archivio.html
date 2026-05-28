@@ -915,6 +915,7 @@ function openModal(id) {
       if (supaData.personaggio) { item.personaggio = supaData.personaggio; }
       if (supaData.anno) { item.year = supaData.anno; }
       if (supaData.tags) { item.tags = supaData.tags; }
+      if (supaData.rotazione) { item.rotazione = supaData.rotazione; }
     }
     renderModalBase(item);
   });
@@ -926,8 +927,15 @@ function openModal(id) {
 function renderModalBase(item) {
   const tagsAttuali = item.tags || '';
   const tagsArray = tagsAttuali ? tagsAttuali.split(',').map(t=>t.trim()).filter(Boolean) : [];
+  const rotazione = item.rotazione || 0;
 
   document.getElementById('modalEyebrow').innerHTML=`<span class="timbro-badge">Stampa Originale Timbrata</span>&nbsp;·&nbsp;${item.year}`;
+
+  // Aggiorna rotazione immagine modale
+  const modalImg = document.getElementById('modalImage');
+  modalImg.style.transform = `rotate(${rotazione}deg)`;
+  modalImg.style.transition = 'transform .3s ease';
+
   document.getElementById('modalMeta').innerHTML=`
     <span><strong>Personaggio:</strong>
       <input type="text" id="inputPersonaggio_${item.id}" value="${item.personaggio||''}" placeholder="Nome personaggio"
@@ -939,6 +947,12 @@ function renderModalBase(item) {
       <input type="number" id="inputAnno_${item.id}" value="${item.year}" min="1900" max="2030"
         style="width:70px;border:1px solid var(--border);border-radius:2px;padding:2px 6px;font-family:'DM Sans',sans-serif;font-size:.82rem;color:var(--ink);"
         onchange="aggiornaAnno(${item.id},this.value)">
+      <button onclick="ruotaFoto(${item.id})" title="Ruota foto 90°"
+        style="margin-left:8px;border:1px solid var(--border);background:var(--bg);padding:3px 8px;cursor:pointer;border-radius:2px;font-size:0.75rem;color:var(--ash);transition:all .2s;"
+        onmouseover="this.style.borderColor='var(--rust)';this.style.color='var(--rust)'"
+        onmouseout="this.style.borderColor='var(--border)';this.style.color='var(--ash)'">
+        ↻ Ruota
+      </button>
     </span>
     <span style="margin-top:6px;">
       <strong>Tag:</strong>
@@ -969,6 +983,18 @@ function renderModalBase(item) {
       <div class="modal-service-info"><strong>Download Digitale HD</strong><span>File JPEG/TIFF + Licenza personale</span></div>
       <div class="modal-service-price">€${Math.round(item.prezzo*0.3)}</div>
     </div>`;
+}
+
+function ruotaFoto(id) {
+  const item = rawData.find(x=>x.id===id);
+  if (!item) return;
+  item.rotazione = ((item.rotazione || 0) + 90) % 360;
+  // Aggiorna visivamente l'immagine nella modale
+  const modalImg = document.getElementById('modalImage');
+  modalImg.style.transform = `rotate(${item.rotazione}deg)`;
+  modalImg.style.transition = 'transform .3s ease';
+  // Salva su Supabase
+  supaSave(id, { rotazione: item.rotazione });
 }
 
 function aggiornaAnno(id, anno) {
