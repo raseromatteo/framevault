@@ -500,7 +500,7 @@
 <script>
 const CARTELLE = [
   { id:'baudo',      label:'Personaggio', title:'Tutto Pippo Baudo',        desc:'Il conduttore più longevo della televisione italiana. Fantastico, Sanremo, Una rotonda sul mare.',            keywords:['pippo baudo'], emoji:'🎬' },
-  { id:'carra',      label:'Personaggio', title:'La Mitica Raffaella',       desc:'Raffaella Carrà, icona assoluta della TV italiana e internazionale. Tuca Tuca, Pronto Raffaella.',          keywords:['raffaella carr'], emoji:'🎤' },
+  { id:'carra',      label:'Personaggio', title:'La Mitica Raffaella',       desc:'Raffaella Carrà, icona assoluta della TV italiana e internazionale. Tuca Tuca, Pronto Raffaella.',          keywords:['raffaella carr', "raffaella carra'"], emoji:'🎤' },
   { id:'bonaccorti', label:'Personaggio', title:'Tutto Enrica Bonaccorti',   desc:'Conduttrice, attrice e showgirl. Tra i volti più amati della RAI degli anni \'80.',                        keywords:['enrica bonaccorti'], emoji:'📺' },
   { id:'troisi',     label:'Personaggio', title:'Massimo Troisi',            desc:'Il genio napoletano. Dal teatro alla TV, fino ai capolavori cinematografici.',                               keywords:['troisi'], emoji:'🎭' },
   { id:'parisi',     label:'Personaggio', title:'Heather Parisi',            desc:'La showgirl americana che conquistò l\'Italia. Fantastico, Al Paradise e i grandi varietà RAI.',           keywords:['heather parisi'], emoji:'💃' },
@@ -514,9 +514,9 @@ const gradients = ['linear-gradient(145deg,#ddd3c2,#b8a88a)','linear-gradient(16
 let rawData = [], cartellaAttiva = null, visibleCount = ITEMS_PER_LOAD;
 let activeFilters = {}, searchQuery = '', isLoading = false;
 
-function assegnaCartelle(titolo) {
-  if (!titolo) return ['altro'];
-  const t = titolo.toLowerCase();
+function assegnaCartelle(titolo, personaggio) {
+  const t = ((titolo || '') + ' ' + (personaggio || '')).toLowerCase();
+  if (!t.trim()) return ['altro'];
   const trovate = [];
   for (const c of CARTELLE) {
     for (const kw of c.keywords) {
@@ -562,7 +562,7 @@ async function caricaCatalogo() {
         archivio: item.archivio || 'stampe',
         rawTitolo: (item.titolo || '').toLowerCase(),
         rotazione: 0,
-        cartelle: assegnaCartelle(isDiapo ? `Nella foto: ${personaggio}` : item.titolo),
+        cartelle: assegnaCartelle(isDiapo ? `Nella foto: ${personaggio}` : item.titolo, personaggio),
       };
     });
   } catch(e) { rawData = []; }
