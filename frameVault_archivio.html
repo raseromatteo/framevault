@@ -457,6 +457,13 @@
           <span class="filter-tag" onclick="toggleFilter('genere','Foto di Scena')">Foto di Scena</span>
         </div>
       </div>
+      <div class="filter-section">
+        <div class="filter-title">Archivio</div>
+        <div class="filter-tags">
+          <span class="filter-tag" onclick="toggleFilter('archivio','stampe')">🖨 Stampa Originale</span>
+          <span class="filter-tag" onclick="toggleFilter('archivio','diapositive')">🎞 Diapositiva</span>
+        </div>
+      </div>
       <button class="clear-btn" onclick="clearFilters()">✕ Cancella filtri</button>
     </aside>
     <main class="main-content">
@@ -756,6 +763,7 @@ function getFiltered() {
     if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
+    if (activeFilters.archivio && item.archivio !== activeFilters.archivio) return false;
     return true;
   });
   if (sort==='az') data.sort((a,b)=>a.title.localeCompare(b.title));
