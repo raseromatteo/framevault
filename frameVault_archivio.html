@@ -568,7 +568,7 @@ async function caricaCatalogo() {
   } catch(e) { rawData = []; }
 
   try {
-    const res = await fetch(`${SUPA_URL}/rest/v1/foto?select=foto_id,rotazione,personaggio,tags`, {
+    const res = await fetch(`${SUPA_URL}/rest/v1/foto?select=foto_id,rotazione,personaggio,tags&rotazione=neq.0&rotazione=not.is.null`, {
       headers: { 'apikey': SUPA_KEY, 'Authorization': `Bearer ${SUPA_KEY}` }
     });
     const supaRows = await res.json();
