@@ -4,12 +4,12 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>FrameVault — Archivio Stampe</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:     #faf8f4;
+      --bg:     #f6f1e8;
       --bg2:    #f2ede4;
-      --white:  #ffffff;
+      --white: #fbf8f1;
       --ink:    #1c1712;
       --rust:   #b8420a;
       --gold:   #c8922a;
@@ -31,7 +31,7 @@
 
     nav {
       display:flex; justify-content:space-between; align-items:center;
-      padding:16px 48px; background:var(--white); border-bottom:1px solid var(--border);
+      padding:16px 48px; background:#e7dcc4; border-bottom:1px solid var(--border);
       position:sticky; top:0; z-index:200;
     }
     .logo { font-family:'Bebas Neue',sans-serif; font-size:1.7rem; letter-spacing:4px; color:var(--ink); text-decoration:none; white-space:nowrap; display:flex; align-items:center; gap:10px; }
@@ -66,7 +66,7 @@
     }
     .archive-hero-inner { position:relative; z-index:1; max-width:760px; margin:0 auto; text-align:center; }
     .archive-hero-eyebrow { font-size:0.62rem; letter-spacing:3px; text-transform:uppercase; color:var(--rust); margin-bottom:14px; font-weight:600; }
-    .archive-hero-title { font-family:'Playfair Display',serif; font-size:2.4rem; font-weight:900; color:#f5f0e8; line-height:1.15; margin-bottom:32px; }
+    .archive-hero-title { font-family:'Fraunces',serif; font-size:2.4rem; font-weight:900; color:#f5f0e8; line-height:1.15; margin-bottom:32px; }
     .archive-hero-search { margin-bottom:24px; }
     .hero-search-box {
       display:flex; align-items:center; gap:12px;
@@ -106,7 +106,7 @@
     .filter-bar {
       background:var(--white); border-bottom:1px solid var(--border);
       padding:0 48px; display:flex; align-items:center; gap:16px;
-      position:sticky; top:57px; z-index:180;
+      position:sticky; top:71px; z-index:180;
     }
     .filter-bar-search {
       display:none; align-items:center; gap:8px;
@@ -179,7 +179,7 @@
 
     .folder-body { padding:16px 16px 18px; }
     .folder-label { font-size:0.6rem; letter-spacing:2px; text-transform:uppercase; color:var(--rust); margin-bottom:4px; font-weight:600; }
-    .folder-title { font-family:'Playfair Display',serif; font-size:1.15rem; font-weight:900; color:var(--ink); margin-bottom:4px; line-height:1.2; }
+    .folder-title { font-family:'Fraunces',serif; font-size:1.15rem; font-weight:900; color:var(--ink); margin-bottom:4px; line-height:1.2; }
     .folder-desc { font-size:0.75rem; color:var(--ash); line-height:1.5; }
     .folder-footer { display:flex; justify-content:space-between; align-items:center; margin-top:12px; padding-top:10px; border-top:1px solid var(--border); }
     .folder-count-label { font-size:0.7rem; color:var(--ash); }
@@ -187,7 +187,7 @@
 
     /* ── LAYOUT FOTO ── */
     .catalog-layout { display:grid; grid-template-columns:260px 1fr; min-height:calc(100vh - 180px); }
-    .sidebar { background:var(--white); border-right:1px solid var(--border); padding:28px 24px; position:sticky; top:57px; height:calc(100vh - 57px); overflow-y:auto; }
+    .sidebar { background:var(--white); border-right:1px solid var(--border); padding:28px 24px; position:sticky; top:71px; height:calc(100vh - 71px); overflow-y:auto; }
     .sidebar::-webkit-scrollbar { width:4px; }
     .sidebar::-webkit-scrollbar-thumb { background:var(--border); }
     .filter-section { margin-bottom:28px; }
@@ -217,10 +217,10 @@
     .card:hover .card-overlay { opacity:1; }
     .overlay-btn { background:var(--rust); color:#fff; border:none; padding:10px 20px; font-family:'DM Sans',sans-serif; font-size:0.78rem; font-weight:500; cursor:pointer; border-radius:2px; }
     .card-body { padding:14px 14px 16px; }
-    .card-title { font-family:'Playfair Display',serif; font-size:0.95rem; font-weight:700; color:var(--ink); margin-bottom:4px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .card-title { font-family:'Fraunces',serif; font-size:0.95rem; font-weight:700; color:var(--ink); margin-bottom:4px; line-height:1.3; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
     .card-meta { font-size:0.72rem; color:var(--ash); margin-bottom:10px; }
     .card-footer { display:flex; justify-content:space-between; align-items:center; }
-    .card-price { font-family:'Playfair Display',serif; font-size:1rem; font-weight:700; color:var(--ink); }
+    .card-price { font-family:'Fraunces',serif; font-size:1rem; font-weight:700; color:var(--ink); }
     .card-category { font-size:0.6rem; letter-spacing:1.5px; text-transform:uppercase; color:var(--rust); background:#fdf0e8; padding:3px 8px; border-radius:1px; }
 
     .timbro-badge { display:inline-flex; align-items:center; gap:5px; border:1.5px solid var(--rust); color:var(--rust); font-size:0.6rem; letter-spacing:2px; text-transform:uppercase; padding:4px 10px; border-radius:1px; font-weight:600; }
@@ -228,7 +228,7 @@
     .scroll-sentinel { height:60px; display:flex; align-items:center; justify-content:center; color:var(--ash); font-size:0.8rem; letter-spacing:1px; grid-column:1/-1; }
     .end-marker { grid-column:1/-1; text-align:center; padding:24px; font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ash); }
     .empty-state { grid-column:1/-1; text-align:center; padding:80px 20px; color:var(--ash); }
-    .empty-state h3 { font-family:'Playfair Display',serif; font-size:1.3rem; color:var(--ink); margin-bottom:8px; }
+    .empty-state h3 { font-family:'Fraunces',serif; font-size:1.3rem; color:var(--ink); margin-bottom:8px; }
 
     /* ── MODAL ── */
     .modal-overlay { position:fixed; inset:0; background:rgba(26,18,9,.7); z-index:500; display:flex; align-items:center; justify-content:center; padding:20px; opacity:0; pointer-events:none; transition:opacity .3s; }
@@ -240,7 +240,7 @@
     .modal-image::before { content:''; position:absolute; inset:0; background:var(--modal-grad, linear-gradient(160deg,#e8dfd0,#c9bca5)); }
     .modal-body { padding:20px 24px; display:flex; flex-direction:column; gap:12px; overflow-y:auto; max-height:88vh; }
     .modal-eyebrow { font-size:0.65rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--rust); }
-    .modal-title { font-family:'Playfair Display',serif; font-size:1.1rem; font-weight:900; line-height:1.2; }
+    .modal-title { font-family:'Fraunces',serif; font-size:1.1rem; font-weight:900; line-height:1.2; }
     .modal-meta { font-size:0.82rem; color:var(--ash); line-height:1.7; }
     .modal-meta span { display:block; }
     .modal-meta strong { color:var(--ink); }
@@ -251,7 +251,7 @@
     .modal-service-info { font-size:0.82rem; }
     .modal-service-info strong { display:block; color:var(--ink); margin-bottom:2px; }
     .modal-service-info span { color:var(--ash); font-size:0.75rem; }
-    .modal-service-price { font-family:'Playfair Display',serif; font-weight:700; font-size:1rem; color:var(--ink); }
+    .modal-service-price { font-family:'Fraunces',serif; font-weight:700; font-size:1rem; color:var(--ink); }
     .modal-cta { background:var(--rust); color:#fff; border:none; padding:14px; font-family:'DM Sans',sans-serif; font-weight:500; font-size:0.88rem; cursor:pointer; border-radius:2px; transition:background .2s; margin-top:4px; }
     .modal-cta:hover { background:var(--brown); }
 
@@ -310,7 +310,7 @@
       .hero-stat strong { font-size:1.2rem; }
 
       /* ── FILTER BAR MOBILE ── */
-      .filter-bar { padding:0 12px; overflow-x:auto; top:57px; }
+      .filter-bar { padding:0 12px; overflow-x:auto; top:71px; }
       .filter-bar-inner { gap:0; }
       .fbar-btn { padding:12px 12px; font-size:0.72rem; }
       .fbar-sep { display:none; }
@@ -336,29 +336,59 @@
       .folder-body { padding:10px 10px 12px; }
       .folder-cover-count { font-size:0.82rem; bottom:8px; left:10px; }
     }
-  </style>
+  
+/* === NAV UNIFICATA (coerente con la home) === */
+nav {
+  position:sticky; top:0; z-index:1000;
+  display:flex; justify-content:space-between; align-items:center;
+  padding:18px 48px; background:#e7dcc4;
+  border-bottom:1px solid rgba(31,24,18,0.1);
+}
+nav .logo { display:flex; align-items:center; gap:11px; text-decoration:none; }
+nav .logo-mark {
+  width:34px; height:34px; border:1.5px solid #1f1812; border-radius:2px;
+  display:flex; align-items:center; justify-content:center;
+  font-family:'Fraunces',serif; font-weight:900; font-size:1rem; color:#1f1812; letter-spacing:-1px;
+}
+nav .logo-text { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:5px; color:#1f1812; }
+nav .nav-links { display:flex; align-items:center; gap:34px; list-style:none; margin:0; padding:0; }
+nav .nav-links a { color:#1f1812; text-decoration:none; font-size:0.76rem; letter-spacing:1.5px; text-transform:uppercase; font-weight:400; position:relative; transition:opacity .2s; }
+nav .nav-links a::after { content:''; position:absolute; bottom:-5px; left:0; width:0; height:1px; background:#b8420a; transition:width .3s ease; }
+nav .nav-links a:hover::after { width:100%; }
+nav .nav-enter { border:1px solid #1f1812; padding:9px 22px !important; transition:all .3s ease; }
+nav .nav-enter:hover { background:#b8420a; border-color:#b8420a; color:#fff; }
+nav .nav-enter::after { display:none !important; }
+nav .hamburger { display:none; }
+@media(max-width:680px){
+  nav { padding:14px 20px; }
+  nav .nav-links { position:fixed; inset:0; background:#f6f1e8; flex-direction:column; justify-content:center; gap:30px; transform:translateX(100%); transition:transform .4s ease; z-index:998; }
+  nav .nav-links.open { transform:translateX(0); }
+  nav .nav-links a { font-size:1.1rem; }
+  nav .hamburger { display:flex; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; z-index:999; padding:6px; }
+  nav .hamburger span { display:block; width:24px; height:2px; background:#1f1812; transition:all .3s; }
+  nav .hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+  nav .hamburger.open span:nth-child(2){ opacity:0; }
+  nav .hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+}
+</style>
 </head>
 <body>
 
 <div class="filmstrip"><div class="filmstrip-inner"></div></div>
 
 <nav>
-  <a href="/index.html" class="logo"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" style="flex-shrink:0;"><rect x="1" y="1" width="26" height="26" rx="2" fill="#1c1712"/><text x="4" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#faf8f4" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span class="logo-text">FRAME<span>VAULT</span></span></a>
-  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
-  <ul id="navMenu">
-    <li><a href="/index.html">Home</a></li>
-    <li class="nav-dropdown">
-      <a href="#">Servizi</a>
-      <div class="dropdown-menu"><div class="dropdown-inner">
-        <a href="/index.html#servizi">I nostri servizi</a>
-        <a href="/index.html#come-funziona">Come funziona</a>
-        <a href="/index.html#prezzi">Prezzi</a>
-        <a href="/index.html#licenze">Licenze</a>
-      </div></div>
-    </li>
-    <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
-    <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
-  </ul>
+  <a href="/index.html" class="logo">
+    <span class="logo-mark">FV</span>
+    <span class="logo-text">FRAMEVAULT</span>
+  </a>
+  <button class="hamburger" id="hamburger" onclick="fvToggleMenu()"><span></span><span></span><span></span></button>
+  <div class="nav-links" id="navLinks">
+    <a href="/frameVault_archivio.html">Archivio</a>
+    <a href="/index.html#collezioni">Collezioni</a>
+    <a href="/index.html#storia">La Storia</a>
+    <a href="/index.html#licenze">Licenze</a>
+    <a href="/frameVault_archivio.html" class="nav-enter">Entra nell'archivio</a>
+  </div>
 </nav>
 
 <div class="archive-hero" id="archiveHero">
@@ -592,8 +622,37 @@ async function caricaCatalogo() {
   } catch(e) {}
 
   renderCartelle();
+  attivaRicercaDaURL();
 }
 caricaCatalogo();
+
+// Legge ?q= dall'URL (ricerca arrivata dalla homepage)
+function attivaRicercaDaURL() {
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get('q');
+  if (!q) return;
+  searchQuery = q.toLowerCase().trim();
+  cartellaAttiva = '__search__';
+  const bc = document.getElementById('breadcrumbCurrent');
+  if (bc) bc.textContent = `Ricerca: "${q}"`;
+  const vc = document.getElementById('vistaCartelle');
+  const vf = document.getElementById('vistaFoto');
+  const ah = document.getElementById('archiveHero');
+  const dt = document.getElementById('disclaimerTop');
+  const fb = document.getElementById('filterBar');
+  const ss = document.getElementById('sortSelect');
+  if (vc) vc.style.display = 'none';
+  if (vf) vf.style.display = 'block';
+  if (ah) ah.style.display = 'none';
+  if (dt) dt.style.display = 'none';
+  if (fb) fb.style.display = 'none';
+  if (ss) ss.style.display = '';
+  const si = document.getElementById('searchInput');
+  if (si) si.value = q;
+  visibleCount = ITEMS_PER_LOAD;
+  renderGrid();
+  window.scrollTo({ top:0 });
+}
 
 function renderCartelle() {
   document.getElementById('resultsCount').textContent = `${rawData.length.toLocaleString('it')} immagini in archivio`;
@@ -760,7 +819,11 @@ function getFiltered() {
         if (!item.cartelle.includes(cartellaAttiva)) return false;
       }
     }
-    if (searchQuery && !`${item.title} ${item.personaggio} ${item.year}`.toLowerCase().includes(searchQuery)) return false;
+    if (searchQuery) {
+      const testo = `${item.title} ${item.personaggio} ${item.year} ${item.rawTitolo||''}`.toLowerCase();
+      const parole = searchQuery.split(/\s+/).filter(Boolean);
+      if (!parole.every(p => testo.includes(p))) return false;
+    }
     if (activeFilters.anni && item.anni !== activeFilters.anni) return false;
     if (activeFilters.genere && item.genere !== activeFilters.genere) return false;
     if (activeFilters.archivio && item.archivio !== activeFilters.archivio) return false;
@@ -1030,7 +1093,7 @@ const miniSearch = document.getElementById('filterBarSearch');
 window.addEventListener('scroll', () => {
   if (!heroEl || heroEl.style.display==='none') return;
   const heroBottom = heroEl.getBoundingClientRect().bottom;
-  if (miniSearch) miniSearch.classList.toggle('visible', heroBottom < 57);
+  if (miniSearch) miniSearch.classList.toggle('visible', heroBottom < 71);
 }, { passive:true });
 
 function doSearchSticky() {
@@ -1054,6 +1117,19 @@ document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModalDirect();}
 
 function toggleMenu(){const menu=document.getElementById('navMenu');const btn=document.getElementById('hamburger');menu.classList.toggle('open');btn.classList.toggle('open');document.body.style.overflow=menu.classList.contains('open')?'hidden':'';}
 document.querySelectorAll('#navMenu a').forEach(a=>{a.addEventListener('click',()=>{document.getElementById('navMenu').classList.remove('open');document.getElementById('hamburger').classList.remove('open');document.body.style.overflow='';});});
+</script>
+
+<script>
+function fvToggleMenu(){
+  var l=document.getElementById('navLinks'); var h=document.getElementById('hamburger');
+  if(l) l.classList.toggle('open'); if(h) h.classList.toggle('open');
+}
+document.addEventListener('click',function(e){
+  if(e.target.closest('#navLinks a')){
+    var l=document.getElementById('navLinks'); var h=document.getElementById('hamburger');
+    if(l) l.classList.remove('open'); if(h) h.classList.remove('open');
+  }
+});
 </script>
 </body>
 </html>
