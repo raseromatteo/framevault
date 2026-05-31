@@ -1,1107 +1,740 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>FrameVault — Archivio Stampe Originali di Cinema e Televisione</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
-  <style>
-    :root {
-      --bg:       #faf8f4;
-      --bg2:      #f2ede4;
-      --ink:      #1c1712;
-      --brown:    #5c3a1e;
-      --rust:     #b8420a;
-      --gold:     #c8922a;
-      --ash:      #7a6e62;
-      --border:   #ddd5c5;
-      --white:    #ffffff;
-    }
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>FrameVault — Archivio Storico GRM Foto · Cinema e Televisione Italiana</title>
+<meta name="description" content="Cinquant'anni di cinema, televisione e spettacolo italiano. L'archivio fotografico GRM Foto di Luciano Rasero e Roberto Guberti — stampe originali, diapositive, backstage e ritratti dal 1970." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,900;1,9..144,400&family=DM+Sans:wght@300;400;500&family=Bebas+Neue&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink:    #f6f1e8;
+    --ink2:   #ece3d3;
+    --cream:  #1f1812;
+    --cream2: #4a3f34;
+    --rust:   #b8420a;
+    --rust-l: #c2541d;
+    --gold:   #a8791f;
+    --ash:    #8a7d6b;
+    --line:   rgba(31,24,18,0.14);
+  }
+  * , *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+  html { scroll-behavior:smooth; }
+  body {
+    background:var(--ink); color:var(--cream);
+    font-family:'DM Sans',sans-serif; line-height:1.6;
+    overflow-x:hidden;
+    -webkit-font-smoothing:antialiased;
+  }
+  ::selection { background:var(--rust); color:#fff; }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+  .grain {
+    position:fixed; inset:0; z-index:9999; pointer-events:none; opacity:0.025;
+    background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
 
-    body {
-      background: var(--bg);
-      color: var(--ink);
-      font-family: 'DM Sans', sans-serif;
-      overflow-x: hidden;
-    }
+  /* NAV */
+  nav {
+    position:fixed; top:0; left:0; right:0; z-index:1000;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:20px 48px; transition:all .4s ease;
+    background:#e7dcc4;
+    border-bottom:1px solid rgba(31,24,18,0.1);
+  }
+  nav.scrolled {
+    padding:13px 48px; background:rgba(231,220,196,0.94);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    box-shadow:0 2px 24px rgba(31,24,18,0.07);
+  }
+  .logo { display:flex; align-items:center; gap:11px; text-decoration:none; }
+  .logo-mark {
+    width:34px; height:34px; border:1.5px solid var(--cream);
+    display:flex; align-items:center; justify-content:center;
+    font-family:'Fraunces',serif; font-weight:900; font-size:1rem; color:var(--cream);
+    letter-spacing:-1px;
+  }
+  .logo-text { font-family:'Bebas Neue',sans-serif; font-size:1.5rem; letter-spacing:5px; color:var(--cream); }
+  nav.scrolled .logo-mark, nav.scrolled .logo-text { color:var(--cream); }
+  .nav-links { display:flex; align-items:center; gap:38px; }
+  .nav-links a {
+    color:var(--cream); text-decoration:none; font-size:0.76rem;
+    letter-spacing:1.5px; text-transform:uppercase; font-weight:400;
+    position:relative; transition:opacity .2s;
+  }
+  .nav-links a::after {
+    content:''; position:absolute; bottom:-5px; left:0; width:0; height:1px;
+    background:var(--rust); transition:width .3s ease;
+  }
+  .nav-links a:hover::after { width:100%; }
+  .nav-enter {
+    border:1px solid var(--cream); padding:9px 22px !important;
+    transition:all .3s ease;
+  }
+  .nav-enter:hover { background:var(--rust); border-color:var(--rust); color:#fff; }
+  .nav-enter::after { display:none; }
+  .hamburger { display:none; }
 
-    /* ── FILMSTRIP ── */
-    .filmstrip {
-      width: 100%;
-      height: 28px;
-      background: var(--ink);
-      overflow: hidden;
-      position: relative;
-    }
-    .filmstrip-inner {
-      position: absolute;
-      top: 7px;
-      left: 0;
-      width: 200%;
-      height: 14px;
-      background-image: repeating-linear-gradient(
-        90deg,
-        transparent 0, transparent 18px,
-        rgba(255,255,255,0.15) 18px, rgba(255,255,255,0.15) 20px,
-        transparent 20px, transparent 38px
-      );
-      animation: filmroll 3s linear infinite;
-    }
-    @keyframes filmroll {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-38px); }
-    }
+  /* HERO */
+  .hero {
+    position:relative; min-height:100vh; display:flex; flex-direction:column;
+    justify-content:center; align-items:center; text-align:center;
+    padding:120px 24px 80px; overflow:hidden;
+  }
+  .hero-bg { position:absolute; inset:0; z-index:0; }
+  .hero-bg-img {
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter:grayscale(100%) contrast(0.98) brightness(1.06);
+    opacity:0; transition:opacity 1.6s ease;
+    animation:slowzoom 24s ease-out infinite alternate;
+  }
+  .hero-bg-img.show { opacity:1; }
+  @keyframes slowzoom { from{transform:scale(1)} to{transform:scale(1.12)} }
+  .hero-bg::after {
+    content:''; position:absolute; inset:0;
+    background:
+      radial-gradient(ellipse at 50% 42%, rgba(246,241,232,0.52) 0%, rgba(246,241,232,0.74) 68%, var(--ink) 100%),
+      linear-gradient(to bottom, rgba(246,241,232,0.5) 0%, rgba(246,241,232,0.3) 38%, transparent 62%, var(--ink) 100%);
+  }
+  .hero-content { position:relative; z-index:2; max-width:920px; }
+  .hero-eyebrow {
+    font-size:0.72rem; letter-spacing:5px; text-transform:uppercase;
+    color:var(--gold); margin-bottom:30px; font-weight:500;
+    opacity:0; animation:fadeUp 1s ease .3s forwards;
+  }
+  .hero-eyebrow span { color:var(--ash); }
+  .hero h1 {
+    font-family:'Fraunces',serif; font-weight:300;
+    font-size:clamp(2.4rem, 6vw, 5rem); line-height:1.04;
+    letter-spacing:-1.5px; margin-bottom:30px; color:var(--cream);
+    opacity:0; animation:fadeUp 1.1s ease .5s forwards;
+  }
+  .hero h1 em { font-style:italic; font-weight:400; color:var(--rust-l); }
+  .hero-sub {
+    font-size:1.02rem; color:var(--cream2); max-width:600px; margin:0 auto 46px;
+    font-weight:300; line-height:1.7;
+    opacity:0; animation:fadeUp 1.1s ease .7s forwards;
+  }
+  .hero-search {
+    max-width:680px; margin:0 auto; position:relative;
+    opacity:0; animation:fadeUp 1.1s ease .9s forwards;
+  }
+  .hero-search-box {
+    display:flex; align-items:center; gap:14px;
+    background:rgba(255,255,255,0.55); border:1px solid rgba(31,24,18,0.22);
+    backdrop-filter:blur(14px); padding:6px 6px 6px 22px;
+    transition:all .3s ease;
+  }
+  .hero-search-box:focus-within {
+    border-color:var(--rust); background:rgba(255,255,255,0.8);
+    box-shadow:0 20px 60px rgba(0,0,0,0.4);
+  }
+  .hero-search-box svg { color:var(--cream2); flex-shrink:0; }
+  .hero-search-box input {
+    flex:1; border:none; background:transparent; outline:none;
+    font-family:'DM Sans',sans-serif; font-size:1rem; color:var(--cream);
+    padding:16px 0;
+  }
+  .hero-search-box input::placeholder { color:var(--ash); }
+  .hero-search-btn {
+    background:var(--rust); color:#fff; border:none;
+    padding:16px 32px; font-family:'DM Sans',sans-serif; font-size:0.76rem;
+    font-weight:500; letter-spacing:2px; text-transform:uppercase; cursor:pointer;
+    transition:background .3s ease; white-space:nowrap;
+  }
+  .hero-search-btn:hover { background:var(--rust-l); }
+  .hero-tags {
+    margin-top:22px; font-size:0.8rem; color:var(--ash);
+    display:flex; gap:8px; justify-content:center; flex-wrap:wrap; align-items:center;
+  }
+  .hero-tags a { color:var(--cream2); text-decoration:none; transition:color .2s; cursor:pointer; }
+  .hero-tags a:hover { color:var(--gold); }
+  .hero-scroll {
+    position:absolute; bottom:32px; left:50%; transform:translateX(-50%);
+    z-index:2; font-size:0.62rem; letter-spacing:3px; text-transform:uppercase;
+    color:var(--ash); display:flex; flex-direction:column; align-items:center; gap:10px;
+    opacity:0; animation:fadeUp 1s ease 1.3s forwards;
+  }
+  .hero-scroll-line { width:1px; height:40px; background:linear-gradient(var(--ash), transparent); animation:scrollpulse 2s ease infinite; }
+  @keyframes scrollpulse { 0%,100%{opacity:.3;transform:scaleY(.7)} 50%{opacity:1;transform:scaleY(1)} }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(24px)} to{opacity:1;transform:translateY(0)} }
 
-    /* ── NAV ── */
-    nav {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: 18px 64px;
-      background: var(--white);
-      border-bottom: 1px solid var(--border);
-      position: sticky;
-      top: 0;
-      z-index: 100;
-    }
-    .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.8rem;
-      letter-spacing: 4px;
-      color: var(--ink);
-      text-decoration: none;
-    }
-    .logo span { color: var(--rust); }
-    nav ul {
-      list-style: none;
-      display: flex;
-      gap: 32px;
-      align-items: center;
-    }
-    nav ul a {
-      color: var(--ash);
-      text-decoration: none;
-      font-size: 0.82rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      transition: color 0.2s;
-    }
-    nav ul a:hover { color: var(--ink); }
-    .nav-cta {
-      background: var(--rust) !important;
-      color: var(--white) !important;
-      padding: 9px 22px;
-      border-radius: 2px;
-      font-weight: 500 !important;
-    }
-    .nav-cta:hover { background: var(--brown) !important; }
+  /* STATS */
+  .stats {
+    display:grid; grid-template-columns:repeat(4,1fr);
+    border-top:1px solid var(--line); border-bottom:1px solid var(--line);
+    background:var(--ink2);
+  }
+  .stat {
+    padding:48px 32px; text-align:center; border-right:1px solid var(--line);
+    transition:background .3s ease;
+  }
+  .stat:last-child { border-right:none; }
+  .stat:hover { background:rgba(193,74,22,0.05); }
+  .stat-num {
+    font-family:'Fraunces',serif; font-weight:300; font-size:2.8rem;
+    color:var(--cream); line-height:1; margin-bottom:10px;
+  }
+  .stat-num span { color:var(--rust-l); }
+  .stat-label { font-size:0.68rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--ash); }
 
-    /* ── DROPDOWN ── */
-    .nav-dropdown { position: relative; }
-    .nav-dropdown > a {
-      display: flex; align-items: center; gap: 5px; cursor: pointer;
-    }
-    .nav-dropdown > a::after {
-      content: '▾'; font-size: 0.65rem; color: var(--ash);
-      transition: transform 0.2s;
-    }
-    .nav-dropdown:hover > a::after { transform: rotate(180deg); }
-    .dropdown-menu {
-      display: none;
-      position: absolute;
-      top: 100%;
-      left: 50%;
-      transform: translateX(-50%);
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      min-width: 200px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.08);
-      z-index: 300;
-      padding-top: 12px;
-    }
-    .dropdown-menu::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 12px;
-      background: transparent;
-    }
-    .nav-dropdown:hover .dropdown-menu { display: block; }
-    .dropdown-inner {
-      background: var(--white);
-      border-top: 2px solid var(--rust);
-    }
-    .dropdown-menu a {
-      display: block;
-      padding: 12px 20px;
-      font-size: 0.82rem;
-      color: var(--ash);
-      text-decoration: none;
-      border-bottom: 1px solid var(--border);
-      transition: all 0.2s;
-      white-space: nowrap;
-    }
-    .dropdown-menu a:last-child { border-bottom: none; }
-    .dropdown-menu a:hover { color: var(--rust); background: #fdf5f0; padding-left: 24px; }
+  /* SECTION SHARED */
+  section { position:relative; }
+  .sec-pad { padding:110px 48px; }
+  .sec-head { max-width:1400px; margin:0 auto 56px; }
+  .sec-eyebrow {
+    font-size:0.7rem; letter-spacing:4px; text-transform:uppercase;
+    color:var(--rust-l); margin-bottom:16px; font-weight:500;
+  }
+  .sec-title {
+    font-family:'Fraunces',serif; font-weight:300;
+    font-size:clamp(2rem,4vw,3.2rem); line-height:1.1; letter-spacing:-1px;
+    color:var(--cream); max-width:760px;
+  }
+  .sec-title em { font-style:italic; color:var(--gold); }
+  .sec-intro { font-size:1rem; color:var(--cream2); max-width:560px; margin-top:20px; font-weight:300; }
 
-    /* ── HERO ── */
-    .hero {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      height: 100vh;
-      max-height: 720px;
-      background: var(--white);
-    }
-    .hero-left {
-      padding: 60px 64px;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-    }
-    .eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--rust);
-      font-weight: 500;
-      margin-bottom: 20px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .eyebrow::before {
-      content: '';
-      display: inline-block;
-      width: 28px;
-      height: 1px;
-      background: var(--rust);
-    }
-    h1 {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(2.8rem, 4.5vw, 5rem);
-      font-weight: 900;
-      line-height: 1.08;
-      color: var(--ink);
-    }
-    h1 em {
-      font-style: italic;
-      color: var(--rust);
-    }
-    .hero-desc {
-      margin-top: 24px;
-      font-size: 1rem;
-      line-height: 1.75;
-      color: var(--ash);
-      max-width: 440px;
-    }
-    .hero-stats {
-      display: flex;
-      gap: 36px;
-      margin-top: 40px;
-      padding-top: 32px;
-      border-top: 1px solid var(--border);
-    }
-    .stat-num {
-      font-family: 'Playfair Display', serif;
-      font-size: 2rem;
-      font-weight: 900;
-      color: var(--ink);
-      line-height: 1;
-    }
-    .stat-label {
-      font-size: 0.72rem;
-      letter-spacing: 1px;
-      color: var(--ash);
-      margin-top: 4px;
-    }
-    .cta-row {
-      display: flex;
-      gap: 14px;
-      margin-top: 36px;
-    }
-    .btn-primary {
-      background: var(--rust);
-      color: var(--white);
-      border: none;
-      padding: 15px 34px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      letter-spacing: 0.5px;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: background 0.25s, transform 0.2s;
-    }
-    .btn-primary:hover { background: var(--brown); transform: translateY(-1px); }
-    .btn-outline {
-      background: transparent;
-      color: var(--ink);
-      border: 1.5px solid var(--border);
-      padding: 15px 34px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      border-radius: 2px;
-      transition: border-color 0.25s, color 0.25s;
-    }
-    .btn-outline:hover { border-color: var(--ink); }
+  /* FEATURED COLLECTIONS */
+  .collections { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:repeat(12,1fr); gap:18px; }
+  .col-card {
+    position:relative; overflow:hidden; cursor:pointer;
+    min-height:340px; display:flex; align-items:flex-end;
+    text-decoration:none; background:var(--ink2);
+    border:1px solid var(--line);
+  }
+  .col-card:nth-child(1) { grid-column:span 7; min-height:460px; }
+  .col-card:nth-child(2) { grid-column:span 5; min-height:460px; }
+  .col-card:nth-child(3) { grid-column:span 4; }
+  .col-card:nth-child(4) { grid-column:span 4; }
+  .col-card:nth-child(5) { grid-column:span 4; }
+  .col-card-img {
+    position:absolute; inset:0; width:100%; height:100%; object-fit:cover;
+    filter:grayscale(100%) brightness(0.82) contrast(1.0);
+    transition:transform 1.1s cubic-bezier(.2,.8,.2,1), filter .6s ease;
+  }
+  .col-card:hover .col-card-img { transform:scale(1.07); filter:grayscale(15%) brightness(0.95); }
 
-    /* ── HERO RIGHT — grid preview ── */
-    .hero-right {
-      background: var(--bg2);
-      overflow: hidden;
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      grid-template-rows: repeat(3, minmax(0, 1fr));
-      gap: 4px;
-      padding: 4px;
-      height: 100%;
-      max-height: 720px;
-    }
-    .preview-cell {
-      position: relative;
-      overflow: hidden;
-      border-radius: 2px;
-      animation: fadein 0.8s ease both;
-      background: var(--border);
-      min-height: 0;
-    }
-    .preview-cell img {
-      position: absolute;
-      inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      display: block;
-      transition: transform .4s ease;
-    }
-    .preview-cell:hover img { transform: scale(1.04); }
-    .preview-cell:nth-child(1)  { animation-delay: .05s; grid-row: span 2; background: linear-gradient(135deg,#e8dfd0,#d5c9b5); }
-    .preview-cell:nth-child(2)  { animation-delay: .10s; background: linear-gradient(160deg,#ddd3c2,#ccc0a8); }
-    .preview-cell:nth-child(3)  { animation-delay: .15s; grid-row: span 2; background: linear-gradient(180deg,#e2d9c9,#cfc3ae); }
-    .preview-cell:nth-child(4)  { animation-delay: .20s; background: linear-gradient(120deg,#d8cebb,#c9bca5); }
-    .preview-cell:nth-child(5)  { animation-delay: .25s; grid-row: span 2; background: linear-gradient(200deg,#e5ddd0,#d4c9b2); }
-    .preview-cell:nth-child(6)  { animation-delay: .30s; background: linear-gradient(140deg,#dacfc0,#c8bba4); }
-    .preview-cell:nth-child(7)  { animation-delay: .35s; background: linear-gradient(160deg,#e0d8ca,#cfc4b0); }
-    .preview-cell:nth-child(8)  { animation-delay: .40s; background: linear-gradient(180deg,#d6cbb8,#c4b99f); }
-    .preview-cell:nth-child(9)  { animation-delay: .45s; background: linear-gradient(160deg,#e2d8c8,#cec2ac); }
-    .preview-cell::after {
-      content: '';
-      position: absolute;
-      inset: 0;
-      background: repeating-linear-gradient(
-        0deg, transparent, transparent 2px, rgba(0,0,0,0.02) 2px, rgba(0,0,0,0.02) 4px
-      );
-      pointer-events: none;
-    }
+  .col-card::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(14,11,8,0.92) 0%, rgba(14,11,8,0.25) 55%, transparent 100%);
+  }
+  .col-card-body { position:relative; z-index:2; padding:30px; width:100%; }
+  .col-card-cat { font-size:0.62rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+  .col-card-title {
+    font-family:'Fraunces',serif; font-weight:400; font-size:1.7rem;
+    color:var(--cream); line-height:1.1; margin-bottom:8px;
+  }
+  .col-card-count { font-size:0.8rem; color:var(--cream2); display:flex; align-items:center; gap:8px; }
+  .col-card-arrow {
+    position:absolute; top:26px; right:26px; z-index:2;
+    width:42px; height:42px; border:1px solid rgba(245,239,228,0.3); border-radius:50%;
+    display:flex; align-items:center; justify-content:center; color:var(--cream);
+    opacity:0; transform:translateX(-8px); transition:all .4s ease;
+  }
+  .col-card:hover .col-card-arrow { opacity:1; transform:translateX(0); border-color:var(--rust); background:var(--rust); }
 
-    /* ── MARQUEE ── */
-    .marquee-wrap {
-      background: var(--bg2);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
-      padding: 10px 0;
-      overflow: hidden;
-    }
-    .marquee-track {
-      display: inline-flex;
-      animation: marquee 28s linear infinite;
-      white-space: nowrap;
-    }
-    .marquee-track span {
-      font-size: 0.72rem;
-      letter-spacing: 2.5px;
-      text-transform: uppercase;
-      color: var(--ash);
-      padding: 0 24px;
-    }
-    .marquee-track span.dot { color: var(--gold); font-size: 0.5rem; }
-    @keyframes marquee {
-      from { transform: translateX(0); }
-      to   { transform: translateX(-50%); }
-    }
+  /* FROM THE ARCHIVE GRID */
+  .archive-sec { background:var(--ink2); border-top:1px solid var(--line); }
+  .archive-grid {
+    max-width:1400px; margin:0 auto;
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;
+  }
+  .arch-item {
+    position:relative; overflow:hidden; aspect-ratio:3/4; cursor:pointer;
+    background:var(--ink); border:1px solid var(--line);
+  }
+  .arch-item img {
+    width:100%; height:100%; object-fit:cover;
+    filter:grayscale(100%) brightness(0.98) contrast(1.0);
+    transition:transform .9s cubic-bezier(.2,.8,.2,1), filter .5s ease;
+  }
+  .arch-item:hover img { transform:scale(1.06); filter:grayscale(0%) brightness(0.9); }
+  .arch-item::after {
+    content:''; position:absolute; inset:0;
+    background:linear-gradient(to top, rgba(14,11,8,0.9), transparent 50%);
+    opacity:0; transition:opacity .4s ease;
+  }
+  .arch-item:hover::after { opacity:1; }
+  .arch-meta {
+    position:absolute; bottom:0; left:0; right:0; z-index:2; padding:18px;
+    opacity:0; transform:translateY(10px); transition:all .4s ease;
+  }
+  .arch-item:hover .arch-meta { opacity:1; transform:translateY(0); }
+  .arch-meta-year { font-family:'Bebas Neue',sans-serif; font-size:0.9rem; letter-spacing:2px; color:var(--gold); }
+  .arch-meta-name { font-family:'Fraunces',serif; font-size:1rem; color:var(--cream); line-height:1.2; margin-top:2px; }
+  .archive-cta { text-align:center; margin-top:56px; }
 
-    /* ── SECTION SHARED ── */
-    section { padding: 88px 64px; }
-    .section-eyebrow {
-      font-size: 0.7rem;
-      letter-spacing: 3px;
-      text-transform: uppercase;
-      color: var(--rust);
-      font-weight: 500;
-      margin-bottom: 12px;
-    }
-    .section-title {
-      font-family: 'Playfair Display', serif;
-      font-size: clamp(1.8rem, 3vw, 2.8rem);
-      font-weight: 800;
-      line-height: 1.15;
-      color: var(--ink);
-      margin-bottom: 48px;
-    }
-    .section-title span { color: var(--rust); font-style: italic; }
+  .btn-line {
+    display:inline-flex; align-items:center; gap:12px;
+    border:1px solid var(--cream); color:var(--cream); text-decoration:none;
+    padding:16px 36px; font-size:0.76rem; letter-spacing:2px; text-transform:uppercase;
+    transition:all .3s ease; background:transparent; cursor:pointer;
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-line:hover { background:var(--cream); color:var(--ink); gap:18px; }
+  .btn-fill {
+    display:inline-flex; align-items:center; gap:12px;
+    background:var(--rust); color:#fff; text-decoration:none;
+    padding:16px 36px; font-size:0.76rem; letter-spacing:2px; text-transform:uppercase;
+    transition:all .3s ease; border:1px solid var(--rust); cursor:pointer;
+    font-family:'DM Sans',sans-serif;
+  }
+  .btn-fill:hover { background:var(--rust-l); border-color:var(--rust-l); gap:18px; }
 
-    /* ── SERVIZI ── */
-    .services { background: var(--white); }
-    .services-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-    }
-    .service-card {
-      background: var(--bg);
-      padding: 44px 36px;
-      border: 1px solid var(--border);
-      transition: border-color 0.25s, box-shadow 0.25s;
-      cursor: pointer;
-      position: relative;
-    }
-    .service-card:hover {
-      border-color: var(--rust);
-      box-shadow: 0 4px 28px rgba(184,66,10,0.07);
-    }
-    .service-icon {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 20px;
-      background: var(--bg2);
-    }
-    .service-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.2rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 10px;
-    }
-    .service-card p {
-      font-size: 0.875rem;
-      line-height: 1.7;
-      color: var(--ash);
-      margin-bottom: 20px;
-    }
-    .service-formats {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-    }
-    .tag {
-      font-size: 0.65rem;
-      letter-spacing: 1px;
-      text-transform: uppercase;
-      color: var(--brown);
-      border: 1px solid var(--border);
-      padding: 4px 10px;
-      border-radius: 2px;
-      background: var(--white);
-    }
-    .service-price {
-      margin-top: 24px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-      font-size: 0.78rem;
-      color: var(--ash);
-    }
-    .service-price strong {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.4rem;
-      color: var(--ink);
-      font-weight: 700;
-    }
+  /* ABOUT */
+  .about { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:1fr 1fr; gap:80px; align-items:center; }
+  .about-img-wrap { position:relative; }
+  .about-img {
+    width:100%; aspect-ratio:4/5; object-fit:cover;
+    filter:grayscale(100%) contrast(1.0) brightness(1.0);
+    border:1px solid var(--line);
+  }
+  .about-img-tag {
+    position:absolute; bottom:-1px; left:-1px; background:var(--ink);
+    padding:14px 22px; border:1px solid var(--line);
+    font-size:0.66rem; letter-spacing:2px; text-transform:uppercase; color:var(--ash);
+  }
+  .about-text h2 {
+    font-family:'Fraunces',serif; font-weight:300; font-size:clamp(2rem,3.5vw,3rem);
+    line-height:1.12; letter-spacing:-1px; color:var(--cream); margin-bottom:28px;
+  }
+  .about-text h2 em { font-style:italic; color:var(--gold); }
+  .about-text p { font-size:1rem; color:var(--cream2); font-weight:300; margin-bottom:20px; line-height:1.8; }
+  .about-sign {
+    margin-top:32px; padding-top:24px; border-top:1px solid var(--line);
+    font-family:'Fraunces',serif; font-style:italic; font-size:1.1rem; color:var(--cream);
+  }
+  .about-sign span { display:block; font-family:'DM Sans',sans-serif; font-style:normal; font-size:0.72rem; letter-spacing:2px; text-transform:uppercase; color:var(--ash); margin-top:6px; }
 
-    /* ── COME FUNZIONA ── */
-    .howto { background: var(--bg2); }
-    .steps-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 0;
-      position: relative;
-    }
-    .steps-grid::before {
-      content: '';
-      position: absolute;
-      top: 24px;
-      left: 10%;
-      right: 10%;
-      height: 1px;
-      background: var(--border);
-      z-index: 0;
-    }
-    .step {
-      padding: 0 28px;
-      position: relative;
-      z-index: 1;
-    }
-    .step-circle {
-      width: 48px;
-      height: 48px;
-      border-radius: 50%;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 1.2rem;
-      letter-spacing: 1px;
-      color: var(--rust);
-      margin-bottom: 24px;
-    }
-    .step h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-    .step p {
-      font-size: 0.82rem;
-      line-height: 1.7;
-      color: var(--ash);
-    }
+  /* LICENSING */
+  .licensing { background:var(--ink2); border-top:1px solid var(--line); }
+  .lic-grid { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--line); }
+  .lic-card {
+    padding:44px 32px; border-right:1px solid var(--line);
+    transition:background .3s ease; cursor:pointer; position:relative; overflow:hidden;
+  }
+  .lic-card:last-child { border-right:none; }
+  .lic-card:hover { background:var(--ink); }
+  .lic-num { font-family:'Fraunces',serif; font-size:0.9rem; color:var(--rust-l); margin-bottom:24px; }
+  .lic-title { font-family:'Fraunces',serif; font-weight:400; font-size:1.3rem; color:var(--cream); margin-bottom:12px; }
+  .lic-desc { font-size:0.86rem; color:var(--ash); font-weight:300; line-height:1.6; margin-bottom:24px; }
+  .lic-link { font-size:0.7rem; letter-spacing:2px; text-transform:uppercase; color:var(--cream); display:flex; align-items:center; gap:8px; transition:gap .3s ease; }
+  .lic-card:hover .lic-link { gap:14px; color:var(--rust-l); }
 
-    /* ── CATEGORIE ── */
-    .categories { background: var(--white); }
-    .cat-grid {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-    }
-    .cat-card {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      padding: 28px 24px;
-      cursor: pointer;
-      transition: all 0.25s;
-      text-align: center;
-    }
-    .cat-card:hover {
-      background: var(--white);
-      border-color: var(--rust);
-      transform: translateY(-3px);
-      box-shadow: 0 8px 24px rgba(0,0,0,0.07);
-    }
-    .cat-icon { font-size: 2rem; margin-bottom: 12px; display: block; }
-    .cat-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 0.95rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 4px;
-    }
-    .cat-card p { font-size: 0.75rem; color: var(--ash); }
-    .cat-count {
-      display: inline-block;
-      margin-top: 10px;
-      font-size: 0.65rem;
-      letter-spacing: 1px;
-      color: var(--rust);
-      text-transform: uppercase;
-    }
+  /* STORIES */
+  .stories { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:repeat(3,1fr); gap:32px; }
+  .story-card { cursor:pointer; text-decoration:none; display:block; }
+  .story-img-wrap { overflow:hidden; aspect-ratio:3/2; margin-bottom:22px; border:1px solid var(--line); }
+  .story-img { width:100%; height:100%; object-fit:cover; filter:grayscale(100%) brightness(0.98); transition:transform .9s cubic-bezier(.2,.8,.2,1), filter .5s ease; }
+  .story-card:hover .story-img { transform:scale(1.06); filter:grayscale(20%) brightness(0.9); }
+  .story-cat { font-size:0.64rem; letter-spacing:3px; text-transform:uppercase; color:var(--gold); margin-bottom:12px; }
+  .story-title { font-family:'Fraunces',serif; font-weight:400; font-size:1.5rem; color:var(--cream); line-height:1.2; margin-bottom:10px; transition:color .3s ease; }
+  .story-card:hover .story-title { color:var(--rust-l); }
+  .story-excerpt { font-size:0.9rem; color:var(--ash); font-weight:300; line-height:1.6; }
 
-    /* ── PIANI ── */
-    .pricing { background: var(--bg2); }
-    .price-intro {
-      font-size: 0.92rem;
-      color: var(--ash);
-      max-width: 560px;
-      margin-bottom: 48px;
-      line-height: 1.7;
-    }
-    .price-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 20px;
-    }
-    .price-card {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      padding: 36px 28px;
-      position: relative;
-      transition: border-color 0.25s, box-shadow 0.25s;
-    }
-    .price-card:hover { border-color: var(--rust); box-shadow: 0 6px 24px rgba(184,66,10,0.08); }
-    .price-card-icon { font-size: 1.8rem; margin-bottom: 16px; }
-    .price-card-name {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 6px;
-    }
-    .price-card-desc { font-size: 0.83rem; color: var(--ash); line-height: 1.65; margin-bottom: 24px; }
-    .price-card-from {
-      font-size: 0.68rem;
-      letter-spacing: 2px;
-      text-transform: uppercase;
-      color: var(--ash);
-      margin-bottom: 4px;
-    }
-    .price-card-amount {
-      font-family: 'Playfair Display', serif;
-      font-size: 2.4rem;
-      font-weight: 900;
-      color: var(--ink);
-      line-height: 1;
-      margin-bottom: 4px;
-    }
-    .price-card-amount sup { font-size: 1.1rem; vertical-align: super; }
-    .price-card-note { font-size: 0.75rem; color: var(--ash); margin-bottom: 24px; }
-    .price-card ul {
-      list-style: none;
-      display: flex; flex-direction: column; gap: 9px;
-      margin-bottom: 28px;
-      padding-top: 20px;
-      border-top: 1px solid var(--border);
-    }
-    .price-card ul li {
-      font-size: 0.82rem; color: var(--ash);
-      padding-left: 18px; position: relative; line-height: 1.5;
-    }
-    .price-card ul li::before { content: '✓'; position: absolute; left: 0; color: var(--rust); font-size: 0.7rem; top: 2px; }
-    .price-card .btn-primary,
-    .price-card .btn-outline { width: 100%; text-align: center; display: block; border-radius: 2px; }
-    .price-note-box {
-      margin-top: 32px;
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-left: 4px solid var(--gold);
-      padding: 20px 24px;
-      font-size: 0.84rem;
-      color: var(--ash);
-      line-height: 1.7;
-      max-width: 860px;
-    }
-    .price-note-box strong { color: var(--ink); }
+  /* FINAL CTA */
+  .final-cta { text-align:center; padding:130px 48px; border-top:1px solid var(--line); position:relative; overflow:hidden; }
+  .final-cta::before {
+    content:''; position:absolute; inset:0; z-index:0;
+    background:radial-gradient(ellipse at center, rgba(193,74,22,0.08) 0%, transparent 60%);
+  }
+  .final-cta-inner { position:relative; z-index:2; max-width:760px; margin:0 auto; }
+  .final-cta h2 {
+    font-family:'Fraunces',serif; font-weight:300; font-size:clamp(2.2rem,5vw,4rem);
+    line-height:1.08; letter-spacing:-1.5px; color:var(--cream); margin-bottom:28px;
+  }
+  .final-cta h2 em { font-style:italic; color:var(--rust-l); }
+  .final-cta p { font-size:1.05rem; color:var(--cream2); font-weight:300; margin-bottom:44px; }
 
-    /* ── LICENZE ── */
-    .licenses { background: var(--white); }
-    .license-row {
-      display: grid;
-      grid-template-columns: 1fr 1fr;
-      gap: 24px;
-    }
-    .license-card {
-      border: 1.5px solid var(--border);
-      padding: 40px;
-      transition: border-color 0.25s;
-    }
-    .license-card:hover { border-color: var(--gold); }
-    .license-card h3 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
-      font-weight: 700;
-      color: var(--ink);
-      margin-bottom: 8px;
-    }
-    .license-card p { font-size: 0.87rem; color: var(--ash); line-height: 1.7; margin-bottom: 20px; }
-    .license-uses { display: flex; flex-direction: column; gap: 8px; margin-bottom: 28px; }
-    .license-use {
-      font-size: 0.8rem;
-      color: var(--ash);
-      padding-left: 16px;
-      position: relative;
-    }
-    .license-use::before { content: '—'; position: absolute; left: 0; color: var(--gold); }
+  /* FOOTER */
+  footer { background:var(--ink2); border-top:1px solid var(--line); padding:72px 48px 36px; }
+  .footer-top { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:2fr 1fr 1fr 1fr; gap:48px; padding-bottom:56px; border-bottom:1px solid var(--line); }
+  .footer-brand .logo-text { font-size:1.8rem; }
+  .footer-brand p { font-size:0.88rem; color:var(--ash); font-weight:300; margin-top:20px; max-width:300px; line-height:1.7; }
+  .footer-col h4 { font-size:0.66rem; letter-spacing:2.5px; text-transform:uppercase; color:var(--cream); margin-bottom:20px; }
+  .footer-col a { display:block; font-size:0.86rem; color:var(--ash); text-decoration:none; margin-bottom:12px; transition:color .2s; font-weight:300; }
+  .footer-col a:hover { color:var(--rust-l); }
+  .footer-bottom { max-width:1400px; margin:0 auto; padding-top:32px; display:flex; justify-content:space-between; flex-wrap:wrap; gap:16px; }
+  .footer-legal { font-size:0.72rem; color:var(--ash); font-weight:300; line-height:1.7; max-width:680px; }
+  .footer-legal strong { color:var(--cream2); }
+  .footer-copy { font-size:0.7rem; color:var(--ash); }
 
+  .reveal { opacity:0; transform:translateY(40px); transition:opacity 1s ease, transform 1s cubic-bezier(.2,.8,.2,1); }
+  .reveal.in { opacity:1; transform:translateY(0); }
 
-
-    /* ── NEWSLETTER ── */
-    .newsletter {
-      background: var(--ink);
-      text-align: center;
-      padding: 80px 64px;
-      color: #f5eed8;
-    }
-    .newsletter .section-eyebrow { color: #c8922a; }
-    .newsletter .section-title { color: #f5eed8; margin-bottom: 12px; }
-    .newsletter p { color: rgba(245,238,216,0.6); font-size: 0.92rem; margin-bottom: 36px; }
-    .email-row {
-      display: flex;
-      justify-content: center;
-      max-width: 460px;
-      margin: 0 auto;
-    }
-    .email-row input {
-      flex: 1;
-      background: rgba(255,255,255,0.06);
-      border: 1px solid rgba(255,255,255,0.15);
-      border-right: none;
-      color: #f5eed8;
-      padding: 14px 18px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.88rem;
-      outline: none;
-      border-radius: 2px 0 0 2px;
-    }
-    .email-row input::placeholder { color: rgba(245,238,216,0.35); }
-    .email-row button {
-      background: var(--rust);
-      color: #fff;
-      border: none;
-      padding: 14px 28px;
-      font-family: 'DM Sans', sans-serif;
-      font-size: 0.85rem;
-      font-weight: 500;
-      cursor: pointer;
-      border-radius: 0 2px 2px 0;
-      transition: background 0.25s;
-    }
-    .email-row button:hover { background: #a03808; }
-
-    /* ── FOOTER ── */
-    footer {
-      background: var(--white);
-      border-top: 1px solid var(--border);
-      padding: 28px 64px;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      font-size: 0.78rem;
-      color: var(--ash);
-      gap: 24px;
-      flex-wrap: nowrap;
-    }
-
-    /* ── UTILS ── */
-    @keyframes fadein {
-      from { opacity: 0; transform: translateY(16px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    .hamburger { display: none; }
-
-    @media (max-width: 900px) {
-      nav { padding: 14px 24px; }
-      nav ul {
-        display: none;
-        flex-direction: column;
-        position: fixed;
-        top: 0; left: 0; right: 0; bottom: 0;
-        background: var(--white);
-        z-index: 999;
-        justify-content: center;
-        align-items: center;
-        gap: 28px;
-        padding: 40px;
-      }
-      nav ul.open { display: flex; }
-      nav ul a { font-size: 1.1rem; letter-spacing: 1px; color: var(--ink); }
-      nav ul .nav-cta { padding: 14px 36px; font-size: 1rem !important; }
-      .nav-dropdown > a::after { display: none; }
-      .dropdown-menu {
-        display: flex !important;
-        position: static;
-        transform: none;
-        box-shadow: none;
-        border: none;
-        background: transparent;
-        flex-direction: column;
-        gap: 0;
-        min-width: unset;
-        align-items: center;
-      }
-      .dropdown-menu a {
-        font-size: 0.9rem !important;
-        color: var(--ash) !important;
-        border: none;
-        padding: 6px 12px !important;
-      }
-      .dropdown-menu a:hover { padding-left: 12px !important; }
-      .hamburger {
-        display: flex;
-        flex-direction: column;
-        gap: 5px;
-        cursor: pointer;
-        z-index: 1000;
-        background: none;
-        border: none;
-        padding: 6px;
-      }
-      .hamburger span {
-        display: block;
-        width: 26px;
-        height: 2px;
-        background: var(--ink);
-        border-radius: 2px;
-        transition: all 0.3s ease;
-      }
-      .hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-      .hamburger.open span:nth-child(2) { opacity: 0; }
-      .hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-      /* Hero mobile */
-      .hero { grid-template-columns: 1fr; height: auto; max-height: none; }
-      .hero-right { display: none; }
-      .hero-left { padding: 32px 24px 40px; justify-content: flex-start; }
-      .hero-left h1 { font-size: 2.4rem; }
-      .hero-desc { font-size: 0.88rem; margin-top: 16px; }
-      .hero-stats { gap: 24px; margin-top: 28px; padding-top: 20px; }
-      .stat-num { font-size: 1.6rem; }
-
-      /* Bottoni hero su mobile — piccoli e in riga */
-      .cta-row {
-        flex-direction: row;
-        gap: 10px;
-        margin-top: 28px;
-      }
-      .btn-primary, .btn-outline {
-        padding: 11px 18px;
-        font-size: 0.78rem;
-      }
-
-      /* Fix bottone scopri servizi */
-      .btn-outline[onclick] { cursor: pointer; }
-
-      /* Sections */
-      section { padding: 48px 20px; }
-      .services-grid { grid-template-columns: 1fr; gap: 16px; }
-      .steps-grid { grid-template-columns: 1fr; }
-      .cat-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
-      .price-grid, .license-row { grid-template-columns: 1fr; }
-
-      /* Service cards mobile — testo più corto */
-      .service-card { padding: 28px 20px; }
-      .service-card p { font-size: 0.83rem; line-height: 1.6; }
-      .service-formats { display: none; } /* Nasconde i tag su mobile */
-      .service-price { margin-top: 16px; padding-top: 14px; }
-
-      /* Cat cards mobile */
-      .cat-card { padding: 20px 14px; }
-      .cat-icon { font-size: 1.4rem; margin-bottom: 8px; }
-      .cat-card h3 { font-size: 0.82rem; }
-      .cat-card p { display: none; } /* Nasconde descrizione su mobile */
-
-      footer { flex-direction: column; gap: 10px; text-align: center; }
-    }
-  </style>
+  @media(max-width:1000px){
+    .stats { grid-template-columns:repeat(2,1fr); }
+    .stat:nth-child(2){ border-right:none; }
+    .stat:nth-child(1),.stat:nth-child(2){ border-bottom:1px solid var(--line); }
+    .collections { grid-template-columns:repeat(2,1fr); }
+    .col-card:nth-child(n) { grid-column:span 1 !important; min-height:300px !important; }
+    .about { grid-template-columns:1fr; gap:48px; }
+    .lic-grid { grid-template-columns:repeat(2,1fr); }
+    .lic-card:nth-child(2){ border-right:none; }
+    .lic-card:nth-child(1),.lic-card:nth-child(2){ border-bottom:1px solid var(--line); }
+    .stories { grid-template-columns:1fr; }
+    .footer-top { grid-template-columns:1fr 1fr; gap:32px; }
+  }
+  @media(max-width:680px){
+    nav { padding:16px 20px; }
+    nav.scrolled { padding:12px 20px; }
+    .nav-links { position:fixed; inset:0; background:var(--ink); flex-direction:column;
+      justify-content:center; gap:30px; transform:translateX(100%); transition:transform .4s ease; z-index:998; }
+    .nav-links.open { transform:translateX(0); }
+    .nav-links a { font-size:1.1rem; }
+    .hamburger { display:flex; flex-direction:column; gap:5px; cursor:pointer; background:none; border:none; z-index:999; padding:6px; }
+    .hamburger span { display:block; width:24px; height:2px; background:var(--cream); transition:all .3s; }
+    .hamburger.open span:nth-child(1){ transform:translateY(7px) rotate(45deg); }
+    .hamburger.open span:nth-child(2){ opacity:0; }
+    .hamburger.open span:nth-child(3){ transform:translateY(-7px) rotate(-45deg); }
+    .sec-pad { padding:72px 20px; }
+    .collections { grid-template-columns:1fr; }
+    .stats { grid-template-columns:1fr; }
+    .stat { border-right:none; border-bottom:1px solid var(--line); }
+    .lic-grid { grid-template-columns:1fr; }
+    .lic-card { border-right:none; border-bottom:1px solid var(--line); }
+    .footer-top { grid-template-columns:1fr; }
+    .hero-search-btn { padding:14px 20px; }
+    .hero-search-box { padding-left:16px; }
+  }
+  /* testi sovrapposti alle foto restano chiari */
+  .col-card-title { color:#fff; }
+  .col-card-count { color:rgba(255,255,255,0.85); }
+  .arch-meta-name { color:#fff; }
+  .col-card-arrow { color:#fff; border-color:rgba(255,255,255,0.5); }
+</style>
 </head>
 <body>
+<div class="grain"></div>
 
-  <div class="filmstrip"><div class="filmstrip-inner"></div></div>
+<nav id="nav">
+  <a href="/index.html" class="logo">
+    <span class="logo-mark">FV</span>
+    <span class="logo-text">FRAMEVAULT</span>
+  </a>
+  <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
+  <div class="nav-links" id="navLinks">
+    <a href="/frameVault_archivio.html">Archivio</a>
+    <a href="#collezioni">Collezioni</a>
+    <a href="#storia">La Storia</a>
+    <a href="#licenze">Licenze</a>
+    <a href="/frameVault_archivio.html" class="nav-enter">Entra nell'archivio</a>
+  </div>
+</nav>
 
-  <!-- NAV -->
-  <nav>
-    <div class="logo" style="display:flex;align-items:center;gap:10px;"><svg width="26" height="26" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg" style="flex-shrink:0;"><rect x="1" y="1" width="26" height="26" rx="2" fill="#1c1712"/><text x="4" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#faf8f4" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span style="letter-spacing:4px;color:#1c1712;">FRAME<span style="color:#b8420a;">VAULT</span></span></div>
-    <button class="hamburger" id="hamburger" onclick="toggleMenu()" aria-label="Menu">
-      <span></span><span></span><span></span>
-    </button>
-    <ul id="navMenu">
-      <li><a href="/index.html">Home</a></li>
-      <li class="nav-dropdown">
-        <a href="#">Servizi</a>
-        <div class="dropdown-menu">
-          <div class="dropdown-inner">
-            <a href="/frameVault_servizi.html#servizi">I nostri servizi</a>
-            <a href="/frameVault_servizi.html#prezzi">Prezzi</a>
-            <a href="/frameVault_servizi.html#licenze">Licenze</a>
-            <a href="/index.html#come-funziona">Come funziona</a>
-          </div>
-        </div>
-      </li>
-      <li><a href="/frameVault_chisiamo.html">Chi Siamo</a></li>
-      <li><a href="/frameVault_archivio.html" class="nav-cta">Accedi all'archivio</a></li>
-    </ul>
-  </nav>
-
-  <!-- HERO -->
-  <section class="hero" style="padding:0">
-    <div class="hero-left">
-      <div class="eyebrow">Archivio Digitale Ufficiale · Dal 1970</div>
-      <h1>Cinquant'anni di spettacolo italiano, <em>in un archivio fotografico unico.</em></h1>
-      <p class="hero-desc">Stampe originali, diapositive d'epoca e scatti digitali dei protagonisti dello spettacolo italiano. Dall'archivio storico degli anni '70 fino alle produzioni più recenti — tutto disponibile da scaricare, stampare e collezionare.</p>
-      <div class="hero-stats">
-        <div>
-          <div class="stat-num">500K+</div>
-          <div class="stat-label">Immagini d'archivio</div>
-        </div>
-        <div>
-          <div class="stat-num">30+</div>
-          <div class="stat-label">Anni di storia</div>
-        </div>
-        <div>
-          <div class="stat-num">Alta Ris.</div>
-          <div class="stat-label">Qualità digitale</div>
-        </div>
+<header class="hero">
+  <div class="hero-bg" id="heroBg"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow">GRM Foto S.r.l. <span>— Archivio Storico dal 1970</span></div>
+    <h1>Cinquant'anni di cinema,<br>televisione e <em>spettacolo</em> italiano.</h1>
+    <p class="hero-sub">Oltre 500.000 immagini originali firmate Luciano Rasero e Roberto Guberti. Stampe d'epoca, diapositive, backstage e ritratti che hanno raccontato la cultura popolare italiana.</p>
+    <div class="hero-search">
+      <form class="hero-search-box" onsubmit="vaiRicerca(event)">
+        <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="8.5" cy="8.5" r="6" stroke="currentColor" stroke-width="1.5"/><line x1="13" y1="13" x2="18" y2="18" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        <input type="text" id="heroSearch" placeholder="Cerca attori, film, programmi TV, eventi e personaggi" />
+        <button type="submit" class="hero-search-btn">Cerca</button>
+      </form>
+      <div class="hero-tags">
+        <span style="color:var(--ash)">Esplora:</span>
+        <a onclick="vaiRicercaQuick('Massimo Troisi')">Massimo Troisi</a> &middot;
+        <a onclick="vaiRicercaQuick('Raffaella Carrà')">Raffaella Carrà</a> &middot;
+        <a onclick="vaiRicercaQuick('Pippo Baudo')">Pippo Baudo</a> &middot;
+        <a onclick="vaiRicercaQuick('Sanremo')">Sanremo</a>
       </div>
-      <div class="cta-row">
-        <button class="btn-primary" onclick="window.location='/frameVault_archivio.html'">Esplora l'archivio</button>
-        <button class="btn-outline" onclick="window.location='/frameVault_servizi.html'">Scopri i servizi</button>
-      </div>
-    </div>
-    <div class="hero-right">
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_01.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_02.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_03.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_04.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_05.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_06.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_07.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_09.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-      <div class="preview-cell"><img src="https://grmfoto.myds.me/framevault-media/anteprime/hero/hero_08.jpg" alt="" loading="eager" onerror="this.style.display='none'"></div>
-    </div>
-  </section>
-
-  <!-- MARQUEE -->
-  <div class="marquee-wrap">
-    <div class="marquee-track">
-      <span>Cinema Italiano</span><span class="dot">✦</span>
-      <span>Fotogrammi Originali</span><span class="dot">✦</span>
-      <span>Televisione RAI</span><span class="dot">✦</span>
-      <span>Anni '70 · '80 · '90</span><span class="dot">✦</span>
-      <span>Stampa Fine Art</span><span class="dot">✦</span>
-      <span>Download HD</span><span class="dot">✦</span>
-      <span>Licenza Digitale</span><span class="dot">✦</span>
-      <span>Archivio Certificato</span><span class="dot">✦</span>
-      <span>Cinema Italiano</span><span class="dot">✦</span>
-      <span>Fotogrammi Originali</span><span class="dot">✦</span>
-      <span>Televisione RAI</span><span class="dot">✦</span>
-      <span>Anni '70 · '80 · '90</span><span class="dot">✦</span>
-      <span>Stampa Fine Art</span><span class="dot">✦</span>
-      <span>Download HD</span><span class="dot">✦</span>
-      <span>Licenza Digitale</span><span class="dot">✦</span>
-      <span>Archivio Certificato</span><span class="dot">✦</span>
     </div>
   </div>
+  <div class="hero-scroll">
+    <span>Scorri</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</header>
 
-  <!-- SERVIZI -->
-  <section class="services" id="servizi">
-    <div class="section-eyebrow">I nostri servizi</div>
-    <div class="section-title">Due modi di portare<br>la storia a casa tua</div>
-    <div class="services-grid" style="grid-template-columns:repeat(2,1fr)">
+<section class="stats">
+  <div class="stat"><div class="stat-num">30<span>+</span></div><div class="stat-label">Anni di Archivio</div></div>
+  <div class="stat"><div class="stat-num">500<span>K</span></div><div class="stat-label">Immagini Originali</div></div>
+  <div class="stat"><div class="stat-num">2<span>.</span>000<span>+</span></div><div class="stat-label">Produzioni</div></div>
+  <div class="stat"><div class="stat-num">2</div><div class="stat-label">Fotografi d'Autore</div></div>
+</section>
 
-      <div class="service-card">
-        <div class="service-icon">🖨️</div>
-        <h3>Stampa Fine Art su Carta</h3>
-        <p>Stampa fotografica professionale su carta satinata da 200 g/m², resa cromatica impeccabile. Disponibile in formati standard e personalizzati. Ideale per collezioni e regali.</p>
-        <div class="service-formats">
-          <span class="tag">Carta 200g</span>
-          <span class="tag">Satinata / Lucida</span>
-          <span class="tag">A4 · A3 · 70×100</span>
-          <span class="tag">Formato custom</span>
-        </div>
-        <div class="service-price">
-          Da <strong>€12</strong> · spedizione inclusa
-        </div>
+<section class="sec-pad" id="collezioni">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Collezioni in evidenza</div>
+    <h2 class="sec-title">Percorsi curati attraverso <em>i volti</em> e i momenti che hanno definito un'epoca.</h2>
+  </div>
+  <div class="collections reveal">
+    <a class="col-card" href="/frameVault_archivio.html">
+      <div class="col-card-arrow">&rarr;</div>
+      <div class="col-card-cat">Personaggio</div>
+      <div class="col-card-body">
+        <div class="col-card-title">Massimo Troisi</div>
+        <div class="col-card-count">Il genio napoletano &middot; foto di scena</div>
       </div>
-
-      <div class="service-card">
-        <div class="service-icon">⬇️</div>
-        <h3>Download Digitale con Licenza</h3>
-        <p>Scarica il file in alta risoluzione e scegli la licenza più adatta alle tue esigenze — uso privato, editoriale o commerciale. Ogni utilizzo ha il suo preventivo dedicato, trasparente e su misura.</p>
-        <div class="service-formats">
-          <span class="tag">File JPEG / TIFF</span>
-          <span class="tag">Alta risoluzione</span>
-          <span class="tag">Licenza inclusa</span>
-          <span class="tag">Uso editoriale</span>
-        </div>
-        <div class="service-price">
-          <a href="/frameVault_chisiamo.html#contatti" style="display:inline-block;background:var(--rust);color:#fff;text-decoration:none;padding:12px 24px;font-family:'DM Sans',sans-serif;font-size:0.82rem;font-weight:500;border-radius:2px;transition:background .2s;" onmouseover="this.style.background='var(--brown)'" onmouseout="this.style.background='var(--rust)'">Richiedi preventivo →</a>
-        </div>
+    </a>
+    <a class="col-card" href="/frameVault_archivio.html">
+      <div class="col-card-arrow">&rarr;</div>
+      <div class="col-card-cat">Eventi</div>
+      <div class="col-card-body">
+        <div class="col-card-title">Archivio Sanremo</div>
+        <div class="col-card-count">Trent'anni di Festival</div>
       </div>
+    </a>
+    <a class="col-card" href="/frameVault_archivio.html">
+      <div class="col-card-arrow">&rarr;</div>
+      <div class="col-card-cat">Televisione</div>
+      <div class="col-card-body">
+        <div class="col-card-title">La RAI dei grandi varietà</div>
+        <div class="col-card-count">Fantastico &middot; Domenica In &middot; Al Paradise</div>
+      </div>
+    </a>
+    <a class="col-card" href="/frameVault_archivio.html">
+      <div class="col-card-arrow">&rarr;</div>
+      <div class="col-card-cat">Cinema</div>
+      <div class="col-card-body">
+        <div class="col-card-title">Cinema Italiano</div>
+        <div class="col-card-count">Set, foto di scena e backstage</div>
+      </div>
+    </a>
+    <a class="col-card" href="/frameVault_archivio.html">
+      <div class="col-card-arrow">&rarr;</div>
+      <div class="col-card-cat">Ritratti</div>
+      <div class="col-card-body">
+        <div class="col-card-title">Ritratti d'Autore</div>
+        <div class="col-card-count">Posati esclusivi in studio</div>
+      </div>
+    </a>
+  </div>
+</section>
 
+<section class="sec-pad archive-sec">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Dall'archivio</div>
+    <h2 class="sec-title">Una selezione di scatti <em>originali</em> dalla collezione GRM Foto.</h2>
+  </div>
+  <div class="archive-grid reveal" id="archiveGrid"></div>
+  <div class="archive-cta reveal">
+    <a href="/frameVault_archivio.html" class="btn-line">Esplora tutto l'archivio &rarr;</a>
+  </div>
+</section>
+
+<section class="sec-pad" id="storia">
+  <div class="about">
+    <div class="about-img-wrap reveal">
+      <div class="about-img" id="aboutImg" style="background:linear-gradient(160deg,#2a2018,#16110c);"></div>
+      <div class="about-img-tag">Roma &middot; Archivio GRM Foto</div>
     </div>
-  </section>
-
-  <!-- COME FUNZIONA -->
-  <section class="howto" id="come-funziona">
-    <div class="section-eyebrow">Come funziona</div>
-    <div class="section-title">Dal nostro archivio<br>alla tua collezione</div>
-    <div class="steps-grid">
-      <div class="step">
-        <div class="step-circle">01</div>
-        <h3>Cerca nell'archivio</h3>
-        <p>Sfoglia 500.000+ stampe per titolo, anno, regista, attore o genere. Ogni pezzo è catalogato con scheda dettagliata.</p>
-      </div>
-      <div class="step">
-        <div class="step-circle">02</div>
-        <h3>Scegli il servizio</h3>
-        <p>Download digitale o stampa Fine Art su carta. Seleziona il formato e le dimensioni che preferisci.</p>
-      </div>
-      <div class="step">
-        <div class="step-circle">03</div>
-        <h3>Acquista in sicurezza</h3>
-        <p>Pagamento sicuro. Ogni acquisto include il certificato di autenticità e la licenza d'uso appropriata.</p>
-      </div>
-      <div class="step">
-        <div class="step-circle">04</div>
-        <h3>Ricevi o scarica</h3>
-        <p>Download immediato oppure spedizione a casa in tutta Italia e Europa, in packaging protettivo dedicato.</p>
-      </div>
-    </div>
-  </section>
-
-  <!-- CATALOGO CATEGORIE -->
-  <section class="categories" id="catalogo">
-    <div class="section-eyebrow">Il catalogo</div>
-    <div class="section-title">Due collezioni,<br><span>un solo archivio</span></div>
-
-    <!-- Archivio Storico -->
-    <div style="margin-bottom:40px;">
-      <div style="font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--ash);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">📼 Archivio Storico · Anni '70 – 2000</div>
-      <div class="cat-grid">
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">🎬</span>
-          <h3>Cinema Italiano</h3>
-          <p>Fellini, Visconti, Leone, Argento e i grandi del cinema italiano</p>
-          
-        </div>
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">📺</span>
-          <h3>Televisione RAI</h3>
-          <p>Sceneggiati, varietà e fiction italiane dalla nascita della TV</p>
-          
-        </div>
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">📷</span>
-          <h3>Foto di Scena</h3>
-          <p>Dietro le quinte, ritratti e momenti unici sul set</p>
-          
-        </div>
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">🏆</span>
-          <h3>Pezzi Rari</h3>
-          <p>Stampe uniche, numerate e certificate — edizioni limitate</p>
-          
-        </div>
+    <div class="about-text reveal">
+      <div class="sec-eyebrow">La storia</div>
+      <h2>Due fotografi, <em>mezzo secolo</em> di memoria visiva italiana.</h2>
+      <p>L'archivio GRM Foto nasce dall'incontro tra <strong style="color:var(--cream)">Luciano Rasero</strong> e <strong style="color:var(--cream)">Roberto Guberti</strong>, due fotografi che dagli anni '70 hanno documentato il cinema, la televisione e lo spettacolo italiano dietro e davanti le quinte.</p>
+      <p>Set cinematografici, studi RAI, festival, photocall e ritratti esclusivi: ogni scatto è una testimonianza autentica della cultura popolare che ha attraversato cinque decenni.</p>
+      <p>Oggi quella memoria viene digitalizzata, catalogata e resa accessibile — per la prima volta — a editori, ricercatori, collezionisti e appassionati.</p>
+      <div class="about-sign">
+        Luciano Rasero &amp; Roberto Guberti
+        <span>Fondatori &middot; Archivio GRM Foto</span>
       </div>
     </div>
+  </div>
+</section>
 
-    <!-- Attualità, Eventi & Posati -->
-    <div>
-      <div style="font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--ash);margin-bottom:14px;padding-bottom:10px;border-bottom:1px solid var(--border);">🌟 Attualità, Eventi & Posati · Anni 2000 – Oggi</div>
-      <div class="cat-grid">
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">📡</span>
-          <h3>Trasmissioni TV</h3>
-          <p>I grandi programmi televisivi italiani — dal varietà alle fiction più amate</p>
-          
-        </div>
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">🎭</span>
-          <h3>Red Carpet & Eventi</h3>
-          <p>Premiere, festival, cerimonie e grandi eventi dello spettacolo italiano</p>
-          
-        </div>
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">🎤</span>
-          <h3>Personaggi TV & Cinema</h3>
-          <p>Conduttori, presentatori, attori e registi — i volti iconici dello spettacolo italiano</p>
-        </div>
-        <div class="cat-card" onclick="window.location='/frameVault_archivio.html'">
-          <span class="cat-icon">📸</span>
-          <h3>Shooting Esclusivi</h3>
-          <p>Sessioni fotografiche professionali in studio e location</p>
-          
-        </div>
-      </div>
+<section class="sec-pad licensing" id="licenze">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Licenze &amp; Stampe</div>
+    <h2 class="sec-title">Ogni immagine è disponibile per <em>uso editoriale</em>, collezione e stampa fine art.</h2>
+  </div>
+  <div class="lic-grid reveal">
+    <div class="lic-card">
+      <div class="lic-num">01</div>
+      <div class="lic-title">Licenza Editoriale</div>
+      <div class="lic-desc">Per giornali, riviste, libri e contenuti digitali a carattere informativo.</div>
+      <div class="lic-link">Richiedi &rarr;</div>
     </div>
-
-  </section>
-
-  <!-- LICENZE -->
-  <section class="licenses" id="licenze">
-    <div class="section-eyebrow">Licenze d'uso</div>
-    <div class="section-title">Acquista i diritti giusti<br>per ogni utilizzo</div>
-    <div class="license-row">
-      <div class="license-card">
-        <h3>Licenza Personale</h3>
-        <p>Per uso privato e decorativo. Stampa a casa, collezione personale, regalo. Non include l'uso commerciale.</p>
-        <div class="license-uses">
-          <div class="license-use">Stampa per uso domestico</div>
-          <div class="license-use">Collezione privata</div>
-          <div class="license-use">Regalo personale</div>
-          <div class="license-use">Uso sui social personali (non sponsorizzato)</div>
-        </div>
-        <button class="btn-outline">Da €5 · Download immediato</button>
-      </div>
-      <div class="license-card">
-        <h3>Licenza Editoriale & Commerciale</h3>
-        <p>Per pubblicazioni, campagne, produzioni audiovisive, mostre ed esposizioni. Include attribuzione e diritti d'uso estesi.</p>
-        <div class="license-uses">
-          <div class="license-use">Pubblicazioni cartacee e digitali</div>
-          <div class="license-use">Campagne pubblicitarie e marketing</div>
-          <div class="license-use">Mostre, esposizioni e musei</div>
-          <div class="license-use">Produzioni audiovisive e documentari</div>
-        </div>
-        <button class="btn-primary">Richiedi preventivo</button>
-      </div>
+    <div class="lic-card">
+      <div class="lic-num">02</div>
+      <div class="lic-title">Licenza Documentari</div>
+      <div class="lic-desc">Materiale d'archivio per produzioni televisive e cinematografiche.</div>
+      <div class="lic-link">Richiedi &rarr;</div>
     </div>
-  </section>
-
-  <!-- PREZZI -->
-  <!-- LINK ALLA PAGINA SERVIZI -->
-  <section style="background:var(--bg2);padding:60px 64px;text-align:center;border-top:1px solid var(--border);border-bottom:1px solid var(--border)">
-    <div style="font-size:0.68rem;letter-spacing:3px;text-transform:uppercase;color:var(--rust);margin-bottom:12px;">Prezzi e licenze</div>
-    <div style="font-family:'Playfair Display',serif;font-size:clamp(1.6rem,2.5vw,2.4rem);font-weight:900;margin-bottom:12px;">Nessun abbonamento.<br><em style="color:var(--rust);font-style:italic;">Paghi solo quello che ti serve.</em></div>
-    <p style="font-size:0.9rem;color:var(--ash);max-width:480px;margin:0 auto 32px;line-height:1.7;">Download digitale o stampa Fine Art su carta — ogni acquisto è singolo e include la licenza d'uso. Scopri tutti i dettagli nella pagina dedicata.</p>
-    <a href="/frameVault_servizi.html" style="background:var(--rust);color:#fff;text-decoration:none;padding:15px 40px;font-family:'DM Sans',sans-serif;font-size:0.85rem;font-weight:500;border-radius:2px;display:inline-block;transition:background .2s;" onmouseover="this.style.background='var(--brown)'" onmouseout="this.style.background='var(--rust)'">Vedi prezzi e servizi →</a>
-  </section>
-
-
-
-  <!-- NEWSLETTER -->
-  <section class="newsletter" id="newsletter">
-    <div class="section-eyebrow">Resta aggiornato</div>
-    <div class="section-title">Entra per primo<br>nell'archivio</div>
-    <p>Iscriviti per ricevere aggiornamenti sul lancio, anteprime esclusive e nuove stampe selezionate ogni settimana.</p>
-    <div class="email-row">
-      <input type="email" placeholder="la-tua@email.it" />
-      <button>Iscrivimi</button>
+    <div class="lic-card">
+      <div class="lic-num">03</div>
+      <div class="lic-title">Download Digitale</div>
+      <div class="lic-desc">File ad alta risoluzione con licenza d'uso personale immediata.</div>
+      <div class="lic-link">Scopri &rarr;</div>
     </div>
-  </section>
-
-  <!-- FOOTER -->
-  <footer>
-    <div class="logo" style="font-size:1.3rem;display:flex;align-items:center;gap:8px;"><svg width="22" height="22" viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="1" width="26" height="26" rx="2" fill="#faf8f4"/><text x="4" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#1c1712" letter-spacing="-1">F</text><text x="13" y="21" font-family="Georgia, serif" font-size="17" font-weight="700" fill="#b8420a" letter-spacing="-1">V</text></svg><span style="letter-spacing:4px;color:#faf8f4;">FRAME<span style="color:#b8420a;">VAULT</span></span></div>
-    <span>© 2025 FrameVault — Archivio Stampe Originali di Cinema e Televisione</span>
-    <div style="display:flex;gap:24px;align-items:center;flex-wrap:nowrap;">
-      <a href="/frameVault_spedizioni.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Spedizione e Resi</a>
-      <a href="/index.html#licenze" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Licenze</a>
-      <a href="/frameVault_chisiamo.html" style="color:var(--ash);text-decoration:none;font-size:0.78rem;white-space:nowrap;" onmouseover="this.style.color='var(--rust)'" onmouseout="this.style.color='var(--ash)'">Chi Siamo</a>
+    <div class="lic-card">
+      <div class="lic-num">04</div>
+      <div class="lic-title">Stampe Fine Art</div>
+      <div class="lic-desc">Tirature su carta museale, numerate e pronte da incorniciare.</div>
+      <div class="lic-link">Acquista &rarr;</div>
     </div>
-  </footer>
+  </div>
+</section>
 
-  <script>
-    // Menu hamburger
-    function toggleMenu() {
-      const menu = document.getElementById('navMenu');
-      const btn = document.getElementById('hamburger');
-      menu.classList.toggle('open');
-      btn.classList.toggle('open');
-      document.body.style.overflow = menu.classList.contains('open') ? 'hidden' : '';
+<section class="sec-pad">
+  <div class="sec-head reveal">
+    <div class="sec-eyebrow">Storie dall'archivio</div>
+    <h2 class="sec-title">Approfondimenti e racconti <em>dietro gli scatti</em>.</h2>
+  </div>
+  <div class="stories reveal">
+    <a class="story-card" href="/frameVault_archivio.html">
+      <div class="story-img-wrap"><div class="story-img" style="background:linear-gradient(145deg,#2a2018,#16110c);"></div></div>
+      <div class="story-cat">Cinema</div>
+      <div class="story-title">Troisi dietro le quinte</div>
+      <div class="story-excerpt">Gli scatti inediti sul set che raccontano il metodo di lavoro del genio napoletano.</div>
+    </a>
+    <a class="story-card" href="/frameVault_archivio.html">
+      <div class="story-img-wrap"><div class="story-img" style="background:linear-gradient(145deg,#2a1d18,#16110c);"></div></div>
+      <div class="story-cat">Televisione</div>
+      <div class="story-title">L'epoca d'oro dei varietà</div>
+      <div class="story-excerpt">Quando la RAI riuniva milioni di italiani davanti allo schermo il sabato sera.</div>
+    </a>
+    <a class="story-card" href="/frameVault_archivio.html">
+      <div class="story-img-wrap"><div class="story-img" style="background:linear-gradient(145deg,#241f18,#16110c);"></div></div>
+      <div class="story-cat">Eventi</div>
+      <div class="story-title">Sanremo, mezzo secolo di Festival</div>
+      <div class="story-excerpt">Dai camerini al palco dell'Ariston: il dietro le quinte della canzone italiana.</div>
+    </a>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="final-cta-inner reveal">
+    <h2>Entra nell'archivio.<br><em>La storia ti aspetta.</em></h2>
+    <p>Oltre mezzo milione di immagini a portata di ricerca.</p>
+    <a href="/frameVault_archivio.html" class="btn-fill">Accedi all'archivio &rarr;</a>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-top">
+    <div class="footer-brand">
+      <div class="logo"><span class="logo-mark">FV</span><span class="logo-text">FRAMEVAULT</span></div>
+      <p>L'archivio storico GRM Foto. Cinquant'anni di cinema, televisione e spettacolo italiano firmati Rasero &amp; Guberti.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Archivio</h4>
+      <a href="/frameVault_archivio.html">Esplora tutto</a>
+      <a href="/frameVault_archivio.html">Personaggi</a>
+      <a href="/frameVault_archivio.html">Diapositive</a>
+      <a href="/frameVault_archivio.html">Stampe Originali</a>
+    </div>
+    <div class="footer-col">
+      <h4>Servizi</h4>
+      <a href="#licenze">Licenze Editoriali</a>
+      <a href="#licenze">Stampe Fine Art</a>
+      <a href="/frameVault_spedizioni.html">Spedizioni e Resi</a>
+      <a href="/frameVault_chisiamo.html#contatti">Contatti</a>
+    </div>
+    <div class="footer-col">
+      <h4>Studio</h4>
+      <a href="/frameVault_chisiamo.html">Chi Siamo</a>
+      <a href="#storia">La Storia</a>
+      <a href="/frameVault_chisiamo.html#contatti">Lungotevere della Vittoria 10, Roma</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p class="footer-legal">FrameVault è un marchio di <strong>©GRM Foto S.r.l.</strong> Tutti i diritti sulle immagini dell'archivio sono di proprietà esclusiva di GRM Foto S.r.l. Qualsiasi riproduzione, cessione o utilizzo commerciale non autorizzato è perseguibile ai sensi della Legge 22 aprile 1941 n. 633 sui diritti d'autore.</p>
+    <p class="footer-copy">© 2025 GRM Foto S.r.l.</p>
+  </div>
+</footer>
+
+<script>
+const nav = document.getElementById('nav');
+window.addEventListener('scroll', () => {
+  nav.classList.toggle('scrolled', window.scrollY > 60);
+}, { passive:true });
+
+function toggleMenu(){
+  document.getElementById('navLinks').classList.toggle('open');
+  document.getElementById('hamburger').classList.toggle('open');
+}
+document.querySelectorAll('#navLinks a').forEach(a=>a.addEventListener('click',()=>{
+  document.getElementById('navLinks').classList.remove('open');
+  document.getElementById('hamburger').classList.remove('open');
+}));
+
+function vaiRicerca(e){
+  e.preventDefault();
+  const q = document.getElementById('heroSearch').value.trim();
+  window.location.href = '/frameVault_archivio.html' + (q ? '?q='+encodeURIComponent(q) : '');
+}
+function vaiRicercaQuick(q){
+  window.location.href = '/frameVault_archivio.html?q='+encodeURIComponent(q);
+}
+
+const obs = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); obs.unobserve(e.target);} });
+}, { threshold:0.12 });
+document.querySelectorAll('.reveal').forEach(el=>obs.observe(el));
+
+async function caricaImmagini(){
+  try {
+    const res = await fetch('/api/catalogo');
+    const data = await res.json();
+    if (!Array.isArray(data) || data.length === 0) return;
+
+    const valide = data.filter(x => x.img);
+    const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(p=>p[1]);
+    const mix = shuffle(valide);
+
+    const heroBg = document.getElementById('heroBg');
+    const heroPick = mix[0];
+    if (heroPick) {
+      const img = document.createElement('img');
+      img.className = 'hero-bg-img';
+      img.src = '/api/immagine?path=' + heroPick.img;
+      img.onload = () => img.classList.add('show');
+      heroBg.appendChild(img);
     }
-    document.querySelectorAll('#navMenu a').forEach(a => {
-      a.addEventListener('click', () => {
-        document.getElementById('navMenu').classList.remove('open');
-        document.getElementById('hamburger').classList.remove('open');
-        document.body.style.overflow = '';
-      });
+
+    const aboutPick = mix[1];
+    if (aboutPick) {
+      const aboutImg = document.getElementById('aboutImg');
+      aboutImg.style.backgroundImage = "url('/api/immagine?path=" + aboutPick.img + "')";
+      aboutImg.style.backgroundSize = 'cover';
+      aboutImg.style.backgroundPosition = 'center';
+    }
+
+    const collCards = document.querySelectorAll('.col-card');
+    const findByName = (name) => valide.find(x => (x.titolo||'').toLowerCase().includes(name) || (x.personaggio_cartella||'').toLowerCase().includes(name));
+    const collQueries = ['troisi', 'sanremo', null, null, null];
+    collCards.forEach((card, i) => {
+      let pick = collQueries[i] ? findByName(collQueries[i]) : null;
+      if (!pick) pick = mix[i+2];
+      if (pick) {
+        const img = document.createElement('img');
+        img.className = 'col-card-img';
+        img.src = '/api/immagine?path=' + pick.img;
+        card.insertBefore(img, card.firstChild);
+      }
     });
 
-    // Scroll reveal
-    const io = new IntersectionObserver(entries => {
-      entries.forEach(e => {
-        if (e.isIntersecting) {
-          e.target.style.opacity = '1';
-          e.target.style.transform = 'translateY(0)';
-        }
-      });
-    }, { threshold: 0.08 });
-    document.querySelectorAll('.service-card, .step, .cat-card, .price-card, .license-card').forEach(el => {
-      el.style.opacity = '0';
-      el.style.transform = 'translateY(20px)';
-      el.style.transition = 'opacity 0.55s ease, transform 0.55s ease, border-color 0.25s, box-shadow 0.25s';
-      io.observe(el);
+    const grid = document.getElementById('archiveGrid');
+    mix.slice(8, 20).forEach(item => {
+      const div = document.createElement('a');
+      div.className = 'arch-item';
+      div.href = '/frameVault_archivio.html';
+      const nome = (item.titolo||'').match(/[Nn]ella foto[:\s]+(.+?)(?:\r|\n|,|$)/);
+      const nomeShow = nome ? nome[1].trim() : (item.personaggio_cartella || 'Archivio GRM Foto');
+      div.innerHTML = '<img src="/api/immagine?path=' + item.img + '" alt="" loading="lazy"><div class="arch-meta"><div class="arch-meta-year">' + (item.anno||'') + '</div><div class="arch-meta-name">' + nomeShow + '</div></div>';
+      grid.appendChild(div);
     });
-  </script>
 
+    const storyImgs = document.querySelectorAll('.story-img');
+    const storyPicks = [findByName('troisi'), mix[22], findByName('sanremo')];
+    storyImgs.forEach((el, i) => {
+      const pick = storyPicks[i] || mix[24+i];
+      if (pick) {
+        el.style.backgroundImage = "url('/api/immagine?path=" + pick.img + "')";
+        el.style.backgroundSize = 'cover';
+        el.style.backgroundPosition = 'center';
+      }
+    });
+
+  } catch(e) { console.error('Errore caricamento immagini:', e); }
+}
+caricaImmagini();
+</script>
 </body>
 </html>
