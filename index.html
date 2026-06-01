@@ -242,7 +242,7 @@
   .archive-sec { background:var(--ink2); border-top:1px solid var(--line); }
   .archive-grid {
     max-width:1400px; margin:0 auto;
-    display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px;
+    display:grid; grid-template-columns:repeat(5,1fr); gap:14px;
   }
   .arch-item {
     position:relative; overflow:hidden; aspect-ratio:3/4; cursor:pointer;
@@ -407,6 +407,7 @@
   .col-card-count { color:rgba(255,255,255,0.85); }
   .arch-meta-name { color:#fff; }
   .col-card-arrow { color:#fff; border-color:rgba(255,255,255,0.5); }
+  @media(max-width:1000px){ .archive-grid{ grid-template-columns:repeat(2,1fr); } }
 </style>
 </head>
 <body>
@@ -419,7 +420,6 @@
   </a>
   <button class="hamburger" id="hamburger" onclick="toggleMenu()"><span></span><span></span><span></span></button>
   <div class="nav-links" id="navLinks">
-    <a href="/frameVault_archivio.html">Archivio</a>
     <a href="/frameVault_servizi.html">Servizi</a>
     <a href="/frameVault_chisiamo.html">Chi Siamo</a>
     <a href="/frameVault_archivio.html" class="nav-enter">Entra nell'archivio</a>
@@ -687,7 +687,7 @@ async function caricaImmagini(){
     });
 
     const grid = document.getElementById('archiveGrid');
-    mix.slice(8, 14).forEach(item => {
+    mix.slice(8, 18).forEach(item => {
       const div = document.createElement('a');
       div.className = 'arch-item';
       div.href = '/frameVault_archivio.html';
