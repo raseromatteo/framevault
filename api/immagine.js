@@ -23,11 +23,17 @@ export default async function handler(req, res) {
       if (response.ok) break;
     }
 
-    if (!response || !response.ok) return res.status(404).end();
+    if (!response || !response.ok) {
+      // Cache breve sui 404 per non ripetere i tentativi al NAS troppo spesso
+      res.setHeader('Cache-Control', 'public, s-maxage=300');
+      return res.status(404).end();
+    }
 
     const buffer = await response.arrayBuffer();
     res.setHeader('Content-Type', 'image/jpeg');
-    res.setHeader('Cache-Control', 's-maxage=86400');
+    // Le anteprime non cambiano: cache lunga su CDN + browser per ridurre il Fast Origin Transfer.
+    // Una volta scaricata dal NAS, l'immagine viene servita dalla cache senza ripassare dall'origine.
+    res.setHeader('Cache-Control', 'public, max-age=31536000, s-maxage=31536000, immutable, stale-while-revalidate=86400');
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.status(200).send(Buffer.from(buffer));
   } catch (error) {
