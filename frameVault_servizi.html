@@ -212,6 +212,18 @@ nav .hamburger { display:none; }
   .nav-dd-menu { position:static; transform:none; opacity:1; visibility:visible; background:transparent; border:none; box-shadow:none; padding:0; min-width:0; margin-top:12px; }
   .nav-dd-menu a { text-align:center; font-size:0.92rem; padding:8px 0; opacity:0.75; }
 }
+
+/* Servizi+Licenze unificati */
+.svc-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:20px; margin-top:8px; }
+.svc-card { border:1px solid var(--border); background:var(--white); padding:36px 30px; display:flex; flex-direction:column; transition:border-color .3s ease; }
+.svc-card-pro { border-color:var(--gold); }
+.svc-card:hover { border-color:var(--rust); }
+.svc-ico { font-size:1.7rem; margin-bottom:18px; }
+.svc-card h3 { font-family:'Fraunces',serif; font-weight:400; font-size:1.25rem; color:var(--ink); margin-bottom:10px; }
+.svc-price { font-family:'Fraunces',serif; font-size:1.4rem; color:var(--rust); margin-bottom:18px; }
+.svc-price span { font-family:'DM Sans',sans-serif; font-size:0.78rem; color:var(--ash); }
+.svc-card p { font-size:0.88rem; color:var(--ash); line-height:1.6; margin-bottom:24px; flex:1; }
+@media(max-width:900px){ .svc-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -245,6 +257,35 @@ nav .hamburger { display:none; }
   <p>Due modi per portare a casa la storia dello spettacolo italiano — download digitale o stampa Fine Art su carta. Ogni acquisto è singolo e include la licenza d'uso corrispondente.</p>
 </div>
 
+<section class="hiw-sec">
+  <div class="hiw-wrap">
+    <div class="hiw-eyebrow">Come funziona</div>
+    <h2 class="hiw-title">Dal nostro archivio <em>alla tua collezione</em></h2>
+    <div class="hiw-grid">
+      <div class="hiw-step">
+        <div class="hiw-num">01</div>
+        <h3>Cerca nell'archivio</h3>
+        <p>Sfoglia oltre 500.000 stampe per titolo, anno, regista, attore o genere. Ogni pezzo è catalogato con scheda dettagliata.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">02</div>
+        <h3>Scegli il servizio</h3>
+        <p>Download digitale per uso editoriale e commerciale, oppure stampa Fine Art su carta museale nel formato che preferisci.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">03</div>
+        <h3>Acquista in sicurezza</h3>
+        <p>Pagamento sicuro. Ogni acquisto include la licenza d'uso appropriata e, per le stampe, il certificato di autenticità.</p>
+      </div>
+      <div class="hiw-step">
+        <div class="hiw-num">04</div>
+        <h3>Ricevi o scarica</h3>
+        <p>Download immediato per i file digitali, oppure spedizione a casa in tutta Italia ed Europa in packaging protettivo dedicato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <div class="catalog-wrap">
   <div class="cat-eyebrow">Il catalogo</div>
   <div class="cat-title">Due collezioni, <em>un solo archivio</em></div>
@@ -274,78 +315,33 @@ nav .hamburger { display:none; }
 
 <div class="content-wrap">
 
-  <!-- PREZZI -->
-  <div class="prices-wrap" id="prezzi">
-    <div class="sec-eyebrow">I nostri servizi</div>
-    <div class="sec-title">Due modi di <em>collezionare</em></div>
-    <div class="prices-grid">
+  <div class="services-unified" id="servizi">
+    <div class="sec-eyebrow">Servizi e licenze</div>
+    <div class="sec-title">Due modi di collezionare,<br><em>una licenza per ogni uso</em></div>
+    <div class="svc-grid">
 
-      <div class="price-card">
-        <div class="price-card-icon">🖨️</div>
-        <div class="price-card-name">Stampa Fine Art su Carta</div>
-        <div class="price-card-desc">Stampa professionale su carta fotografica satinata. Spedita in packaging protettivo, pronta da incorniciare.</div>
-        <div class="price-from">A partire da</div>
-        <div class="price-amount"><sup>€</sup>12</div>
-        <div class="price-note">per stampa · spedizione inclusa</div>
-        <ul>
-          <li>Carta satinata 200 g/m²</li>
-          <li>Formati: A4, A3, 50×70, 70×100</li>
-          <li>Formato personalizzato su richiesta</li>
-          <li>Licenza personale inclusa</li>
-          <li>Consegna in 5–7 giorni lavorativi</li>
-        </ul>
+      <div class="svc-card">
+        <div class="svc-ico">🖨️</div>
+        <h3>Stampa Fine Art</h3>
+        <div class="svc-price">da €12 <span>· spedizione inclusa</span></div>
+        <p>Stampa su carta fotografica museale satinata 200 g/m². Formati A4, A3, 50×70, 70×100 e su misura. Licenza personale inclusa, consegna in 5–7 giorni in Italia ed Europa.</p>
         <button class="btn-outline">Ordina la stampa</button>
       </div>
 
-      <div class="price-card">
-        <div class="price-card-icon">⬇️</div>
-        <div class="price-card-name">Download Digitale</div>
-        <div class="price-card-desc">Scarica il file in alta risoluzione con la licenza più adatta — uso privato, editoriale o commerciale. Preventivo su misura per ogni esigenza.</div>
-        <ul>
-          <li>File JPEG alta risoluzione</li>
-          <li>Disponibile anche in TIFF</li>
-          <li>Licenza personalizzata inclusa</li>
-          <li>Certificato di autenticità digitale</li>
-          <li>Accesso immediato</li>
-        </ul>
-        <a href="/frameVault_chisiamo.html#contatti" class="btn-primary" style="display:block;text-align:center;text-decoration:none;">Richiedi preventivo →</a>
+      <div class="svc-card">
+        <div class="svc-ico">⬇️</div>
+        <h3>Download Digitale</h3>
+        <div class="svc-price">da €5 <span>· download immediato</span></div>
+        <p>File ad alta risoluzione (JPEG o TIFF) con licenza personale: uso privato, collezione, regalo e social non sponsorizzati. Disponibile subito dopo il pagamento.</p>
+        <button class="btn-outline">Scarica il file</button>
       </div>
 
-    </div>
-
-    <div class="note-box">
-      💼 <strong>Uso editoriale o commerciale?</strong> Per pubblicazioni, campagne pubblicitarie, mostre o produzioni audiovisive è richiesta una licenza specifica. Il prezzo varia in base all'utilizzo e alla tiratura. <a href="/frameVault_chisiamo.html#contatti">Contattaci per un preventivo personalizzato →</a>
-    </div>
-  </div>
-
-  <!-- LICENZE -->
-  <div class="licenses-wrap" id="licenze">
-    <div class="sec-eyebrow">Licenze d'uso</div>
-    <div class="sec-title">Acquista i diritti giusti<br>per ogni <em>utilizzo</em></div>
-    <div class="licenses-grid">
-
-      <div class="license-card">
-        <h3>Licenza Personale</h3>
-        <p>Per uso privato e decorativo. Stampa a casa, collezione personale, regalo. Non include l'uso commerciale.</p>
-        <div class="license-uses">
-          <div class="license-use">Stampa per uso domestico</div>
-          <div class="license-use">Collezione privata</div>
-          <div class="license-use">Regalo personale</div>
-          <div class="license-use">Uso sui social personali (non sponsorizzato)</div>
-        </div>
-        <button class="btn-outline">Inclusa in ogni acquisto</button>
-      </div>
-
-      <div class="license-card">
+      <div class="svc-card svc-card-pro">
+        <div class="svc-ico">💼</div>
         <h3>Licenza Editoriale & Commerciale</h3>
-        <p>Per pubblicazioni, campagne, produzioni audiovisive, mostre ed esposizioni. Include attribuzione e diritti d'uso estesi.</p>
-        <div class="license-uses">
-          <div class="license-use">Pubblicazioni cartacee e digitali</div>
-          <div class="license-use">Campagne pubblicitarie e marketing</div>
-          <div class="license-use">Mostre, esposizioni e musei</div>
-          <div class="license-use">Produzioni audiovisive e documentari</div>
-        </div>
-        <a href="/frameVault_chisiamo.html#contatti" class="btn-rust" style="display:block;text-align:center;">Richiedi preventivo</a>
+        <div class="svc-price">su preventivo</div>
+        <p>Per pubblicazioni, campagne pubblicitarie, mostre, esposizioni e produzioni audiovisive. Diritti d'uso estesi e attribuzione, prezzo su misura in base all'utilizzo e alla tiratura.</p>
+        <a href="/frameVault_chisiamo.html#contatti" class="btn-rust" style="display:block;text-align:center;text-decoration:none;">Richiedi preventivo →</a>
       </div>
 
     </div>
@@ -362,34 +358,6 @@ nav .hamburger { display:none; }
 
 </div>
 
-<section class="hiw-sec">
-  <div class="hiw-wrap">
-    <div class="hiw-eyebrow">Come funziona</div>
-    <h2 class="hiw-title">Dal nostro archivio <em>alla tua collezione</em></h2>
-    <div class="hiw-grid">
-      <div class="hiw-step">
-        <div class="hiw-num">01</div>
-        <h3>Cerca nell'archivio</h3>
-        <p>Sfoglia oltre 500.000 stampe per titolo, anno, regista, attore o genere. Ogni pezzo è catalogato con scheda dettagliata.</p>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-num">02</div>
-        <h3>Scegli il servizio</h3>
-        <p>Download digitale per uso editoriale e commerciale, oppure stampa Fine Art su carta museale nel formato che preferisci.</p>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-num">03</div>
-        <h3>Acquista in sicurezza</h3>
-        <p>Pagamento sicuro. Ogni acquisto include la licenza d'uso appropriata e, per le stampe, il certificato di autenticità.</p>
-      </div>
-      <div class="hiw-step">
-        <div class="hiw-num">04</div>
-        <h3>Ricevi o scarica</h3>
-        <p>Download immediato per i file digitali, oppure spedizione a casa in tutta Italia ed Europa in packaging protettivo dedicato.</p>
-      </div>
-    </div>
-  </div>
-</section>
 
 <footer>
   <a href="/index.html" class="logo" style="display:flex;align-items:center;gap:10px;text-decoration:none;"><span style="width:30px;height:30px;border:1.5px solid #1f1812;border-radius:2px;display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;font-size:0.9rem;color:#1f1812;letter-spacing:-1px;flex-shrink:0;">FV</span><span style="font-family:'Bebas Neue',sans-serif;font-size:1.5rem;letter-spacing:4px;color:#1f1812;">FRAMEVAULT</span></a>
