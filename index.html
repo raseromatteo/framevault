@@ -410,14 +410,14 @@
   @media(max-width:1000px){ .archive-grid{ grid-template-columns:repeat(2,1fr); } }
 
 /* Dropdown nav (Servizi > Spedizioni) */
-.nav-dd { position:relative; }
+.nav-dd { position:relative; display:flex; align-items:center; }
 .nav-dd-menu { position:absolute; top:calc(100% + 10px); left:50%; transform:translateX(-50%) translateY(6px); background:#e7dcc4; border:1px solid rgba(31,24,18,0.14); min-width:190px; padding:6px 0; opacity:0; visibility:hidden; transition:all .25s ease; z-index:1100; box-shadow:0 10px 30px rgba(31,24,18,0.1); }
 .nav-dd:hover .nav-dd-menu { opacity:1; visibility:visible; transform:translateX(-50%) translateY(0); }
 .nav-dd-menu a { display:block !important; padding:10px 20px; font-size:0.72rem; letter-spacing:1.5px; text-transform:uppercase; color:#1f1812; text-decoration:none; white-space:nowrap; transition:background .2s,color .2s; }
 .nav-dd-menu a:hover { background:rgba(184,66,10,0.08); color:#b8420a; }
 .nav-dd-menu a::after { display:none !important; }
 @media(max-width:680px){
-  .nav-dd { text-align:center; }
+  .nav-dd { text-align:center; flex-direction:column; }
   .nav-dd-menu { position:static; transform:none; opacity:1; visibility:visible; background:transparent; border:none; box-shadow:none; padding:0; min-width:0; margin-top:12px; }
   .nav-dd-menu a { text-align:center; font-size:0.92rem; padding:8px 0; opacity:0.75; }
 }
