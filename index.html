@@ -313,7 +313,7 @@
 
   /* LICENSING */
   .licensing { background:var(--ink2); border-top:1px solid var(--line); }
-  .lic-grid { max-width:1400px; margin:0 auto; display:grid; grid-template-columns:repeat(4,1fr); gap:0; border:1px solid var(--line); }
+  .lic-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(2,1fr); gap:0; border:1px solid var(--line); }
   .lic-card {
     padding:44px 32px; border-right:1px solid var(--line);
     transition:background .3s ease; cursor:pointer; position:relative; overflow:hidden;
@@ -531,8 +531,8 @@
 
 <section class="sec-pad archive-sec">
   <div class="sec-head reveal">
-    <div class="sec-eyebrow">Dall'archivio</div>
-    <h2 class="sec-title">Una selezione di scatti <em>originali</em> dalla collezione GRM Foto.</h2>
+    <div class="sec-eyebrow">Ultimi caricamenti</div>
+    <h2 class="sec-title">Gli ultimi scatti <em>aggiunti</em> all'archivio GRM Foto.</h2>
   </div>
   <div class="archive-grid reveal" id="archiveGrid"></div>
   <div class="archive-cta reveal">
@@ -566,30 +566,21 @@
     <h2 class="sec-title">Ogni immagine è disponibile per <em>uso editoriale</em>, collezione e stampa fine art.</h2>
   </div>
   <div class="lic-grid reveal">
-    <div class="lic-card">
+    <a href="/frameVault_servizi.html" class="lic-card" style="text-decoration:none;color:inherit;">
       <div class="lic-num">01</div>
-      <div class="lic-title">Licenza Editoriale</div>
-      <div class="lic-desc">Per giornali, riviste, libri e contenuti digitali a carattere informativo.</div>
-      <div class="lic-link">Richiedi &rarr;</div>
-    </div>
-    <div class="lic-card">
-      <div class="lic-num">02</div>
-      <div class="lic-title">Licenza Documentari</div>
-      <div class="lic-desc">Materiale d'archivio per produzioni televisive e cinematografiche.</div>
-      <div class="lic-link">Richiedi &rarr;</div>
-    </div>
-    <div class="lic-card">
-      <div class="lic-num">03</div>
-      <div class="lic-title">Download Digitale</div>
-      <div class="lic-desc">File ad alta risoluzione con licenza d'uso personale immediata.</div>
-      <div class="lic-link">Scopri &rarr;</div>
-    </div>
-    <div class="lic-card">
-      <div class="lic-num">04</div>
       <div class="lic-title">Stampe Fine Art</div>
-      <div class="lic-desc">Tirature su carta museale, numerate e pronte da incorniciare.</div>
-      <div class="lic-link">Acquista &rarr;</div>
-    </div>
+      <div class="lic-desc">Tirature su carta fotografica museale, numerate e pronte da incorniciare. Da €12, spedizione inclusa.</div>
+      <div class="lic-link">Scopri &rarr;</div>
+    </a>
+    <a href="/frameVault_servizi.html" class="lic-card" style="text-decoration:none;color:inherit;">
+      <div class="lic-num">02</div>
+      <div class="lic-title">Download Digitale &amp; Licenze</div>
+      <div class="lic-desc">File ad alta risoluzione con la licenza adatta all'uso &mdash; personale, editoriale o commerciale: dalla stampa privata a giornali, libri e documentari.</div>
+      <div class="lic-link">Richiedi un preventivo &rarr;</div>
+    </a>
+  </div>
+  <div class="reveal" style="text-align:center; margin-top:48px;">
+    <a href="/frameVault_servizi.html" class="btn-line">Scopri i servizi &rarr;</a>
   </div>
 </section>
 
@@ -636,6 +627,51 @@
 </footer>
 
 <script>
+
+// ═══════════════════════════════════════════════════════════════
+//  FOTO DELLO SFONDO HERO (dietro al titolo principale)
+//  ----------------------------------------------------------------
+//  Per cambiarle: metti le foto nella cartella del NAS
+//    /framevault-media/anteprime/catalogo/_hero/
+//  e scrivi qui sotto i nomi dei file (consigliate 3 o 4).
+//  Si alternano automaticamente in dissolvenza.
+//  Se SOSTITUISCI una foto mantenendo lo stesso nome, aumenta
+//  HERO_VERSION di 1 (es. da 1 a 2) per forzare l'aggiornamento.
+// ═══════════════════════════════════════════════════════════════
+const HERO_IMAGES = [
+  '_hero/hero1.jpg',
+  '_hero/hero2.jpg',
+  '_hero/hero3.jpg',
+  '_hero/hero4.jpg',
+];
+const HERO_VERSION = 1;
+
+function caricaHero(){
+  const heroBg = document.getElementById('heroBg');
+  if (!heroBg) return;
+  const imgs = [];
+  HERO_IMAGES.forEach((nome) => {
+    const img = document.createElement('img');
+    img.className = 'hero-bg-img';
+    img.src = '/api/immagine?path=' + nome + '&v=' + HERO_VERSION;
+    img.alt = '';
+    img.onerror = () => img.remove();          // se manca, la salta
+    img.onload = () => { if (!heroBg.querySelector('.hero-bg-img.show')) img.classList.add('show'); };
+    heroBg.appendChild(img);
+    imgs.push(img);
+  });
+  // Alterna in dissolvenza ogni 6 secondi
+  let idx = 0;
+  setInterval(() => {
+    const vis = imgs.filter(im => im.complete && im.naturalWidth > 0);
+    if (vis.length < 2) return;
+    vis[idx % vis.length].classList.remove('show');
+    idx++;
+    vis[idx % vis.length].classList.add('show');
+  }, 6000);
+}
+caricaHero();
+
 const nav = document.getElementById('nav');
 window.addEventListener('scroll', () => {
   nav.classList.toggle('scrolled', window.scrollY > 60);
@@ -673,16 +709,6 @@ async function caricaImmagini(){
     const valide = data.filter(x => x.img);
     const shuffle = a => a.map(v=>[Math.random(),v]).sort((x,y)=>x[0]-y[0]).map(p=>p[1]);
     const mix = shuffle(valide);
-
-    const heroBg = document.getElementById('heroBg');
-    const heroPick = mix[0];
-    if (heroPick) {
-      const img = document.createElement('img');
-      img.className = 'hero-bg-img';
-      img.src = '/api/immagine?path=' + heroPick.img;
-      img.onload = () => img.classList.add('show');
-      heroBg.appendChild(img);
-    }
 
     const aboutPick = mix[1];
     if (aboutPick) {
