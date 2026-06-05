@@ -421,6 +421,23 @@
   .nav-dd-menu { position:static; transform:none; opacity:1; visibility:visible; background:transparent; border:none; box-shadow:none; padding:0; min-width:0; margin-top:12px; }
   .nav-dd-menu a { text-align:center; font-size:0.92rem; padding:8px 0; opacity:0.75; }
 }
+
+/* Box Licenze & Stampe in stile pagina servizi */
+.hsvc-grid { max-width:1100px; margin:0 auto; display:grid; grid-template-columns:repeat(2,1fr); gap:24px; }
+.hsvc-card { border:1px solid var(--line); background:#fbf8f1; padding:40px 36px; display:flex; flex-direction:column; transition:border-color .3s ease; text-decoration:none; }
+.hsvc-card-pro { border-color:var(--gold); }
+.hsvc-card:hover { border-color:var(--rust); }
+.hsvc-ico { font-size:1.8rem; margin-bottom:20px; }
+.hsvc-card h3 { font-family:'Fraunces',serif; font-weight:400; font-size:1.35rem; color:var(--cream); margin-bottom:12px; }
+.hsvc-price { font-family:'Fraunces',serif; font-size:1.5rem; color:var(--rust); margin-bottom:20px; }
+.hsvc-price span { font-family:'DM Sans',sans-serif; font-size:0.8rem; color:var(--ash); }
+.hsvc-card p { font-size:0.9rem; color:var(--ash); line-height:1.65; margin-bottom:28px; flex:1; }
+.hsvc-btn { display:block; text-align:center; padding:14px; font-size:0.78rem; letter-spacing:1.5px; text-transform:uppercase; transition:all .3s ease; }
+.hsvc-btn-outline { border:1px solid var(--line); color:var(--cream); }
+.hsvc-btn-outline:hover { border-color:var(--cream); }
+.hsvc-btn-fill { background:var(--rust); color:#fff; }
+.hsvc-btn-fill:hover { background:#c2541d; }
+@media(max-width:760px){ .hsvc-grid{ grid-template-columns:1fr; } }
 </style>
 </head>
 <body>
@@ -565,18 +582,20 @@
     <div class="sec-eyebrow">Licenze &amp; Stampe</div>
     <h2 class="sec-title">Ogni immagine è disponibile per <em>uso editoriale</em>, collezione e stampa fine art.</h2>
   </div>
-  <div class="lic-grid reveal">
-    <a href="/frameVault_servizi.html" class="lic-card" style="text-decoration:none;color:inherit;">
-      <div class="lic-num">01</div>
-      <div class="lic-title">Stampe Fine Art</div>
-      <div class="lic-desc">Tirature su carta fotografica museale, numerate e pronte da incorniciare. Da €12, spedizione inclusa.</div>
-      <div class="lic-link">Scopri &rarr;</div>
+  <div class="hsvc-grid reveal">
+    <a href="/frameVault_servizi.html" class="hsvc-card">
+      <div class="hsvc-ico">🖨️</div>
+      <h3>Stampa Fine Art</h3>
+      <div class="hsvc-price">da €12 <span>· spedizione inclusa</span></div>
+      <p>Stampa su carta fotografica museale satinata 200 g/m². Formati A4, A3, 50×70, 70×100 e su misura. Licenza personale inclusa, consegna in 5–7 giorni in Italia ed Europa.</p>
+      <span class="hsvc-btn hsvc-btn-outline">Ordina la stampa</span>
     </a>
-    <a href="/frameVault_servizi.html" class="lic-card" style="text-decoration:none;color:inherit;">
-      <div class="lic-num">02</div>
-      <div class="lic-title">Download Digitale &amp; Licenze</div>
-      <div class="lic-desc">File ad alta risoluzione con la licenza adatta all'uso &mdash; personale, editoriale o commerciale: dalla stampa privata a giornali, libri e documentari.</div>
-      <div class="lic-link">Richiedi un preventivo &rarr;</div>
+    <a href="/frameVault_servizi.html" class="hsvc-card hsvc-card-pro">
+      <div class="hsvc-ico">⬇️</div>
+      <h3>Download Digitale &amp; Licenza d'uso</h3>
+      <div class="hsvc-price">su preventivo</div>
+      <p>File ad alta risoluzione (JPEG o TIFF) fornito con la licenza adatta al tuo utilizzo &mdash; personale, editoriale o commerciale. Dall'uso privato, collezione e regalo fino a pubblicazioni, campagne, mostre e produzioni audiovisive. Il prezzo è su misura, in base all'utilizzo e alla tiratura.</p>
+      <span class="hsvc-btn hsvc-btn-fill">Richiedi preventivo &rarr;</span>
     </a>
   </div>
   <div class="reveal" style="text-align:center; margin-top:48px;">
